@@ -27,7 +27,7 @@ public class Game {
 	 
 	public Game(){
 		initGL();
-		Star.createStars(2000);
+		Star.createStars(50);
 		DrawText.initText();
 	}
 	public void initGL(){

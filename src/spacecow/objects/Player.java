@@ -113,7 +113,9 @@ public class Player {
 		if (Keyboard.isKeyDown(Keyboard.KEY_2) && (Magnet.isAvailable())) {
 			Magnet.initMagnet();
 		}
-		
+		if (Keyboard.getEventKey() == Keyboard.KEY_SPACE) {
+			System.out.println("space!");
+		}
 		
 	}
 
