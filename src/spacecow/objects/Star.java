@@ -1,5 +1,4 @@
 package spacecow.objects;
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.newdawn.slick.opengl.Texture;
@@ -27,7 +26,7 @@ public class Star{
 	
 	Texture starIm = null;
 	
-	private static ArrayList<Star> starsArray = new ArrayList<>();
+
 	
 	
 	public static double superSpeed=1;
@@ -120,11 +119,11 @@ public class Star{
 	}
 	public static void createStars(int numOfStars){
 		for (int i = 0; i < numOfStars; i++) {
-			starsArray.add(new Star());
+			ObjectArrays.getStarsArray().add(new Star());
 		}
 	}
 	public static void updateStars(){
-		for (Star star : starsArray) {
+		for (Star star : ObjectArrays.getStarsArray()) {
 			star.move();
 			TextureHandler.drawTexture(star.starIm, star.getCenterX(), star.centerY);
 		}
@@ -134,10 +133,7 @@ public class Star{
 		return starCount;
 	}
 	public static void addNewStar(){
-		starsArray.add(new Star(0));
-	}
-	public static ArrayList<Star> getStarArray(){
-		 return starsArray;
+		ObjectArrays.getStarsArray().add(new Star(0));
 	}
 
 }

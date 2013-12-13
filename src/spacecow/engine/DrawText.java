@@ -1,23 +1,23 @@
 package spacecow.engine;
 
 import java.awt.Font;
+import java.util.ArrayList;
 
-import org.lwjgl.Sys;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 
 import spacecow.buffs.Rush;
 import spacecow.buffs.SuperSpeed;
-import spacecow.objects.Player;
-import spacecow.objects.ScoreMultiplyer;
-import spacecow.objects.Star;
+import spacecow.objects.ObjectArrays;
 
 public class DrawText {
 
 	static TrueTypeFont font;
 	
+	private static ArrayList<DrawPoints> drawPointsArray = new ArrayList<>();
+	private static ArrayList<DrawPoints> removePointsArray = new ArrayList<>();
+	
+
 	public static void initText(){
 		Font score = new Font("Bank Gothic", Font.BOLD, 35);
 		font = new TrueTypeFont(score, false);
@@ -49,14 +49,14 @@ public class DrawText {
 		font.drawString(20, 105, "Score multi: "+Score.getScoreMulti());
 	}
 	private static void drawStarNr(){
-		font.drawString(20, 135, "Stars: "+Star.getStarArray().size());
+		font.drawString(20, 135, "Stars: "+ObjectArrays.getStarsArray().size());
 	}
 	public static void drawPoints(){
 //		DrawPoints.getDrawPointsArray().add((new DrawPoints(font, Player.getInstance().getX(), Player.getInstance().getY(), ""+Score.getLatestScore())));
 		}
 	public static void update(){
-		for (DrawPoints dpR : DrawPoints.getRemovePointsArray()) {
-			DrawPoints.getDrawPointsArray().remove(dpR);
+		for (DrawPoints dpR : DrawText.getRemovePointsArray()) {
+			DrawText.getDrawPointsArray().remove(dpR);
 		}
 		drawScore();
 		drawRush();
@@ -65,18 +65,17 @@ public class DrawText {
 		drawScoreMulti();
 		drawStarNr();
 		Color.white.bind();
-		for (DrawPoints drawPoints : DrawPoints.getDrawPointsArray()) {
+		for (DrawPoints drawPoints : DrawText.getDrawPointsArray()) {
 			drawPoints.update();
 		}
 		Color.white.bind();
 	}
 	
+	public static ArrayList<DrawPoints> getDrawPointsArray() {
+		return drawPointsArray;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	public static ArrayList<DrawPoints> getRemovePointsArray() {
+		return removePointsArray;
+	}
 }

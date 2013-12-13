@@ -82,8 +82,6 @@ public class Player {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && Rush.getInstance().isAvailable()) {
 			Thread rushThread = new Thread(Rush.getInstance());
 			rushThread.start();
-			System.out.println("Thread name: "+rushThread.getName());
-			System.out.println("Nr of threads: "+Thread.activeCount());
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			this.up=true; //move up
@@ -113,10 +111,6 @@ public class Player {
 		if (Keyboard.isKeyDown(Keyboard.KEY_2) && (Magnet.isAvailable())) {
 			Magnet.initMagnet();
 		}
-		if (Keyboard.getEventKey() == Keyboard.KEY_SPACE) {
-			System.out.println("space!");
-		}
-		
 	}
 
 	public float getX() {

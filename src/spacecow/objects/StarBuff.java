@@ -1,6 +1,5 @@
 package spacecow.objects;
 
-import java.util.ArrayList;
 
 import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Rectangle;
@@ -19,8 +18,6 @@ public class StarBuff {
 	private float y;
 	private float speed = 20;
 	private static long nextObject = Sys.getTime()+100;
-	private static ArrayList<StarBuff> sbArray = new ArrayList<>();
-	private static ArrayList<StarBuff> sbRemove = new ArrayList<>();
 	private static int addStar;
 	
 	public StarBuff() {
@@ -35,7 +32,7 @@ public class StarBuff {
 		TextureHandler.drawTexture(this.sbTex, this.x, this.y);
 		this.sbRect.setBounds(this.x, this.y, sbTex.getTextureWidth(), sbTex.getTextureHeight());
 		if (colliding()) {
-			sbRemove.add(this);
+			ObjectArrays.getSbRemove().add(this);
 		}
 	}
 	private boolean colliding(){
@@ -53,22 +50,19 @@ public class StarBuff {
 		return collission;
 	}
 	public static void update(){
-		for (StarBuff sbR : sbRemove) {
-			sbArray.remove(sbR);
+		for (StarBuff sbR : ObjectArrays.getSbRemove()) {
+			ObjectArrays.getSbArray().remove(sbR);
 		}
 		if (Sys.getTime()>nextObject) {
-			sbArray.add(new StarBuff());
+			ObjectArrays.getSbArray().add(new StarBuff());
 			nextObject = (long) (Sys.getTime()+(Math.random()*50));
 		}
-		for (StarBuff sb : sbArray) {
+		for (StarBuff sb : ObjectArrays.getSbArray()) {
 			sb.move();
 			if (sb.y>Game.dHeight) {
-				sbRemove.add(sb);
+				ObjectArrays.getSbRemove().add(sb);
 			}
 		}
-	}
-	public static ArrayList<StarBuff> getSbArray() {
-		return sbArray;
 	}
 	public float getX() {
 		return x;

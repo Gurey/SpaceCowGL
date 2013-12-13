@@ -6,8 +6,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.opengl.TextureImpl;
 
 import spacecow.buffs.Magnet;
 import spacecow.objects.ScoreMultiplyer;
@@ -34,8 +32,7 @@ public class Game {
 		try {
 			Display.setFullscreen(true);
 			Display.setDisplayMode(new DisplayMode(dWidth, dHeight));
-			Display.setVSyncEnabled(true);
-			Display.sync(60);
+//			Display.setVSyncEnabled(true);
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();

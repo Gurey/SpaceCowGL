@@ -1,6 +1,5 @@
 package spacecow.objects;
 
-import java.util.ArrayList;
 
 import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Rectangle;
@@ -19,8 +18,7 @@ public class ScoreMultiplyer {
 	float y;
 	private float speed = 8;
 	private static long nextObject = Sys.getTime()+100;
-	private static ArrayList<ScoreMultiplyer> smArray = new ArrayList<>();
-	private static ArrayList<ScoreMultiplyer> smRemove = new ArrayList<>();
+	
 	
 	public ScoreMultiplyer() {
 		smTex = TextureHandler.getInstance().getCowTex();
@@ -35,7 +33,7 @@ public class ScoreMultiplyer {
 		this.smRect.setBounds(this.x, this.y, smTex.getTextureWidth(), smTex.getTextureHeight());
 		if (colliding()) {
 			Score.scoreMulti();
-			smRemove.add(this);
+			ObjectArrays.getSmRemove().add(this);
 		}
 	}
 	private boolean colliding(){
@@ -43,18 +41,17 @@ public class ScoreMultiplyer {
 		return collission;
 	}
 	public static void update(){
-		for (ScoreMultiplyer dpR : smRemove) {
-			smArray.remove(dpR);
+		for (ScoreMultiplyer dpR : ObjectArrays.getSmRemove()) {
+			ObjectArrays.getSmArray().remove(dpR);
 		}
 		if (Sys.getTime()>nextObject) {
-			smArray.add(new ScoreMultiplyer());
+			ObjectArrays.getSmArray().add(new ScoreMultiplyer());
 			nextObject = (long) (Sys.getTime()+500+(Math.random()*5000)-(Score.getScoreMulti()*80));
 		}
-		for (ScoreMultiplyer dp : smArray) {
+		for (ScoreMultiplyer dp : ObjectArrays.getSmArray()) {
 			dp.move();
 			if (dp.y>Game.dHeight) {
-				smRemove.add(dp);
-				System.out.println(smArray.size());
+				ObjectArrays.getSmRemove().add(dp);
 			}
 		}
 	}

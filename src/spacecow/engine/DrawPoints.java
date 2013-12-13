@@ -1,6 +1,5 @@
 package spacecow.engine;
 
-import java.util.ArrayList;
 
 import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
@@ -12,8 +11,6 @@ public class DrawPoints {
 	private float x, y;
 	private String textToWrite;
 	private long time;
-	private static ArrayList<DrawPoints> drawPointsArray = new ArrayList<>();
-	private static ArrayList<DrawPoints> removePointsArray = new ArrayList<>();
 	
 	
 	public DrawPoints(TrueTypeFont fontIn, float playerX, float PlayerY, String textToWrite) {
@@ -22,7 +19,7 @@ public class DrawPoints {
 		this.y=PlayerY;
 		this.textToWrite=textToWrite;
 		this.time = Sys.getTime();
-		drawPointsArray.add(this);
+		DrawText.getDrawPointsArray().add(this);
 	}
 	
 	public void update(){
@@ -31,7 +28,7 @@ public class DrawPoints {
 			Color.white.bind();
 		}
 		else {
-			removePointsArray.add(this);
+			DrawText.getRemovePointsArray().add(this);
 		}
 		
 	}
@@ -43,13 +40,4 @@ public class DrawPoints {
 	public long getTime() {
 		return time;
 	}
-
-	public static ArrayList<DrawPoints> getDrawPointsArray() {
-		return drawPointsArray;
-	}
-
-	public static ArrayList<DrawPoints> getRemovePointsArray() {
-		return removePointsArray;
-	}
-	
 }

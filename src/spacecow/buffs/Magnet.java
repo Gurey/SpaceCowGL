@@ -2,6 +2,7 @@ package spacecow.buffs;
 
 import org.lwjgl.Sys;
 
+import spacecow.objects.ObjectArrays;
 import spacecow.objects.Player;
 import spacecow.objects.StarBuff;
 
@@ -19,40 +20,66 @@ public class Magnet {
 	
 	public static void update(){
 		if (!available) {
-				vel+=0.01f;
-		for (StarBuff sb : StarBuff.getSbArray()) {
-			sb.setSpeed(0);
+		vel+=0.09f;
+		for (StarBuff sb : ObjectArrays.getSbArray()) {
+//			sb.setSpeed(0);
 			//upper right block
 			if (sb.getX()>=Player.getInstance().getX() && sb.getY()<=Player.getInstance().getY()) {
 				 xDiff = sb.getX() - Player.getInstance().getX();
 				 yDiff = Player.getInstance().getY() - sb.getY();
 				 if (xDiff>yDiff) {
 					sb.setX(sb.getX()-(vel+(xDiff/200)));
-					sb.setY(sb.getY()+(vel*2));
-					System.out.println("xdif="+xDiff+"ydif="+yDiff);
-					System.out.println("playerx "+Player.getInstance().getX()+" PlayerY "+Player.getInstance().getY());
+					sb.setY(sb.getY()+(yDiff*(vel*0.0035f)));
 				 }
 				 else {
-					sb.setX(sb.getX()-(vel*2));
+					sb.setX(sb.getX()-(xDiff*(vel*0.0035f)));
 					sb.setY(sb.getY()+(vel+(yDiff/200)));
-					System.out.println("koer y");
 				}
 			}
-			
-//			else{
-//				sb.setX(sb.getX()+vel);
-//			}
-//			if (sb.getY()>Player.getInstance().getY()) {
-//				sb.setY(sb.getY()-vel);
-//			}
-//			else{
-//				sb.setY(sb.getY()+vel);
-//			}
+			//lower right
+			else if (sb.getX()>=Player.getInstance().getX() && sb.getY()>=Player.getInstance().getY()) {
+				 xDiff = sb.getX() - Player.getInstance().getX();
+				 yDiff = sb.getY() - Player.getInstance().getY();
+				 if (xDiff>yDiff) {
+					sb.setX(sb.getX()-(vel+(xDiff/200)));
+					sb.setY(sb.getY()-(yDiff*(vel*0.0035f)));
+				 }
+				 else {
+					sb.setX(sb.getX()-(xDiff*(vel*0.0035f)));
+					sb.setY(sb.getY()-(vel+(yDiff/200)));
+				}
+			}
+			//lower left
+			else if (sb.getX()<=Player.getInstance().getX() && sb.getY()>=Player.getInstance().getY()) {
+				 xDiff = Player.getInstance().getX() - sb.getX();
+				 yDiff = sb.getY() - Player.getInstance().getY();
+				 if (xDiff>yDiff) {
+					sb.setX(sb.getX()+(vel+(xDiff/200)));
+					sb.setY(sb.getY()-(yDiff*(vel*0.0035f)));
+				 }
+				 else {
+					sb.setX(sb.getX()+(xDiff*(vel*0.0035f)));
+					sb.setY(sb.getY()-(vel+(yDiff/200)));
+				}
+			}
+			//Upper left
+			else {
+				 xDiff = Player.getInstance().getX() - sb.getX();
+				 yDiff = Player.getInstance().getY() - sb.getY();
+				 if (xDiff>yDiff) {
+					sb.setX(sb.getX()+(vel+(xDiff/200)));
+					sb.setY(sb.getY()+(yDiff*(vel*0.0035f)));
+				 }
+				 else {
+					sb.setX(sb.getX()+(xDiff*(vel*0.0035f)));
+					sb.setY(sb.getY()+(vel+(yDiff/200)));
+				}
+			}
 		}
 		if (Sys.getTime()>time+5000) {
 			available = true;
 			vel = 0;
-			for (StarBuff sb : StarBuff.getSbArray()) {
+			for (StarBuff sb : ObjectArrays.getSbArray()) {
 				sb.setSpeed(10);
 			}
 		}
