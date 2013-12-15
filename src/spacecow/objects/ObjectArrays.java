@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ObjectArrays {
 
 	//Score multiplyer
-	private static ArrayList<ScoreMultiplyer> smArray = new ArrayList<>();
+	private static ArrayList<ScoreMultiplyer> smArray = new ArrayList<>(); 
 	private static ArrayList<ScoreMultiplyer> smRemove = new ArrayList<>();
 	//StarBuff
 	private static ArrayList<StarBuff> sbArray = new ArrayList<>();
