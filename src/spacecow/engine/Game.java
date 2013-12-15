@@ -25,12 +25,11 @@ public class Game {
 	 
 	public Game(){
 		initGL();
-		Star.createStars(50);
+		Star.createStars(25000);
 		DrawText.initText();
 	}
 	public void initGL(){
 		try {
-			Display.setFullscreen(true);
 			Display.setDisplayMode(new DisplayMode(dWidth, dHeight));
 //			Display.setVSyncEnabled(true);
 			Display.create();

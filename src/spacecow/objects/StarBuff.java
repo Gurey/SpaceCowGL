@@ -55,7 +55,7 @@ public class StarBuff {
 		}
 		if (Sys.getTime()>nextObject) {
 			ObjectArrays.getSbArray().add(new StarBuff());
-			nextObject = (long) (Sys.getTime()+(Math.random()*50));
+			nextObject = (long) (Sys.getTime()+(Math.random()*500));
 		}
 		for (StarBuff sb : ObjectArrays.getSbArray()) {
 			sb.move();
