@@ -9,13 +9,14 @@ public class FPS {
 	private static boolean getFPS=true;
 	
 	public static String getFPS(){
-		tick++;
 		if (System.currentTimeMillis()>time+1000 || getFPS == true){
 			time=System.currentTimeMillis();
 			getFPS = false;
 			FPS = "FPS: "+tick;
 			tick=0;
+			return FPS;
 		}
+		tick++;
 		return FPS;
 	}
 	
