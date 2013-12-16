@@ -20,9 +20,9 @@ public class Magnet {
 	
 	public static void update(){
 		if (!available) {
-		vel+=0.09f;
+		vel+=0.07f;
 		for (StarBuff sb : ObjectArrays.getSbArray()) {
-//			sb.setSpeed(0);
+			sb.setSpeed(0);
 			//upper right block
 			if (sb.getX()>=Player.getInstance().getX() && sb.getY()<=Player.getInstance().getY()) {
 				 xDiff = sb.getX() - Player.getInstance().getX();

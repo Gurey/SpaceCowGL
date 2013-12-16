@@ -46,7 +46,7 @@ public class ScoreMultiplyer {
 		}
 		if (Sys.getTime()>nextObject) {
 			ObjectArrays.getSmArray().add(new ScoreMultiplyer());
-			nextObject = (long) (Sys.getTime()+500+(Math.random()*5000)-(Score.getScoreMulti()*80));
+			nextObject = (long) (Sys.getTime()+500+(Math.random()*5000)-(Score.getScoreMulti()*10));
 		}
 		for (ScoreMultiplyer dp : ObjectArrays.getSmArray()) {
 			dp.move();

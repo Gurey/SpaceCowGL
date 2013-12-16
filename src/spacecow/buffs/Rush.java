@@ -25,7 +25,7 @@ public class Rush implements Runnable{
 		long startTime = System.currentTimeMillis();
 		System.out.println(startTime);
 		this.available=false;
-		this.vel=10;
+		this.vel=15;
 		int loopcount=0;
 		while (this.vel>1.5) {
 			loopcount++;

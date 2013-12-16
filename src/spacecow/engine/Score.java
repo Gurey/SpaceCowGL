@@ -7,7 +7,7 @@ import org.lwjgl.Sys;
 public class Score {
 	
 	private static long score = 0;
-	private static int scoreMulti=50;
+	private static int scoreMulti=1;
 	private static long scoreMultiTime;
 	private static int latestScore;
 	
@@ -29,8 +29,8 @@ public class Score {
 		scoreMulti++;
 	}
 	public static void update(){
-		if (Sys.getTime()>scoreMultiTime+5000-(scoreMulti*100)) {
-			scoreMulti--;
+		if (Sys.getTime()>scoreMultiTime+5000) {
+			scoreMulti/=2;
 			scoreMultiTime=Sys.getTime();
 			if (scoreMulti<1) {
 				scoreMulti=1;

@@ -25,13 +25,13 @@ public class Game {
 	 
 	public Game(){
 		initGL();
-		Star.createStars(25000);
+		Star.createStars(80);
 		DrawText.initText();
 	}
 	public void initGL(){
 		try {
 			Display.setDisplayMode(new DisplayMode(dWidth, dHeight));
-//			Display.setVSyncEnabled(true);
+			Display.setVSyncEnabled(true);
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -55,6 +55,7 @@ public class Game {
 	
 	public void start(){
 		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			Display.sync(60);
 			render();
 			update();
 			Display.update();
