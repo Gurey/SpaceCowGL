@@ -2,8 +2,13 @@ package spacecow.objects;
 
 import java.util.ArrayList;
 
+import spacecow.engine.GameObject;
+
 public class ObjectArrays {
 
+	//ObjectArray
+	private static ArrayList<GameObject> GameObjectArray = new ArrayList<>();
+	private static ArrayList<GameObject> GameObjectRemove = new ArrayList<>();
 	//Score multiplyer
 	private static ArrayList<ScoreMultiplyer> smArray = new ArrayList<>(); 
 	private static ArrayList<ScoreMultiplyer> smRemove = new ArrayList<>();
@@ -27,6 +32,12 @@ public class ObjectArrays {
 	}
 	public static ArrayList<Star> getStarsArray() {
 		return starsArray;
+	}
+	public static ArrayList<GameObject> getGameObjectArray() {
+		return GameObjectArray;
+	}
+	public static ArrayList<GameObject> getGameObjectRemove() {
+		return GameObjectRemove;
 	}
 	
 }
