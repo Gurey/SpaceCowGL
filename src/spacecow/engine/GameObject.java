@@ -54,7 +54,7 @@ public class GameObject {
 			}
 		}
 		public static long getNextObject() {
-			return nextObject;
+			return nextObject ;
 		}	
 	
 	
