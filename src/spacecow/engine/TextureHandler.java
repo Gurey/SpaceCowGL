@@ -14,28 +14,45 @@ public final class TextureHandler {
 	
 	private static TextureHandler instance = null;
 	
+	private Texture number1tex;
+	private Texture number2tex;
+	private Texture number3tex;
+	
+	
+	private Texture star1Tex;
+	private Texture star2Tex;
+	private Texture star3Tex;
+	private Texture star4Tex;
+	private Texture star5Tex;
+	
+	private Texture cowTex;
+	private Texture starBuffTex;
+	private Texture cookieTex;
+	private Texture plusTex;
+	
 	public static TextureHandler getInstance(){
 		if (instance == null) {
 			instance = new TextureHandler();
 		}
 		return instance;
 	}
-	
-	private Texture number1tex = TextureHandler.loadTexture("res/number1.png");
-	private Texture number2tex = TextureHandler.loadTexture("res/number2.png");
-	private Texture number3tex = TextureHandler.loadTexture("res/number3.png");
-
-	
-	private Texture star1Tex = TextureHandler.loadTexture("/res/Star1.png");
-	private Texture star2Tex = TextureHandler.loadTexture("/res/Star2.png");
-	private Texture star3Tex = TextureHandler.loadTexture("/res/Star3.png");
-	private Texture star4Tex = TextureHandler.loadTexture("/res/Star4.png");
-	private Texture star5Tex = TextureHandler.loadTexture("/res/Star5.png");
-	
-	private Texture cowTex = TextureHandler.loadTexture("res/cow.png");
-	private Texture starBuffTex = TextureHandler.loadTexture("res/StarBuff.png");
-	private Texture cookieTex = TextureHandler.loadTexture("res/Cookie.png");
-	private Texture plusTex = TextureHandler.loadTexture("res/plus.png");
+	private TextureHandler(){
+		
+		 number1tex = TextureHandler.loadTexture("res/number1.png");
+		 number2tex = TextureHandler.loadTexture("res/number2.png");
+		 number3tex = TextureHandler.loadTexture("res/number3.png");
+		
+		 star1Tex = TextureHandler.loadTexture("/res/Star1.png");
+		 star2Tex = TextureHandler.loadTexture("/res/Star2.png");
+		 star3Tex = TextureHandler.loadTexture("/res/Star3.png");
+		 star4Tex = TextureHandler.loadTexture("/res/Star4.png");
+		 star5Tex = TextureHandler.loadTexture("/res/Star5.png");
+		
+		 cowTex = TextureHandler.loadTexture("res/cow.png");
+		 starBuffTex = TextureHandler.loadTexture("res/StarBuff.png");
+		 cookieTex = TextureHandler.loadTexture("res/Cookie.png");
+		 plusTex = TextureHandler.loadTexture("res/plus.png");
+	}
 
 	private static Texture loadTexture(String path){
 		

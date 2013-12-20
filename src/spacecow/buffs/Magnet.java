@@ -26,7 +26,7 @@ public class Magnet {
 		float texWC = Player.getInstance().getX()+(Player.getInstance().getTexture().getTextureWidth()/2);
 		float texHC = Player.getInstance().getY()+(Player.getInstance().getTexture().getTextureHeight()/2);
 		vel+=0.07f;
-		for (GameObject sb : GameObjectHandler.getInstance().getGameObjectArray()) {
+		for (GameObject sb : GameObjectHandler.getInstance().getGameObjectArray()){
 			sb.setSpeed(0);
 			//upper right block
 			if (sb.getX()>=texWC && sb.getY()<=texHC) {

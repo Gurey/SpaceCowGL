@@ -93,5 +93,4 @@ public class GameObjectHandler {
 			nextStarBuff = (long) (Sys.getTime()+(Math.random()*50));
 		}
 	}
-	
 }

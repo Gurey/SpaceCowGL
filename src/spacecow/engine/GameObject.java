@@ -13,6 +13,7 @@ public class GameObject {
 		private float x,y;
 		private float speed = 8,rotation=0,rotationSpeed;
 		private boolean isRotating = false;
+		private boolean isMagnetic = true;
 		
 		
 		public GameObject(Texture tex) {
@@ -109,5 +110,13 @@ public class GameObject {
 
 		public void setRotating(boolean isRotating) {
 			this.isRotating = isRotating;
+		}
+
+		public boolean isMagnetic() {
+			return isMagnetic;
+		}
+
+		public void setMagnetic(boolean isMagnetic) {
+			this.isMagnetic = isMagnetic;
 		}
 }
