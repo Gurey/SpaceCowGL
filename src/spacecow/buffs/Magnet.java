@@ -2,7 +2,8 @@ package spacecow.buffs;
 
 import org.lwjgl.Sys;
 
-import spacecow.objects.ObjectArrays;
+import spacecow.engine.GameObject;
+import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
 import spacecow.objects.StarBuff;
 
@@ -13,6 +14,8 @@ public class Magnet {
 	private static float vel;
 	private static float xDiff=0, yDiff=0; 
 	
+
+	
 	public static void initMagnet(){
 	available = false;
 	time = Sys.getTime();
@@ -20,13 +23,15 @@ public class Magnet {
 	
 	public static void update(){
 		if (!available) {
+		float texWC = Player.getInstance().getX()+(Player.getInstance().getTexture().getTextureWidth()/2);
+		float texHC = Player.getInstance().getY()+(Player.getInstance().getTexture().getTextureHeight()/2);
 		vel+=0.07f;
-		for (StarBuff sb : ObjectArrays.getSbArray()) {
+		for (GameObject sb : GameObjectHandler.getInstance().getGameObjectArray()) {
 			sb.setSpeed(0);
 			//upper right block
-			if (sb.getX()>=Player.getInstance().getX() && sb.getY()<=Player.getInstance().getY()) {
-				 xDiff = sb.getX() - Player.getInstance().getX();
-				 yDiff = Player.getInstance().getY() - sb.getY();
+			if (sb.getX()>=texWC && sb.getY()<=texHC) {
+				 xDiff = sb.getX() - texWC;
+				 yDiff = texHC - sb.getY();
 				 if (xDiff>yDiff) {
 					sb.setX(sb.getX()-(vel+(xDiff/200)));
 					sb.setY(sb.getY()+(yDiff*(vel*0.0035f)));
@@ -37,9 +42,9 @@ public class Magnet {
 				}
 			}
 			//lower right
-			else if (sb.getX()>=Player.getInstance().getX() && sb.getY()>=Player.getInstance().getY()) {
-				 xDiff = sb.getX() - Player.getInstance().getX();
-				 yDiff = sb.getY() - Player.getInstance().getY();
+			else if (sb.getX()>=texWC && sb.getY()>=texHC) {
+				xDiff = sb.getX() - texWC;
+				yDiff = sb.getY() - texHC;
 				 if (xDiff>yDiff) {
 					sb.setX(sb.getX()-(vel+(xDiff/200)));
 					sb.setY(sb.getY()-(yDiff*(vel*0.0035f)));
@@ -50,9 +55,9 @@ public class Magnet {
 				}
 			}
 			//lower left
-			else if (sb.getX()<=Player.getInstance().getX() && sb.getY()>=Player.getInstance().getY()) {
-				 xDiff = Player.getInstance().getX() - sb.getX();
-				 yDiff = sb.getY() - Player.getInstance().getY();
+			else if (sb.getX()<=texWC && sb.getY()>=texHC) {
+				 xDiff = texWC - sb.getX();
+				 yDiff = sb.getY() - texHC;
 				 if (xDiff>yDiff) {
 					sb.setX(sb.getX()+(vel+(xDiff/200)));
 					sb.setY(sb.getY()-(yDiff*(vel*0.0035f)));
@@ -64,8 +69,8 @@ public class Magnet {
 			}
 			//Upper left
 			else {
-				 xDiff = Player.getInstance().getX() - sb.getX();
-				 yDiff = Player.getInstance().getY() - sb.getY();
+				 xDiff = texWC - sb.getX();
+				 yDiff = texHC - sb.getY();
 				 if (xDiff>yDiff) {
 					sb.setX(sb.getX()+(vel+(xDiff/200)));
 					sb.setY(sb.getY()+(yDiff*(vel*0.0035f)));
@@ -79,8 +84,8 @@ public class Magnet {
 		if (Sys.getTime()>time+5000) {
 			available = true;
 			vel = 0;
-			for (StarBuff sb : ObjectArrays.getSbArray()) {
-				sb.setSpeed(10);
+			for (GameObject sb : GameObjectHandler.getInstance().getGameObjectArray()) {
+				sb.setSpeed(15);
 			}
 		}
 		}

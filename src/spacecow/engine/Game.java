@@ -6,8 +6,11 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.opengl.Texture;
 
 import spacecow.buffs.Magnet;
+import spacecow.objects.Cookie;
+import spacecow.objects.GameObjectHandler;
 import spacecow.objects.ScoreMultiplyer;
 import spacecow.objects.Player;
 import spacecow.objects.Star;
@@ -16,16 +19,15 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
 	
-	TextureHandler sqr; 
 	public static int dWidth = 1400;
 	public static int dHeight = 750;
+
 	
-	ScoreMultiplyer p;
+	Time time = new Time();
 	
-	 
 	public Game(){
 		initGL();
-		Star.createStars(80);
+		Star.createStars(1000);
 		DrawText.initText();
 	}
 	public void initGL(){
@@ -54,7 +56,18 @@ public class Game {
 	}
 	
 	public void start(){
-		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+//		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+//			Display.sync(60);
+//			render();
+//			if (CountDown.getCountdownState()<=0) {
+//				break;
+//			}
+//			Player.getInstance().update();
+//			Star.updateStars();
+//			CountDown.countDown();
+//			Display.update();
+//		}
+		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0)) {
 			Display.sync(60);
 			render();
 			update();
@@ -62,14 +75,11 @@ public class Game {
 		}
 		Display.destroy();
 	}
-	
 	public void update(){
-		Star.updateStars();
-		ScoreMultiplyer.update();
-		StarBuff.update();
+//		StarBuff.update();
+		GameObjectHandler.getInstance().update();
 		Player.getInstance().update();
 		Magnet.update();
-		
 		Score.update();
 		DrawText.update();
 	}

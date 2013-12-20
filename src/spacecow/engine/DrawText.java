@@ -8,7 +8,8 @@ import org.newdawn.slick.TrueTypeFont;
 
 import spacecow.buffs.Rush;
 import spacecow.buffs.SuperSpeed;
-import spacecow.objects.ObjectArrays;
+import spacecow.objects.GameObjectHandler;
+import spacecow.objects.Player;
 
 public class DrawText {
 
@@ -17,6 +18,7 @@ public class DrawText {
 	private static ArrayList<DrawPoints> drawPointsArray = new ArrayList<>();
 	private static ArrayList<DrawPoints> removePointsArray = new ArrayList<>();
 	
+	static Time time = new Time();
 
 	public static void initText(){
 		Font score = new Font("Bank Gothic", Font.BOLD, 35);
@@ -49,10 +51,18 @@ public class DrawText {
 		font.drawString(20, 105, "Score multi: "+Score.getScoreMulti());
 	}
 	private static void drawStarNr(){
-		font.drawString(20, 135, "Stars: "+ObjectArrays.getStarsArray().size());
+		font.drawString(20, 135, "Stars: "+GameObjectHandler.getInstance().getStarsArray().size());
+	}
+	private static void drawTimeLeft(){
+		if (time.getSecondsLeft()<5){
+		font.drawString(Game.dWidth/2, 15, "Time left: "+time.getSecondsLeft()+"sec",Color.red);
+		}
+		else {
+		font.drawString(Game.dWidth/2, 15, "Time left: "+time.getSecondsLeft()+"sec",Color.white);
+		}
 	}
 	public static void drawPoints(){
-//		DrawPoints.getDrawPointsArray().add((new DrawPoints(font, Player.getInstance().getX(), Player.getInstance().getY(), ""+Score.getLatestScore())));
+//		DrawPoints.getDrawPointsArray().add((new DrawPoints(font, Player.getInstance().getX(), Player.getInstance().getY(), ""+Score.getLastestScore())));
 		}
 	public static void update(){
 		for (DrawPoints dpR : DrawText.getRemovePointsArray()) {
@@ -64,6 +74,7 @@ public class DrawText {
 		drawFPS();
 		drawScoreMulti();
 		drawStarNr();
+		drawTimeLeft();
 		Color.white.bind();
 		for (DrawPoints drawPoints : DrawText.getDrawPointsArray()) {
 			drawPoints.update();

@@ -21,16 +21,21 @@ public final class TextureHandler {
 		return instance;
 	}
 	
+	private Texture number1tex = TextureHandler.loadTexture("res/number1.png");
+	private Texture number2tex = TextureHandler.loadTexture("res/number2.png");
+	private Texture number3tex = TextureHandler.loadTexture("res/number3.png");
 
-	private Texture star1Tex = TextureHandler.loadTexture("./res/Star1.png");
-	private Texture star2Tex = TextureHandler.loadTexture("./res/Star2.png");
-	private Texture star3Tex = TextureHandler.loadTexture("./res/Star3.png");
-	private Texture star4Tex = TextureHandler.loadTexture("./res/Star4.png");
-	private Texture star5Tex = TextureHandler.loadTexture("./res/Star5.png");
+	
+	private Texture star1Tex = TextureHandler.loadTexture("/res/Star1.png");
+	private Texture star2Tex = TextureHandler.loadTexture("/res/Star2.png");
+	private Texture star3Tex = TextureHandler.loadTexture("/res/Star3.png");
+	private Texture star4Tex = TextureHandler.loadTexture("/res/Star4.png");
+	private Texture star5Tex = TextureHandler.loadTexture("/res/Star5.png");
 	
 	private Texture cowTex = TextureHandler.loadTexture("res/cow.png");
-	
 	private Texture starBuffTex = TextureHandler.loadTexture("res/StarBuff.png");
+	private Texture cookieTex = TextureHandler.loadTexture("res/Cookie.png");
+	private Texture plusTex = TextureHandler.loadTexture("res/plus.png");
 
 	private static Texture loadTexture(String path){
 		
@@ -62,6 +67,32 @@ public final class TextureHandler {
 			glVertex2f(x, y+tex.getTextureHeight());
 			
 			glEnd();
+			
+	}
+	public static void drawRotatingTexture(Texture tex, float x, float y, float rotation){
+		float xCenter = tex.getTextureWidth()/2;
+		float yCenter = tex.getTextureHeight()/2;
+		tex.bind();
+		glPushMatrix();
+		glTranslatef(x+xCenter,y+yCenter, 0);
+		glRotatef(rotation, 0f, 0f, 1f);
+		glTranslatef(-x-xCenter,-y-yCenter, 0);
+		glBegin(GL_QUADS);
+		
+			glTexCoord2f(0, 1);
+			glVertex2f(x, y);
+			
+			glTexCoord2f(1, 1);
+			glVertex2f(x+tex.getTextureWidth(), y);
+			
+			glTexCoord2f(1, 0);
+			glVertex2f(x+tex.getTextureWidth(), y+tex.getTextureHeight());
+			
+			glTexCoord2f(0, 0);
+			glVertex2f(x, y+tex.getTextureHeight());
+			
+			glEnd();
+			glPopMatrix();
 			
 	}
 	
@@ -110,5 +141,24 @@ public final class TextureHandler {
 	public Texture getStarBuffTex() {
 		return starBuffTex;
 	}
-	
+
+	public Texture getCookieTex() {
+		return cookieTex;
+	}
+
+	public Texture getNumber1tex() {
+		return number1tex;
+	}
+
+	public Texture getNumber2tex() {
+		return number2tex;
+	}
+
+	public Texture getNumber3tex() {
+		return number3tex;
+	}
+
+	public Texture getPlusTex() {
+		return plusTex;
+	}
 }

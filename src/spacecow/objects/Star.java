@@ -31,7 +31,7 @@ public class Star{
 	
 	public static double superSpeed=1;
 	private static double minSpeed=0.3*superSpeed;
-	private static double maxSpeed=25*superSpeed;
+	private static double maxSpeed=15*superSpeed;
 	
 	public Star(){
 		this.centerX=(int) (0+Math.random()*gbWidth);
@@ -53,6 +53,7 @@ public class Star{
 	
 	public void move(){
 			this.changePos(this.yVel);
+			TextureHandler.drawTexture(this.starIm, this.getCenterX(), this.centerY);
 			if (this.centerY>gbHeight) {
 				starCount++;
 				Score.incScoreBackground(1);
@@ -119,21 +120,14 @@ public class Star{
 	}
 	public static void createStars(int numOfStars){
 		for (int i = 0; i < numOfStars; i++) {
-			ObjectArrays.getStarsArray().add(new Star());
+			GameObjectHandler.getInstance().getStarsArray().add(new Star());
 		}
 	}
-	public static void updateStars(){
-		for (Star star : ObjectArrays.getStarsArray()) {
-			star.move();
-			TextureHandler.drawTexture(star.starIm, star.getCenterX(), star.centerY);
-		}
-	}
-
 	public static int getStarCount() {
 		return starCount;
 	}
 	public static void addNewStar(){
-		ObjectArrays.getStarsArray().add(new Star(0));
+		GameObjectHandler.getInstance().getStarsArray().add(new Star(0));
 	}
 
 }

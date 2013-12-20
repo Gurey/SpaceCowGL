@@ -1,61 +1,113 @@
 package spacecow.engine;
 
-import org.lwjgl.Sys;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
-import spacecow.objects.ObjectArrays;
+import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
-import spacecow.objects.ScoreMultiplyer;
 
 public class GameObject {
 
-		private Texture smTex;
-		private Rectangle smRect;
-		private float x;
-		float y;
-		private float speed = 8;
-		private static long nextObject = Sys.getTime()+100;
+		private Texture objTex;
+		private Rectangle objRect;
+		private float x,y;
+		private float speed = 8,rotation=0,rotationSpeed;
+		private boolean isRotating = false;
 		
 		
-		public GameObject() {
-			smTex = TextureHandler.getInstance().getCowTex();
-			this.y = -10-smTex.getTextureHeight();
-			this.x = (float)Math.random()*Game.dWidth;
-			smRect = new Rectangle(this.x, this.y, smTex.getWidth(), smTex.getHeight());
+		public GameObject(Texture tex) {
+			this.objTex = tex;
+			this.y = -10-objTex.getImageHeight();
+			this.x = (float)Math.random()*Game.dWidth-(objTex.getTextureWidth()/2);
+			this.objRect = new Rectangle(this.x, this.y, objTex.getWidth(), objTex.getHeight());
 		}
 		
 		public void move(){
 			this.y += this.speed;
-			TextureHandler.drawTexture(this.smTex, this.x, this.y);
-			this.smRect.setBounds(this.x, this.y, smTex.getTextureWidth(), smTex.getTextureHeight());
+			if (isRotating){
+				TextureHandler.drawRotatingTexture(this.objTex, x, y, rotation);
+				rotation+=rotationSpeed;
+			}
+			else TextureHandler.drawTexture(this.objTex, this.x, this.y);
+			this.objRect.setBounds(this.x, this.y, objTex.getTextureWidth(), objTex.getTextureHeight());
 			if (colliding()) {
-				Score.scoreMulti();
-//				ObjectArrays.getSmRemove().add(this);
+				this.collisionAction();
+				GameObjectHandler.getInstance().getGameObjectRemove().add(this);
 			}
-		}
-		private boolean colliding(){
-			boolean collission = UnitCollission.isColliding(smRect, Player.getInstance().getpRectangle());
-			return collission;
-		}
-		public static void update(){
-			for (ScoreMultiplyer dpR : ObjectArrays.getSmRemove()) {
-				ObjectArrays.getSmArray().remove(dpR);
-			}
-			if (Sys.getTime()>nextObject) {
-				ObjectArrays.getSmArray().add(new ScoreMultiplyer());
-				nextObject = (long) (Sys.getTime()+500+(Math.random()*5000)-(Score.getScoreMulti()*80));
-			}
-			for (ScoreMultiplyer dp : ObjectArrays.getSmArray()) {
-				dp.move();
-				if (dp.y>Game.dHeight) {
-					ObjectArrays.getSmRemove().add(dp);
+			else if (this.getY()>Game.dHeight) {
+					GameObjectHandler.getInstance().getGameObjectRemove().add(this);
 				}
 			}
+		
+		private boolean colliding(){
+			boolean collision = UnitCollission.isColliding(objRect, Player.getInstance().getpRectangle());
+			return collision;
 		}
-		public static long getNextObject() {
-			return nextObject ;
-		}	
-	
-	
+		public void collisionAction(){
+			
+		}
+
+		public Texture getObjTex() {
+			return objTex;
+		}
+
+		public void setObjTex(Texture objTex) {
+			this.objTex = objTex;
+		}
+
+		public Rectangle getObjRect() {
+			return objRect;
+		}
+
+		public void setObjRect(Rectangle objRect) {
+			this.objRect = objRect;
+		}
+
+		public float getX() {
+			return x;
+		}
+
+		public void setX(float x) {
+			this.x = x;
+		}
+
+		public float getY() {
+			return y;
+		}
+
+		public void setY(float y) {
+			this.y = y;
+		}
+
+		public float getSpeed() {
+			return speed;
+		}
+
+		public void setSpeed(float speed) {
+			this.speed = speed;
+		}
+
+		public float getRotation() {
+			return rotation;
+		}
+
+		public void setRotation(float rotation) {
+			this.rotation = rotation;
+		}
+
+		public float getRotationSpeed() {
+			return rotationSpeed;
+		}
+
+		public void setRotationSpeed(float rotationSpeed) {
+			this.rotationSpeed = rotationSpeed;
+		}
+
+		public boolean isRotating() {
+			return isRotating;
+		}
+
+		public void setRotating(boolean isRotating) {
+			this.isRotating = isRotating;
+		}
 }

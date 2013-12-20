@@ -9,16 +9,15 @@ public class Score {
 	private static long score = 0;
 	private static int scoreMulti=1;
 	private static long scoreMultiTime;
-	private static int latestScore;
+	private static int lastestScore;
 	
 	
 	public static void incScoreBackground(int points){
 		score+=(points*scoreMulti);
 	}
-	
 	public static void incScore(int points){
 		score+=(points*scoreMulti);
-		setLatestScore(points*scoreMulti);
+		lastestScore=(points*scoreMulti);
 		DrawText.drawPoints();
 	}
 	public static long getScore(){
@@ -40,10 +39,11 @@ public class Score {
 	public static int getScoreMulti(){
 		return scoreMulti;
 	}
-	public static int getLatestScore() {
-		return latestScore;
+	public static void setScoreMulti(int ScoreMul){
+		scoreMulti = ScoreMul;
 	}
-	public static void setLatestScore(int latestScore) {
-		Score.latestScore = latestScore;
+
+	public static int getLastestScore() {
+		return lastestScore;
 	}
 }
