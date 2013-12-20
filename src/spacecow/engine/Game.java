@@ -6,15 +6,11 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.newdawn.slick.opengl.Texture;
 
 import spacecow.buffs.Magnet;
-import spacecow.objects.Cookie;
 import spacecow.objects.GameObjectHandler;
-import spacecow.objects.ScoreMultiplyer;
 import spacecow.objects.Player;
 import spacecow.objects.Star;
-import spacecow.objects.StarBuff;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Game {

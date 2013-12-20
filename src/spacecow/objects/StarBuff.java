@@ -1,15 +1,10 @@
 package spacecow.objects;
 
 
-import org.lwjgl.Sys;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
-import spacecow.engine.Game;
 import spacecow.engine.GameObject;
 import spacecow.engine.Score;
-import spacecow.engine.TextureHandler;
-import spacecow.engine.UnitCollission;
 
 public class StarBuff extends GameObject {
 	

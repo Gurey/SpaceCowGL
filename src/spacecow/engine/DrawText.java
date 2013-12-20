@@ -9,7 +9,6 @@ import org.newdawn.slick.TrueTypeFont;
 import spacecow.buffs.Rush;
 import spacecow.buffs.SuperSpeed;
 import spacecow.objects.GameObjectHandler;
-import spacecow.objects.Player;
 
 public class DrawText {
 

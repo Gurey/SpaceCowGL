@@ -5,7 +5,6 @@ import org.lwjgl.Sys;
 import spacecow.engine.GameObject;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
-import spacecow.objects.StarBuff;
 
 public class Magnet {
 
