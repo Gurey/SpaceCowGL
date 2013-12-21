@@ -3,7 +3,8 @@ package spacecow.engine;
 public class Main {
 	static Game g;	
 	public static void main(String[] args) {
-		new LoadNative();
+		LoadNative nativeLoader = new LoadNative();
+		nativeLoader.loadNatives();
 		g = new Game();
 		g.start();
 	}
