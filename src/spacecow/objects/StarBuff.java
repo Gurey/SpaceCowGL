@@ -17,9 +17,7 @@ public class StarBuff extends GameObject {
 	@Override
 	public void collisionAction(){
 		addStar++;
-		for (int i = 0; i <= Score.getScoreMulti(); i++) {
-			Score.incScore(10);
-		}
+			Score.incScore(10*Score.getScoreMulti());
 		if (addStar>=10) {
 			Star.addNewStar();
 			addStar=0;

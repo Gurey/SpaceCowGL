@@ -24,6 +24,7 @@ public class GameObjectHandler {
 	
 	long nextStarBuff, nextScoreMultiplyer, nextCookie;
 	private static GameObjectHandler instance=null;
+	
 	public static GameObjectHandler getInstance(){
 		if (instance == null) {
 			instance= new GameObjectHandler();

@@ -53,7 +53,7 @@ public class Star{
 	
 	public void move(){
 			this.changePos(this.yVel);
-			TextureHandler.drawTexture(this.starIm, this.getCenterX(), this.centerY);
+			TextureHandler.getInstance().drawTexture(this.starIm, this.getCenterX(), this.centerY);
 			if (this.centerY>gbHeight) {
 				starCount++;
 				Score.incScoreBackground(1);

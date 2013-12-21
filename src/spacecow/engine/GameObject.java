@@ -26,10 +26,10 @@ public class GameObject {
 		public void move(){
 			this.y += this.speed;
 			if (isRotating){
-				TextureHandler.drawRotatingTexture(this.objTex, x, y, rotation);
+				TextureHandler.getInstance().drawRotatingTexture(this.objTex, x, y, rotation);
 				rotation+=rotationSpeed;
 			}
-			else TextureHandler.drawTexture(this.objTex, this.x, this.y);
+			else TextureHandler.getInstance().drawTexture(this.objTex, this.x, this.y);
 			this.objRect.setBounds(this.x, this.y, objTex.getTextureWidth(), objTex.getTextureHeight());
 			if (colliding()) {
 				this.collisionAction();

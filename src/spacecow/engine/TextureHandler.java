@@ -10,7 +10,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public final class TextureHandler {
+public final class TextureHandler{
 	
 	private static TextureHandler instance = null;
 	
@@ -67,7 +67,7 @@ public final class TextureHandler {
 		return tex;
 	}
 	
-	public static void drawTexture(Texture tex, float x, float y){
+	public void drawTexture(Texture tex, float x, float y){
 		tex.bind();
 		glBegin(GL_QUADS);
 		
@@ -86,7 +86,7 @@ public final class TextureHandler {
 			glEnd();
 			
 	}
-	public static void drawRotatingTexture(Texture tex, float x, float y, float rotation){
+	public void drawRotatingTexture(Texture tex, float x, float y, float rotation){
 		float xCenter = tex.getTextureWidth()/2;
 		float yCenter = tex.getTextureHeight()/2;
 		tex.bind();

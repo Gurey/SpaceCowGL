@@ -75,7 +75,7 @@ public class Player {
 		if (this.speedY<0.1) {
 			this.speedY=0;
 		}
-		TextureHandler.drawTexture(neutralCow, this.x, this.y);
+		TextureHandler.getInstance().drawTexture(neutralCow, this.x, this.y);
 	}
 	public void getInput(){
 //		this.speedX = (float) (8+Rush.getInstance().getVel());

@@ -23,7 +23,7 @@ public class Game {
 	
 	public Game(){
 		initGL();
-		Star.createStars(1000);
+		Star.createStars(80);
 		DrawText.initText();
 	}
 	public void initGL(){

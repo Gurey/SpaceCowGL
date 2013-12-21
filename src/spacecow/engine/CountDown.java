@@ -30,7 +30,7 @@ public class CountDown {
 				countdownState=0;
 			}
 		}
-		TextureHandler.drawTexture(tex, (Game.dWidth/2)-250, (Game.dHeight/2)-250);
+		TextureHandler.getInstance().drawTexture(tex, (Game.dWidth/2)-250, (Game.dHeight/2)-250);
 	}
 	public static int getCountdownState(){
 		return countdownState;
