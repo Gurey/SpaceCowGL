@@ -36,7 +36,7 @@ public final class TextureHandler{
 		}
 		return instance;
 	}
-	private TextureHandler(){
+	private TextureHandler() {
 		
 		 number1tex = TextureHandler.loadTexture("res/number1.png");
 		 number2tex = TextureHandler.loadTexture("res/number2.png");
