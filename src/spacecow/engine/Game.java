@@ -80,6 +80,7 @@ public class Game {
 //		}
 		iTimer.refreshTime();
 		score.setScore(0);
+		time.setTimeLeft(60);
 		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0)) {
 			iTimer.startTimer();
 			render();

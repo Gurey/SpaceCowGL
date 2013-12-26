@@ -4,7 +4,7 @@ import org.lwjgl.Sys;
 
 public class Time {
 
-	private static long timeLeft=Sys.getTime()+20000;
+	private long timeLeft=Sys.getTime()+20000;
 	
 	public int getSecondsLeft(){
 		int secondsLeft = (int) ((timeLeft-Sys.getTime())/Sys.getTimerResolution());
@@ -12,6 +12,9 @@ public class Time {
 	}
 	public void incTimeLeft(int seconds){
 		timeLeft += seconds*Sys.getTimerResolution();
+	}
+	public void setTimeLeft(int seconds){
+		timeLeft = Sys.getTime()+(seconds*Sys.getTimerResolution());
 	}
 	
 }

@@ -12,11 +12,6 @@ public class Score {
 	private int scoreMulti=1;
 	private long scoreMultiTime;
 	
-	DrawText text;
-	
-	public Score(){
-		text = new DrawText(35,false);
-	}
 	
 	public void incScoreBackground(int points){
 		score+=(points*scoreMulti);
@@ -42,7 +37,6 @@ public class Score {
 				scoreMulti=1;
 			}
 		}
-		text.drawString(""+this.score, 10f, 10f, Color.white);
 	}
 	public int getScoreMulti(){
 		return scoreMulti;
