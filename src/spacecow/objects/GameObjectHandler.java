@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.lwjgl.Sys;
 
+import spacecow.buffs.SuperSpeed;
+import spacecow.engine.Game;
 import spacecow.engine.GameObject;
 import spacecow.engine.Score;
 import spacecow.engine.TextureHandler;
@@ -22,19 +24,22 @@ public class GameObjectHandler {
 	//Backgroundstars
 	private  ArrayList<Star> starsArray = new ArrayList<>();
 	
-	long nextStarBuff, nextScoreMultiplyer, nextCookie;
-	private static GameObjectHandler instance=null;
+	private Score score;
+	private TextureHandler texHandler;
+	private SuperSpeed superSpeed;
+	private Player player;
 	
-	public static GameObjectHandler getInstance(){
-		if (instance == null) {
-			instance= new GameObjectHandler();
-		}
-		return instance;
-	}
-	private GameObjectHandler(){
+	long nextStarBuff, nextScoreMultiplyer, nextCookie;
+	
+	public GameObjectHandler(Score score, TextureHandler texHandler, SuperSpeed superSpeed, Player player){
 		this.nextStarBuff=Sys.getTime()+50;
 		this.nextCookie=Sys.getTime()+30000;
 		this.nextScoreMultiplyer=Sys.getTime()+1000;
+		this.score = score;
+		this.texHandler = texHandler;
+		this.superSpeed = superSpeed;
+		this.player = player;
+		createStars(150);
 	}
 	
 	public ArrayList<ScoreMultiplyer> getSmArray() {
@@ -65,13 +70,30 @@ public class GameObjectHandler {
 		
 	}
 	private void moveAllObjects(){
+			if (StarBuff.getAddStar()>=10) {
+				StarBuff.setAddStar(0);
+				starsArray.add(new Star(score, texHandler, -10, superSpeed));
+			}
 		for (Star st : starsArray) {
 			st.move();
 		}
 		for (GameObject go : gameObjectArray) {
 			go.move();
+			if (go.isRotating()){
+				texHandler.drawRotatingTexture(go.getObjTex(), go.getX(), go.getY(), go.getRotation());
+				go.setRotation(go.getRotation()+go.getRotationSpeed());
+			}
+			else texHandler.drawTexture(go.getObjTex(), go.getX(), go.getY());
+			if (go.colliding()) {
+				go.collisionAction();
+				gameObjectRemove.add(go);
+			}
+			else if (go.getY()>Game.dHeight) {
+				gameObjectRemove.add(go);
+				}
+			}
 		}
-	}
+	
 	private void removeObjectsFromArray(){
 		for (GameObject go : gameObjectRemove) {
 			gameObjectArray.remove(go);
@@ -80,18 +102,23 @@ public class GameObjectHandler {
 	private void checkIfNewObjects(){
 		//new Cookie
 		if (Sys.getTime()>nextCookie) {
-			this.gameObjectArray.add(new Cookie(TextureHandler.getInstance().getCookieTex()));
+			this.gameObjectArray.add(new Cookie(texHandler.getCookieTex(),score, player));
 			nextCookie = (long) (Sys.getTime()+500+(Math.random()*30000));
 		}
 		//new ScoreMulti
 		if (Sys.getTime()>nextScoreMultiplyer) {
-			this.gameObjectArray.add(new ScoreMultiplyer(TextureHandler.getInstance().getPlusTex()));
-			nextScoreMultiplyer = (long) (Sys.getTime()+500+(Math.random()*5000)-(Score.getScoreMulti()*10));
+			this.gameObjectArray.add(new ScoreMultiplyer(texHandler.getPlusTex(),score, player));
+			nextScoreMultiplyer = (long) (Sys.getTime()+500+(Math.random()*5000)-(score.getScoreMulti()*10));
 		}
 		//new StarBuff
 		if (Sys.getTime()>nextStarBuff) {
-			this.gameObjectArray.add(new StarBuff(TextureHandler.getInstance().getStarBuffTex()));
-			nextStarBuff = (long) (Sys.getTime()+(Math.random()*50));
+			this.gameObjectArray.add(new StarBuff(texHandler.getStarBuffTex(),score, player));
+			nextStarBuff = (long) (Sys.getTime()+(Math.random()*500));
+		}
+	}
+	private void createStars(int numberOfStars){
+		for (int i = 0; i < numberOfStars; i++) {
+			starsArray.add(new Star(score, texHandler, superSpeed));
 		}
 	}
 }

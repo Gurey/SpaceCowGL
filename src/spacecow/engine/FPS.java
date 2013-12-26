@@ -1,16 +1,18 @@
 package spacecow.engine;
 
+import org.lwjgl.Sys;
+
 
 public class FPS {
 
-	private static String FPS="0";
-	private static int tick;
-	private static long time;
-	private static boolean getFPS=true;
+	private String FPS="0";
+	private int tick;
+	private long time;
+	private boolean getFPS=true;
 	
-	public static String getFPS(){
-		if (System.currentTimeMillis()>time+1000 || getFPS == true){
-			time=System.currentTimeMillis();
+	public String getFPS(){
+		if (Sys.getTime()>time+1000 || getFPS == true){
+			time=Sys.getTime();
 			getFPS = false;
 			FPS = "FPS: "+tick;
 			tick=0;

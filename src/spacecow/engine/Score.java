@@ -1,33 +1,40 @@
 package spacecow.engine;
 
+
 import org.lwjgl.Sys;
+import org.newdawn.slick.Color;
 
 
 
 public class Score {
 	
-	private static long score = 0;
-	private static int scoreMulti=1;
-	private static long scoreMultiTime;
-	private static int lastestScore;
+	private long score = 0;
+	private int scoreMulti=1;
+	private long scoreMultiTime;
 	
+	DrawText text;
 	
-	public static void incScoreBackground(int points){
+	public Score(){
+		text = new DrawText(35,false);
+	}
+	
+	public void incScoreBackground(int points){
 		score+=(points*scoreMulti);
 	}
-	public static void incScore(int points){
+	public void incScore(int points){
 		score+=(points*scoreMulti);
-		lastestScore=(points*scoreMulti);
-		DrawText.drawPoints();
 	}
-	public static long getScore(){
+	public long getScore(){
 		return score;
 	}
-	public static void scoreMulti(){
+	public void setScore(long score){
+		this.score = score;
+	}
+	public void scoreMulti(){
 		scoreMultiTime = Sys.getTime();
 		scoreMulti++;
 	}
-	public static void update(){
+	public void update(){
 		if (Sys.getTime()>scoreMultiTime+5000) {
 			scoreMulti/=2;
 			scoreMultiTime=Sys.getTime();
@@ -35,15 +42,12 @@ public class Score {
 				scoreMulti=1;
 			}
 		}
+		text.drawString(""+this.score, 10f, 10f, Color.white);
 	}
-	public static int getScoreMulti(){
+	public int getScoreMulti(){
 		return scoreMulti;
 	}
-	public static void setScoreMulti(int ScoreMul){
+	public void setScoreMulti(int ScoreMul){
 		scoreMulti = ScoreMul;
-	}
-
-	public static int getLastestScore() {
-		return lastestScore;
 	}
 }

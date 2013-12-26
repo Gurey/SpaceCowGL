@@ -12,7 +12,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public final class TextureHandler{
 	
-	private static TextureHandler instance = null;
 	
 	private Texture number1tex;
 	private Texture number2tex;
@@ -30,13 +29,7 @@ public final class TextureHandler{
 	private Texture cookieTex;
 	private Texture plusTex;
 	
-	public static TextureHandler getInstance(){
-		if (instance == null) {
-			instance = new TextureHandler();
-		}
-		return instance;
-	}
-	private TextureHandler() {
+	public TextureHandler() {
 		
 		 number1tex = TextureHandler.loadTexture("res/number1.png");
 		 number2tex = TextureHandler.loadTexture("res/number2.png");

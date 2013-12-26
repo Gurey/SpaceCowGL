@@ -1,31 +1,42 @@
 package spacecow.buffs;
 
+import java.util.ArrayList;
+
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 
 import spacecow.engine.GameObject;
-import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
 
 public class Magnet {
 
-	private static boolean available=true;
-	private static long time;
-	private static float vel;
-	private static float xDiff=0, yDiff=0; 
+	private boolean available=true;
+	private long time;
+	private float vel;
+	private float xDiff=0, yDiff=0; 
 	
-
+	public ArrayList<GameObject> gameObjArr;
+	public Player player;
 	
-	public static void initMagnet(){
+	public Magnet(ArrayList<GameObject> gameObjArr, Player player){
+		this.gameObjArr = gameObjArr;
+		this.player = player;
+	}
+	
+	public void initMagnet(){
 	available = false;
 	time = Sys.getTime();
 	}
 	
-	public static void update(){
+	public void update(){
+		if (Keyboard.isKeyDown(Keyboard.KEY_2) && (isAvailable())) {
+		initMagnet();
+		}
 		if (!available) {
-		float texWC = Player.getInstance().getX()+(Player.getInstance().getTexture().getTextureWidth()/2);
-		float texHC = Player.getInstance().getY()+(Player.getInstance().getTexture().getTextureHeight()/2);
+		float texWC = player.getX()+(player.getTexture().getTextureWidth()/2);
+		float texHC = player.getY()+(player.getTexture().getTextureHeight()/2);
 		vel+=0.07f;
-		for (GameObject sb : GameObjectHandler.getInstance().getGameObjectArray()){
+		for (GameObject sb : gameObjArr){
 			sb.setSpeed(0);
 			//upper right block
 			if (sb.getX()>=texWC && sb.getY()<=texHC) {
@@ -83,7 +94,7 @@ public class Magnet {
 		if (Sys.getTime()>time+5000) {
 			available = true;
 			vel = 0;
-			for (GameObject sb : GameObjectHandler.getInstance().getGameObjectArray()) {
+			for (GameObject sb : gameObjArr) {
 				sb.setSpeed(15);
 			}
 		}
@@ -91,7 +102,7 @@ public class Magnet {
 		
 	}
 
-	public static boolean isAvailable() {
+	public boolean isAvailable() {
 		return available;
 	}
 	

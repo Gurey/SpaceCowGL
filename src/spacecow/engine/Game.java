@@ -8,23 +8,38 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import spacecow.buffs.Magnet;
+import spacecow.buffs.SuperSpeed;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
-import spacecow.objects.Star;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
 	
 	public static int dWidth = 1400;
 	public static int dHeight = 750;
+	private Score score;
+	private GameObjectHandler gameObjHandler;
+	private Magnet magnet;
+	private TextureHandler texHandler;
+	private Player player;
+	private SuperSpeed superSpeed;
+	
+	private IterationTimer iTimer = new IterationTimer();
+	
+	GameOver gOver;
 
 	
 	Time time = new Time();
 	
 	public Game(){
 		initGL();
-		Star.createStars(80);
-		DrawText.initText();
+		superSpeed = new SuperSpeed();
+		texHandler = new TextureHandler();
+		score = new Score();
+		player = new Player(texHandler, superSpeed);
+		gameObjHandler = new GameObjectHandler(score, texHandler, superSpeed, player);
+		magnet = new Magnet(gameObjHandler.getGameObjectArray(), player);
+		gOver = new GameOver(gameObjHandler.getStarsArray());
 	}
 	public void initGL(){
 		try {
@@ -52,32 +67,41 @@ public class Game {
 	}
 	
 	public void start(){
+//		CountDown count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
 //		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-//			Display.sync(60);
 //			render();
-//			if (CountDown.getCountdownState()<=0) {
+//			if (count.getCountdownState()<=0) {
 //				break;
 //			}
-//			Player.getInstance().update();
-//			Star.updateStars();
-//			CountDown.countDown();
+//			player.update();
+//			count.countDown();
 //			Display.update();
+//			Display.sync(60);
 //		}
+		iTimer.refreshTime();
+		score.setScore(0);
 		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0)) {
-			Display.sync(60);
+			iTimer.startTimer();
 			render();
 			update();
 			Display.update();
+			Display.sync(60);
+			iTimer.getAverageIterationTime();
+		}
+		gOver.setFinalScore(score.getScore());
+		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			render();
+			gOver.update();
+			Display.update();
+			Display.sync(60);
 		}
 		Display.destroy();
 	}
 	public void update(){
-//		StarBuff.update();
-		GameObjectHandler.getInstance().update();
-		Player.getInstance().update();
-		Magnet.update();
-		Score.update();
-		DrawText.update();
+		gameObjHandler.update();
+		player.update();
+		magnet.update();
+		score.update();
 	}
 	public void render(){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

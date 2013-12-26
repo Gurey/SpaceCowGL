@@ -7,7 +7,6 @@ public class LoadNative {
 	private String os = System.getProperty("os.name").toLowerCase();
 	
 	public void loadNatives(){
-		 System.out.println(os);
 		 if (isWindows()) {
 				System.out.println("This is Windows");
 				System.setProperty("org.lwjgl.librarypath", new File("LWJGL/LWJGLNative/windows").getAbsolutePath());
@@ -15,7 +14,7 @@ public class LoadNative {
 				System.out.println("This is Mac");
 				System.setProperty("org.lwjgl.librarypath", new File("LWJGL/LWJGLNative/macosx").getAbsolutePath());
 			} else {
-				System.out.println("Your OS is not support!!");
+				System.out.println("Your OS is not supported!!");
 			}
 	}
 	public boolean isWindows() {

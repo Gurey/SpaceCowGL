@@ -1,6 +1,5 @@
 package spacecow.buffs;
 
-import spacecow.objects.Star;
 
 public class SuperSpeed implements Runnable {
 
@@ -8,27 +7,19 @@ public class SuperSpeed implements Runnable {
 	
 	private boolean available;
 	
-	private static SuperSpeed instance;
-	
 	private double increese=0.25;
-	
-	private SuperSpeed(){
+	private double superSpeed;
+
+	public SuperSpeed(){
 		this.available=true;
-	}
-	
-	public static SuperSpeed getInstance(){
-		if (instance == null) {
-			instance = new SuperSpeed();
-		}
-		return instance;
+		this.superSpeed=1;
 	}
 	
 	@Override
 	public void run() {
 		this.available=false;
-		while (Star.getSuperSpeed()<4) {
-			newSpeed = Star.getSuperSpeed()+increese;
-			Star.setSuperSpeed(newSpeed);
+		while (superSpeed<4) {
+			superSpeed += increese;
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -43,9 +34,8 @@ public class SuperSpeed implements Runnable {
 				e.printStackTrace();
 			}
 	
-			while (Star.getSuperSpeed()>1) {
-				newSpeed = Star.getSuperSpeed()-increese;
-				Star.setSuperSpeed(newSpeed);
+			while (superSpeed>1) {
+				superSpeed -= increese;
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -53,7 +43,7 @@ public class SuperSpeed implements Runnable {
 					e.printStackTrace();
 				}
 			}
-			Star.setSuperSpeed(1);
+			superSpeed=1;
 			this.available=true;
 		}		
 	
@@ -62,4 +52,7 @@ public class SuperSpeed implements Runnable {
 		return available;
 	}
 
+	public double getSuperSpeed() {
+		return superSpeed;
+	}
 }

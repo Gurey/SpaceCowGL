@@ -3,6 +3,7 @@ import java.util.Random;
 
 import org.newdawn.slick.opengl.Texture;
 
+import spacecow.buffs.SuperSpeed;
 import spacecow.engine.Game;
 import spacecow.engine.Score;
 import spacecow.engine.TextureHandler;
@@ -14,10 +15,9 @@ public class Star{
 	
 	Random ran = new Random();
 	
-	private static double starRanSpeed = 0;
+	private double starRanSpeed = 0;
 	
-	private static int starCount = 0;
-
+	private Score score;
 	
 	private double yVel=0;
 	
@@ -25,46 +25,53 @@ public class Star{
 	private float centerY, centerX;
 	
 	Texture starIm = null;
-	
+	private TextureHandler texHandler;
 
 	
 	
-	public static double superSpeed=1;
-	private static double minSpeed=0.3*superSpeed;
-	private static double maxSpeed=15*superSpeed;
+	private SuperSpeed superSpeed;
+	private double minSpeed;
+	private double maxSpeed;
 	
-	public Star(){
+	public Star(Score score, TextureHandler texHandler, SuperSpeed superSpeed){
 		this.centerX=(int) (0+Math.random()*gbWidth);
 		this.centerY=(int) (0+Math.random()*gbHeight);
+		this.score = score;
+		this.texHandler = texHandler;
+		this.superSpeed = superSpeed;
+		this.minSpeed=0.3*superSpeed.getSuperSpeed();
+		this.maxSpeed=15*superSpeed.getSuperSpeed();
 		this.yVel=getStarRanSpeed();
-		
 		setStarim(this);
 	}
-	public Star(int y){
+	public Star(Score score, TextureHandler texHandler ,int y, SuperSpeed superSpeed){
 		this.centerX=(int) (0+Math.random()*gbWidth);
 		this.centerY=y;
+		this.score = score;
+		this.texHandler = texHandler;
+		this.superSpeed = superSpeed;
+		this.minSpeed=0.3*superSpeed.getSuperSpeed();
+		this.maxSpeed=15*superSpeed.getSuperSpeed();
 		this.yVel=getStarRanSpeed();
-		
 		setStarim(this);
 	}
 	public void changePos(double yVel){
-		this.centerY+=yVel*superSpeed;
+		this.centerY+=yVel*superSpeed.getSuperSpeed();
 	}
 	
 	public void move(){
-			this.changePos(this.yVel);
-			TextureHandler.getInstance().drawTexture(this.starIm, this.getCenterX(), this.centerY);
+ 			this.changePos(this.yVel);
+			texHandler.drawTexture(this.starIm, this.getCenterX(), this.centerY);
 			if (this.centerY>gbHeight) {
-				starCount++;
-				Score.incScoreBackground(1);
-				this.centerY=0;
-					this.yVel=getStarRanSpeed();
-					this.centerX=(int) (0+Math.random()*gbWidth);
-					setStarim(this);
+				score.incScoreBackground(1);
+				this.yVel=getStarRanSpeed();
+				this.centerX=(int) (0+Math.random()*gbWidth);
+				setStarim(this);
+				this.centerY=0-starIm.getTextureHeight();
 			}
 	}
 
-	public static double getStarRanSpeed() {
+	public double getStarRanSpeed() {
 		starRanSpeed = (double) minSpeed+(Math.random()*maxSpeed);
 		return  starRanSpeed;
 	}
@@ -94,40 +101,20 @@ public class Star{
 	}
 	private void setStarim(Star s){
 		if (this.yVel > maxSpeed*0.95) {
-			this.starIm = TextureHandler.getInstance().getStar1File();
+			this.starIm = texHandler.getStar1File();
 		}
 		else if (this.yVel > maxSpeed*0.7 && this.yVel < maxSpeed*0.95) {
-			this.starIm = TextureHandler.getInstance().getStar2File();
+			this.starIm = texHandler.getStar2File();
 		}
 		else if (this.yVel > maxSpeed*0.5 && this.yVel < maxSpeed*0.7) {
-			this.starIm = TextureHandler.getInstance().getStar3File();
+			this.starIm = texHandler.getStar3File();
 		}
 		else if (this.yVel > maxSpeed*0.2 && this.yVel < maxSpeed*0.5) {
-			this.starIm = TextureHandler.getInstance().getStar4File();
+			this.starIm = texHandler.getStar4File();
 		}
 		else{
-			this.starIm = TextureHandler.getInstance().getStar5File();
+			this.starIm = texHandler.getStar5File();
 		}
 		
 	}
-
-	public static double getSuperSpeed() {
-		return superSpeed;
-	}
-
-	public static void setSuperSpeed(double superSpeed) {
-		Star.superSpeed = superSpeed;
-	}
-	public static void createStars(int numOfStars){
-		for (int i = 0; i < numOfStars; i++) {
-			GameObjectHandler.getInstance().getStarsArray().add(new Star());
-		}
-	}
-	public static int getStarCount() {
-		return starCount;
-	}
-	public static void addNewStar(){
-		GameObjectHandler.getInstance().getStarsArray().add(new Star(0));
-	}
-
 }

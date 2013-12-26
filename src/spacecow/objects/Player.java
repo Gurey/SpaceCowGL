@@ -5,7 +5,6 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
-import spacecow.buffs.Magnet;
 import spacecow.buffs.Rush;
 import spacecow.buffs.SuperSpeed;
 import spacecow.engine.Game;
@@ -18,23 +17,20 @@ public class Player {
 	private boolean up,down, right,left;
 	private int speed=8;
 	private Rectangle pRectangle;
+	private TextureHandler texHandler;
+	private SuperSpeed superSpeed;
 	
-	private static Player instance;
 		
-	private Player(){
+	public Player(TextureHandler texHandler, SuperSpeed superSpeed){
 		this.x = Game.dWidth/2;
 		this.y = Game.dHeight/2;
 		
-		this.neutralCow = TextureHandler.getInstance().getCowTex();
+		this.neutralCow = texHandler.getCowTex();
 		this.speedX = 0;
 		this.speedY = 0;
 		this.pRectangle = new Rectangle(this.x, this.y, this.neutralCow.getWidth(), this.neutralCow.getHeight());
-	}
-	public static Player getInstance(){
-		if (instance == null) {
-			instance = new Player();
-		}
-		return instance;
+		this.superSpeed=superSpeed;
+		this.texHandler=texHandler;
 	}
 	
 	public void move(float x, float y){
@@ -75,7 +71,7 @@ public class Player {
 		if (this.speedY<0.1) {
 			this.speedY=0;
 		}
-		TextureHandler.getInstance().drawTexture(neutralCow, this.x, this.y);
+		texHandler.drawTexture(neutralCow, this.x, this.y);
 	}
 	public void getInput(){
 //		this.speedX = (float) (8+Rush.getInstance().getVel());
@@ -103,14 +99,12 @@ public class Player {
 			this.left=false;
 			this.speedX=speed;
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_1) && (SuperSpeed.getInstance().isAvailable())){
-			Thread superSpeed = new Thread(SuperSpeed.getInstance());
-			superSpeed.start();
+		if (Keyboard.isKeyDown(Keyboard.KEY_1) && (superSpeed.isAvailable())){
+			Thread superSpeedThread = new Thread(superSpeed);
+			superSpeedThread.start();
 			System.out.println("press");
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_2) && (Magnet.isAvailable())) {
-			Magnet.initMagnet();
-		}
+		
 	}
 
 	public float getX() {

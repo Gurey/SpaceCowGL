@@ -1,6 +1,5 @@
 package spacecow.objects;
 
-
 import org.newdawn.slick.opengl.Texture;
 
 import spacecow.engine.GameObject;
@@ -9,40 +8,20 @@ import spacecow.engine.Score;
 public class StarBuff extends GameObject {
 	
 	private static int addStar=0;
-	public StarBuff(Texture tex) {
-		super(tex);
+	public StarBuff(Texture tex, Score score, Player player) {
+		super(tex, score, player);
 		this.setRotating(true);
 		this.setRotationSpeed((float) (1+Math.random()*4));
 	}
 	@Override
 	public void collisionAction(){
 		addStar++;
-			Score.incScore(10*Score.getScoreMulti());
-		if (addStar>=10) {
-			Star.addNewStar();
-			addStar=0;
-		}
+		score.incScore(10*score.getScoreMulti());
 	}
-//	private boolean colliding(){
-//		boolean collision = UnitCollission.isColliding(sbRect, Player.getInstance().getpRectangle());
-//		if (collision) {
-//			
-//		}
-//		return collision;
-//	}
-//	public static void update(){
-//		for (StarBuff sbR : GameObjectHandler.getInstance().getSbRemove()) {
-//			GameObjectHandler.getInstance().getSbArray().remove(sbR);
-//		}
-//		if (Sys.getTime()>nextObject) {
-//			GameObjectHandler.getInstance().getSbArray().add(new StarBuff());
-//			nextObject = (long) (Sys.getTime()+(Math.random()*50));
-//		}
-//		for (StarBuff sb : GameObjectHandler.getInstance().getSbArray()) {
-//			sb.move();
-//			if (sb.y>Game.dHeight) {
-//				GameObjectHandler.getInstance().getSbRemove().add(sb);
-//			}
-//		}
-//	}
+	public static int getAddStar() {
+		return addStar;
+	}
+	public static void setAddStar(int addStar) {
+		StarBuff.addStar = addStar;
+	}
 }

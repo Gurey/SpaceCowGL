@@ -1,47 +1,40 @@
 package spacecow.engine;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
-import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
 
 public class GameObject {
 
-		private Texture objTex;
+		protected Texture objTex;
 		private Rectangle objRect;
 		private float x,y;
 		private float speed = 8,rotation=0,rotationSpeed;
 		private boolean isRotating = false;
 		private boolean isMagnetic = true;
+		protected Score score;
+		protected ArrayList<GameObject> gameObjRem;
+		protected Player player;
 		
-		
-		public GameObject(Texture tex) {
+		public GameObject(Texture tex, Score score, Player player) {
 			this.objTex = tex;
-			this.y = -10-objTex.getImageHeight();
+			this.y = -10-objTex.getTextureHeight();
 			this.x = (float)Math.random()*Game.dWidth-(objTex.getTextureWidth()/2);
 			this.objRect = new Rectangle(this.x, this.y, objTex.getWidth(), objTex.getHeight());
+			this.setScore(score);
+			this.player = player;
 		}
-		
+
 		public void move(){
 			this.y += this.speed;
-			if (isRotating){
-				TextureHandler.getInstance().drawRotatingTexture(this.objTex, x, y, rotation);
-				rotation+=rotationSpeed;
-			}
-			else TextureHandler.getInstance().drawTexture(this.objTex, this.x, this.y);
 			this.objRect.setBounds(this.x, this.y, objTex.getTextureWidth(), objTex.getTextureHeight());
-			if (colliding()) {
-				this.collisionAction();
-				GameObjectHandler.getInstance().getGameObjectRemove().add(this);
-			}
-			else if (this.getY()>Game.dHeight) {
-					GameObjectHandler.getInstance().getGameObjectRemove().add(this);
-				}
-			}
+		}
 		
-		private boolean colliding(){
-			boolean collision = UnitCollission.isColliding(objRect, Player.getInstance().getpRectangle());
+		public boolean colliding(){
+			boolean collision = UnitCollission.isColliding(objRect, player.getpRectangle());
 			return collision;
 		}
 		public void collisionAction(){
@@ -118,5 +111,13 @@ public class GameObject {
 
 		public void setMagnetic(boolean isMagnetic) {
 			this.isMagnetic = isMagnetic;
+		}
+
+		public Score getScore() {
+			return score;
+		}
+
+		public void setScore(Score score) {
+			this.score = score;
 		}
 }
