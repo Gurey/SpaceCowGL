@@ -17,22 +17,25 @@ public class Game {
 	
 	public static int dWidth = 1400;
 	public static int dHeight = 750;
+	
 	private Score score;
 	private GameObjectHandler gameObjHandler;
 	private Magnet magnet;
 	private TextureHandler texHandler;
 	private Player player;
 	private SuperSpeed superSpeed;
-	
+	private FPS fps;
 	private IterationTimer iTimer = new IterationTimer();
+	private GameOver gOver;
+	private Time time = new Time();
 	
-	GameOver gOver;
+	TextHandler textHandler;
 
 	
-	Time time = new Time();
 	
 	public Game(){
 		initGL();
+		setFps(new FPS());
 		superSpeed = new SuperSpeed();
 		texHandler = new TextureHandler();
 		score = new Score();
@@ -40,6 +43,7 @@ public class Game {
 		gameObjHandler = new GameObjectHandler(score, texHandler, superSpeed, player);
 		magnet = new Magnet(gameObjHandler.getGameObjectArray(), player);
 		gOver = new GameOver(gameObjHandler.getStarsArray());
+		textHandler = new TextHandler(this);
 	}
 	public void initGL(){
 		try {
@@ -93,6 +97,7 @@ public class Game {
 		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			render();
 			gOver.update();
+			textHandler.updateGameOver();
 			Display.update();
 			Display.sync(60);
 		}
@@ -103,8 +108,42 @@ public class Game {
 		player.update();
 		magnet.update();
 		score.update();
+		textHandler.updateGame();
 	}
 	public void render(){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+	public Score getScore() {
+		return score;
+	}
+	public GameObjectHandler getGameObjHandler() {
+		return gameObjHandler;
+	}
+	public Magnet getMagnet() {
+		return magnet;
+	}
+	public TextureHandler getTexHandler() {
+		return texHandler;
+	}
+	public Player getPlayer() {
+		return player;
+	}
+	public SuperSpeed getSuperSpeed() {
+		return superSpeed;
+	}
+	public IterationTimer getiTimer() {
+		return iTimer;
+	}
+	public GameOver getgOver() {
+		return gOver;
+	}
+	public Time getTime() {
+		return time;
+	}
+	public FPS getFps() {
+		return fps;
+	}
+	public void setFps(FPS fps) {
+		this.fps = fps;
 	}
 }

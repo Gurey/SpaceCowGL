@@ -24,8 +24,6 @@ public class GameOver {
 		for (Star star : starsArray) {
 			star.move();
 		}
-		dText.drawString("gameover!", (float)Game.dWidth/2, (float)(Game.dHeight/2f)-25, Color.red);
-		dText.drawString("Score: "+finalScore, (float)Game.dWidth/2, (float)(Game.dHeight/2)+25f, Color.white);
 	}
 
 	public long getFinalScore() {
