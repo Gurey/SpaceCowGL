@@ -3,6 +3,7 @@ package spacecow.objects;
 
 import org.newdawn.slick.opengl.Texture;
 
+import spacecow.buffs.Magnet;
 import spacecow.engine.GameObject;
 import spacecow.engine.Score;
 import spacecow.engine.Time;
@@ -11,15 +12,17 @@ public class Cookie extends GameObject {
 
 	Time time = new Time();
 	
-	public Cookie(Texture tex, Score score, Player player){
+	public Cookie(Texture tex, Score score, Player player, Magnet magnet){
 		super(tex, score, player);
+		this.setMagnetic(false);
 		this.setRotating(true);
-		this.setRotationSpeed(5);
+		this.setRotationSpeed((float)(-7+Math.random()*14));
 	}	
+	//Increase the time with x seconds and Score with x
 	@Override
 	public void collisionAction(){
 		time.incTimeLeft(10);
-		getScore().incScore(1000);
+		score.incScore(10000);
 	}
 	
 }

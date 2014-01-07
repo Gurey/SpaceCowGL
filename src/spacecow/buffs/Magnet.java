@@ -3,40 +3,43 @@ package spacecow.buffs;
 import java.util.ArrayList;
 
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 
 import spacecow.engine.GameObject;
 import spacecow.objects.Player;
 
 public class Magnet {
 
-	private boolean available=true;
-	private long time;
+	private boolean idle=true;
+	private long timeLeft;
 	private float vel;
 	private float xDiff=0, yDiff=0; 
 	
 	public ArrayList<GameObject> gameObjArr;
 	public Player player;
-	
+	//Takes in a Player and an Array of GameObjects 
+	//because we need to know where both the GameObject and the player are relative to each other
 	public Magnet(ArrayList<GameObject> gameObjArr, Player player){
 		this.gameObjArr = gameObjArr;
 		this.player = player;
 	}
-	
+	//init, setting the the idle to false so update() will enter the for each loop.
+	//Sets the timeLeft to 5 seconds.
 	public void initMagnet(){
-	available = false;
-	time = Sys.getTime();
+	idle = false;
+	timeLeft = Sys.getTime()+5000;
 	}
-	
+	//Updated the state of the magnet moving all objects affected by it towards the player based on the difference of the distance.
 	public void update(){
-		if (Keyboard.isKeyDown(Keyboard.KEY_2) && (isAvailable())) {
-		initMagnet();
-		}
-		if (!available) {
+		if (!idle) {
 		float texWC = player.getX()+(player.getTexture().getTextureWidth()/2);
 		float texHC = player.getY()+(player.getTexture().getTextureHeight()/2);
-		vel+=0.07f;
+		//Increase the velocity of the magnet if max velocity is not reached.  
+		if (this.vel<18) {
+			vel+=0.07f;
+		}
+		//Checking each corner based from the player witch direction the object should move.
 		for (GameObject sb : gameObjArr){
+			if (sb.isMagnetic()) {	
 			sb.setSpeed(0);
 			//upper right block
 			if (sb.getX()>=texWC && sb.getY()<=texHC) {
@@ -91,19 +94,35 @@ public class Magnet {
 				}
 			}
 		}
-		if (Sys.getTime()>time+5000) {
-			available = true;
+		}
+		// if time is up, this code sets everything to normal again.
+		if (Sys.getTime()>timeLeft) {
+			idle = true;
 			vel = 0;
 			for (GameObject sb : gameObjArr) {
-				sb.setSpeed(15);
+				if (sb.isMagnetic()) {
+					sb.setSpeed(sb.getBaseSpeed());
+				}
 			}
 		}
 		}
-		
+
 	}
 
 	public boolean isAvailable() {
-		return available;
+		return idle;
+	}
+
+	public long getTime() {
+		return timeLeft;
+	}
+	//increase the time left in milliseconds
+	public void incTime(int milliseconds) {
+		this.timeLeft+=milliseconds;
+	}
+	//Return seconds left, used for printing out on screen.
+	public long getTimeLeft(){
+		return (timeLeft-Sys.getTime())/Sys.getTimerResolution();
 	}
 	
 }

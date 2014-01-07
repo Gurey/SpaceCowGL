@@ -2,9 +2,7 @@ package spacecow.engine;
 
 import java.io.IOException;
 
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
@@ -17,7 +15,6 @@ public final class TextureHandler{
 	private Texture number2tex;
 	private Texture number3tex;
 	
-	
 	private Texture star1Tex;
 	private Texture star2Tex;
 	private Texture star3Tex;
@@ -28,38 +25,39 @@ public final class TextureHandler{
 	private Texture starBuffTex;
 	private Texture cookieTex;
 	private Texture plusTex;
+	private Texture asteroidTex;
+	private Texture magnet;
 	
 	public TextureHandler() {
 		
-		 number1tex = TextureHandler.loadTexture("res/number1.png");
-		 number2tex = TextureHandler.loadTexture("res/number2.png");
-		 number3tex = TextureHandler.loadTexture("res/number3.png");
+		 number1tex = loadTexture("res/number1.png");
+		 number2tex = loadTexture("res/number2.png");
+		 number3tex = loadTexture("res/number3.png");
 		
-		 star1Tex = TextureHandler.loadTexture("/res/Star1.png");
-		 star2Tex = TextureHandler.loadTexture("/res/Star2.png");
-		 star3Tex = TextureHandler.loadTexture("/res/Star3.png");
-		 star4Tex = TextureHandler.loadTexture("/res/Star4.png");
-		 star5Tex = TextureHandler.loadTexture("/res/Star5.png");
+		 star1Tex = loadTexture("/res/Star1.png");
+		 star2Tex = loadTexture("/res/Star2.png");
+		 star3Tex = loadTexture("/res/Star3.png");
+		 star4Tex = loadTexture("/res/Star4.png");
+		 star5Tex = loadTexture("/res/Star5.png");
 		
-		 cowTex = TextureHandler.loadTexture("res/cow.png");
-		 starBuffTex = TextureHandler.loadTexture("res/StarBuff.png");
-		 cookieTex = TextureHandler.loadTexture("res/Cookie.png");
-		 plusTex = TextureHandler.loadTexture("res/plus.png");
+		 cowTex = loadTexture("res/moo2.png");
+		 starBuffTex = loadTexture("res/StarBuff.png");
+		 cookieTex = loadTexture("res/Cookie.png");
+		 plusTex = loadTexture("res/plus.png");
+		 asteroidTex = loadTexture("res/asteroid.png");
+		 magnet = (loadTexture("res/magnet.png"));
 	}
-
-	private static Texture loadTexture(String path){
-		
+	//Loads a image based on the Path and puts it on a texture.
+	private Texture loadTexture(String path){
 		Texture tex = null;
 		try {
 			tex = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(path));
-			System.out.println("texture id: "+tex.getTextureID());
-			TextureImpl.unbind();
 		} catch (IOException e) {
 			// TODO: handle exception
 		}
 		return tex;
 	}
-	
+	//Draw a texture on the screen based on the x and y values it takes in.
 	public void drawTexture(Texture tex, float x, float y){
 		tex.bind();
 		glBegin(GL_QUADS);
@@ -79,6 +77,7 @@ public final class TextureHandler{
 			glEnd();
 			
 	}
+	//rotates and then draws a texture to the screen.
 	public void drawRotatingTexture(Texture tex, float x, float y, float rotation){
 		float xCenter = tex.getTextureWidth()/2;
 		float yCenter = tex.getTextureHeight()/2;
@@ -104,24 +103,6 @@ public final class TextureHandler{
 			glEnd();
 			glPopMatrix();
 			
-	}
-	
-	public static void drawQuad(float x, float y, Rectangle rect){
-		glBegin(GL_QUADS);
-		
-		glTexCoord2f(0, 0);
-		glVertex2f(x, y);
-		
-		glTexCoord2f(1, 0);
-		glVertex2f(x+rect.getWidth(), y);
-		
-		glTexCoord2f(0, 1);
-		glVertex2f(x, y+rect.getHeight());
-		
-		glTexCoord2f(1, 1);
-		glVertex2f(x+rect.getWidth(), y+rect.getHeight());
-		
-		glEnd();
 	}
 
 	public Texture getStar1File() {
@@ -170,5 +151,13 @@ public final class TextureHandler{
 
 	public Texture getPlusTex() {
 		return plusTex;
+	}
+
+	public Texture getAsteroidTex() {
+		return asteroidTex;
+	}
+
+	public Texture getMagnet() {
+		return magnet;
 	}
 }

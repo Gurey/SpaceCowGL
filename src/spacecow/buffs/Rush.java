@@ -1,12 +1,14 @@
 package spacecow.buffs;
 
+import org.lwjgl.Sys;
+
 
 public class Rush implements Runnable{
 
-	boolean available;
+	private boolean available;
 	private static Rush instance;
 	private float vel;
-	int cooldown=1000;
+	private int cooldown=1500;
 	
 	private Rush(){
 		this.available=true;
@@ -20,15 +22,13 @@ public class Rush implements Runnable{
 		return instance;
 	}
 	
+	//sets the Rush velocity to 15 and the decrease with *0.5 every 100th of a second making the player move slower.
 	@Override
 	public void run() {
-		long startTime = System.currentTimeMillis();
-		System.out.println(startTime);
+		long startTime = Sys.getTime();
 		this.available=false;
 		this.vel=15;
-		int loopcount=0;
 		while (this.vel>1.5) {
-			loopcount++;
 			this.vel=(float) (this.vel*0.5);
 		try {
 			Thread.sleep(100);
@@ -36,23 +36,23 @@ public class Rush implements Runnable{
 			// TODO: handle exception
 		}
 		}
-		System.out.println(loopcount);
 		this.vel=1;
-		long sleep = startTime+cooldown-System.currentTimeMillis();
+		//continue the cooldown so that the Player can't use it again until the cooldown has passed.
+		long sleep = startTime+cooldown-Sys.getTime();
 		try {
 			System.out.println("Rush sleeping for: "+sleep);
 			Thread.sleep(sleep);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		System.out.println(System.currentTimeMillis()-startTime);
+		System.out.println(Sys.getTime()-startTime);
 		this.available=true;
 	}
 
 	public boolean isAvailable() {
 		return available;
 	}
-
+	//vel is used in Player.move();
 	public double getVel() {
 		return vel;
 	}

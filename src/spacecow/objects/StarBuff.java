@@ -11,12 +11,14 @@ public class StarBuff extends GameObject {
 	public StarBuff(Texture tex, Score score, Player player) {
 		super(tex, score, player);
 		this.setRotating(true);
-		this.setRotationSpeed((float) (1+Math.random()*4));
+		this.setRotationSpeed((float) (-5+Math.random()*10));
 	}
+	//if collision addStar is increased by 1 and the score is increased.
+	//addStar is used in GameObjectHandler, when reached to 10 it adds a new star to the background.
 	@Override
 	public void collisionAction(){
 		addStar++;
-		score.incScore(10*score.getScoreMulti());
+		score.incScore(100*score.getScoreMulti());
 	}
 	public static int getAddStar() {
 		return addStar;

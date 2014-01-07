@@ -18,7 +18,7 @@ public class CountDown {
 		this.starArray=starArray;
 		this.texHandler = texHandler;
 	}
-	
+	//Moves all the stars in the background and count down from 3 to 1 by printing out a Texture on the middle of the screen.
 	public void countDown(){
 		for (Star star : starArray) {
 			star.move();

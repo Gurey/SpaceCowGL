@@ -7,13 +7,12 @@ public class FPS {
 
 	private String FPS="0";
 	private int tick;
-	private long time;
-	private boolean getFPS=true;
+	private long time=Sys.getTime();
 	
+	//Calc the FPS, adding +1 to tick if one second has not passed sense last time reset.
 	public String getFPS(){
-		if (Sys.getTime()>time+1000 || getFPS == true){
+		if (Sys.getTime()>time+1000){
 			time=Sys.getTime();
-			getFPS = false;
 			FPS = "FPS: "+tick;
 			tick=0;
 			return FPS;

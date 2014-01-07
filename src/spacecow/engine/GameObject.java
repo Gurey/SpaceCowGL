@@ -7,12 +7,12 @@ import org.newdawn.slick.opengl.Texture;
 
 import spacecow.objects.Player;
 
-public class GameObject {
+public abstract class GameObject {
 
 		protected Texture objTex;
 		private Rectangle objRect;
 		private float x,y;
-		private float speed = 8,rotation=0,rotationSpeed;
+		private float speed = 8,rotation=0,rotationSpeed, baseSpeed;
 		private boolean isRotating = false;
 		private boolean isMagnetic = true;
 		protected Score score;
@@ -26,19 +26,20 @@ public class GameObject {
 			this.objRect = new Rectangle(this.x, this.y, objTex.getWidth(), objTex.getHeight());
 			this.setScore(score);
 			this.player = player;
+			this.baseSpeed=this.speed;
 		}
-
+		//Moves the object downwards, 
 		public void move(){
 			this.y += this.speed;
 			this.objRect.setBounds(this.x, this.y, objTex.getTextureWidth(), objTex.getTextureHeight());
 		}
-		
+		//Check if the object is colliding with the player
 		public boolean colliding(){
 			boolean collision = UnitCollission.isColliding(objRect, player.getpRectangle());
 			return collision;
 		}
-		public void collisionAction(){
-			
+		//if the object is colliding this method is executed, should be used with polymophism in the class that extends this class.
+		public void collisionAction() {
 		}
 
 		public Texture getObjTex() {
@@ -119,5 +120,13 @@ public class GameObject {
 
 		public void setScore(Score score) {
 			this.score = score;
+		}
+
+		public float getBaseSpeed() {
+			return baseSpeed;
+		}
+
+		public void setBaseSpeed(float baseSpeed) {
+			this.baseSpeed = baseSpeed;
 		}
 }

@@ -5,7 +5,7 @@ import java.io.File;
 public class LoadNative {
 	
 	private String os = System.getProperty("os.name").toLowerCase();
-	
+	//Loads the natives needed to run the program based on the operating system of the computer.
 	public void loadNatives(){
 		 if (isWindows()) {
 				System.out.println("This is Windows");
