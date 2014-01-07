@@ -97,10 +97,14 @@ public class GameObjectHandler {
 			this.gameObjectArray.add(new StarBuff(texHandler.getStarBuffTex(),score, player));
 			nextStarBuff = (long) (Sys.getTime()+(Math.random()*500));
 		}
-		//new Asteroid, created within the range of 0.5 to 2 seconds.
+		//new Asteroid, created within the range of 0.5 to 1.8 seconds minus scoreMulti*5.
 		if (Sys.getTime()>nextAsteroid) {
 			this.gameObjectArray.add(new Asteroid(texHandler.getAsteroidTex(), score, player));
-			nextAsteroid = (long) (Sys.getTime()+500+(Math.random()*1500));
+			nextAsteroid = (long) (Sys.getTime()+300+(Math.random()*1500-score.getScoreMulti()*5));
+			//The lowest spawn rate is every 300 milliseconds.
+			if (nextAsteroid<Sys.getTime()+300) {
+				nextAsteroid=Sys.getTime()+300;
+			}
 		}
 		//new Magnet, created within the range of 0.5 to 6.5 seconds.
 		if (Sys.getTime()>nextMagnet) {
