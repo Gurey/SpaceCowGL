@@ -8,13 +8,15 @@ import spacecow.engine.Time;
 
 public class Asteroid extends GameObject {
 
-	Time time = new Time();
+	private Time time;
 	
-	public Asteroid(Texture tex, Score score, Player player) {
+	public Asteroid(Texture tex, Score score, Player player, Time time) {
 		super(tex, score, player);
 		this.setMagnetic(false); 
 		this.setRotating(true);
+		this.time = time;
 		this.setRotationSpeed((float)(-4+Math.random()*8));
+		this.setSpeed((float) (getSpeed()+(Math.random()*3)));
 	}
 	
 	//Reduce the time left with x seconds if colliding

@@ -3,7 +3,6 @@ import java.util.Random;
 
 import org.newdawn.slick.opengl.Texture;
 
-import spacecow.buffs.SuperSpeed;
 import spacecow.engine.Game;
 import spacecow.engine.Score;
 import spacecow.engine.TextureHandler;
@@ -29,36 +28,33 @@ public class Star{
 
 
 
-	private SuperSpeed superSpeed;
 	private double minSpeed;
 	private double maxSpeed;
 	//is use when the game is started
-	public Star(Score score, TextureHandler texHandler, SuperSpeed superSpeed){
+	public Star(Score score, TextureHandler texHandler){
 		this.centerX=(int) (0+Math.random()*gbWidth);
 		this.centerY=(int) (0+Math.random()*gbHeight);
 		this.score = score;
 		this.texHandler = texHandler;
-		this.superSpeed = superSpeed;
-		this.minSpeed=0.3*superSpeed.getSuperSpeed();
-		this.maxSpeed=15*superSpeed.getSuperSpeed();
+		this.minSpeed=0.3;
+		this.maxSpeed=15;
 		this.yVel=getStarRanSpeed();
 		setStarim(this);
 	}
 	//Used when the game is running.
-	public Star(Score score, TextureHandler texHandler ,int y, SuperSpeed superSpeed){
+	public Star(Score score, TextureHandler texHandler ,int y){
 		this.centerX=(int) (0+Math.random()*gbWidth);
 		this.centerY=y;
 		this.score = score;
 		this.texHandler = texHandler;
-		this.superSpeed = superSpeed;
-		this.minSpeed=0.3*superSpeed.getSuperSpeed();
-		this.maxSpeed=15*superSpeed.getSuperSpeed();
+		this.minSpeed=0.3;
+		this.maxSpeed=15;
 		this.yVel=getStarRanSpeed();
 		setStarim(this);
 	}
 	//Moves the Star
 	public void changePos(double yVel){
-		this.centerY+=yVel*superSpeed.getSuperSpeed();
+		this.centerY+=yVel;
 	}
 
 	public void move(){

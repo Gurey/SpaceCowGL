@@ -6,31 +6,30 @@ import org.newdawn.slick.Color;
 
 import spacecow.buffs.Magnet;
 import spacecow.buffs.Rush;
-import spacecow.buffs.SuperSpeed;
 import spacecow.objects.Star;
 
 public class TextHandler {
 
-	SuperSpeed superSpeed;
 	FPS fps;
 	Time time;
 	Score score;
 	ArrayList<Star>starsArray;
 	GameOver gOver;
 	Magnet magnet;
+	Rush rush;
 
 	DrawText drawNormal;
 	DrawText drawCenter;
 	DrawText drawTime;
 
 	public TextHandler(Game game){
-		this.superSpeed=game.getSuperSpeed();
 		this.fps=game.getFps();
 		this.time=game.getTime();
 		this.score = game.getScore();
 		this.starsArray=game.getGameObjHandler().getStarsArray();
 		this.gOver = game.getgOver();
 		this.magnet = game.getMagnet();
+		this.rush = game.getRush();
 		this.drawNormal=new DrawText(35,false);
 		this.drawCenter=new DrawText(55, true);
 		this.drawTime=new DrawText(30, true);
@@ -42,20 +41,11 @@ public class TextHandler {
 	}
 	//Draws rush in green if its available for use, else gray.
 	private void drawRush(){
-		if (Rush.getInstance().isAvailable()) {
+		if (rush.isAvailable()) {
 			drawNormal.drawString(20, 45, "Rush", Color.green);
 		}
 		else {
 			drawNormal.drawString(20, 45, "Rush", Color.gray);
-		}
-	}
-	//Draw superSpeed in green if its available for use, else gray.
-	private void drawSuperSpeed(){
-		if (superSpeed.isAvailable()) {
-			drawNormal.drawString(20, 75, "Super Speed", Color.green);
-		}
-		else {
-			drawNormal.drawString(20, 75, "Super Speed", Color.gray);
 		}
 	}
 	private void drawFPS(){
@@ -88,7 +78,6 @@ public class TextHandler {
 	public void updateGame(){
 		drawScore();
 		drawRush();
-		drawSuperSpeed();
 		drawFPS();
 		drawScoreMulti();
 		drawStarNr();

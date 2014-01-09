@@ -6,7 +6,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import spacecow.buffs.Magnet;
-import spacecow.buffs.SuperSpeed;
+import spacecow.buffs.Rush;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
 import static org.lwjgl.opengl.GL11.*;
@@ -21,21 +21,22 @@ public class Game {
 	private Magnet magnet;
 	private TextureHandler texHandler;
 	private Player player;
-	private SuperSpeed superSpeed;
 	private FPS fps;
 	private GameOver gOver;
-	private Time time = new Time();
+	private Time time;
+	private Rush rush;
 	
 	TextHandler textHandler;
 
 	public Game(){
 		initGL();
 		setFps(new FPS());
-		superSpeed = new SuperSpeed();
+		rush = new Rush();
+		time = new Time();
 		texHandler = new TextureHandler();
 		score = new Score();
-		player = new Player(texHandler, superSpeed);
-		gameObjHandler = new GameObjectHandler(score, texHandler, superSpeed, player);
+		player = new Player(texHandler, rush);
+		gameObjHandler = new GameObjectHandler(score, texHandler, player, time);
 		magnet = new Magnet(gameObjHandler.getGameObjectArray(), player);
 		gOver = new GameOver(gameObjHandler.getStarsArray());
 		gameObjHandler.setMagnet(magnet);
@@ -94,7 +95,7 @@ public class Game {
 		//Sets the finalscore to the current score.
 		gOver.setFinalScore(score.getScore());
 		//Run gameover until the players wants to exit.
-		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+		while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && time.getSecondsLeft()<=0) {
 			render();
 			gOver.update();
 			textHandler.updateGameOver();
@@ -106,6 +107,7 @@ public class Game {
 	//updates all components in the Game phase.
 	public void update(){
 		gameObjHandler.update();
+		rush.update();
 		player.update();
 		magnet.update();
 		score.update();
@@ -130,9 +132,6 @@ public class Game {
 	public Player getPlayer() {
 		return player;
 	}
-	public SuperSpeed getSuperSpeed() {
-		return superSpeed;
-	}
 	public GameOver getgOver() {
 		return gOver;
 	}
@@ -144,5 +143,8 @@ public class Game {
 	}
 	public void setFps(FPS fps) {
 		this.fps = fps;
+	}
+	public Rush getRush(){
+		return rush;
 	}
 }

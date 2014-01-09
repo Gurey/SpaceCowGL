@@ -9,9 +9,9 @@ import spacecow.objects.Star;
 
 public class CountDown {
 
-	private static long time=Sys.getTime();
-	private static int countdownState=3;
-	private static Texture numberTex; 
+	private long time=Sys.getTime();
+	private int countdownState=3;
+	private Texture numberTex; 
 	ArrayList<Star> starArray;
 	TextureHandler texHandler;
 	public CountDown(ArrayList<Star> starArray, TextureHandler texHandler){
@@ -47,6 +47,13 @@ public class CountDown {
 	}
 	public int getCountdownState(){
 		return countdownState;
+	}
+	public void setCountDownState(int state){
+		int stateToSet = state;
+		if (stateToSet<3) {
+			stateToSet = 3;
+		}
+		this.countdownState=stateToSet;
 	}
 	
 }

@@ -4,7 +4,7 @@ import org.lwjgl.Sys;
 
 public class Time {
 
-	private static long timeLeft;
+	private long timeLeft;
 	
 	//Dividing the time left with the resolution of the time to return seconds.
 	public int getSecondsLeft(){

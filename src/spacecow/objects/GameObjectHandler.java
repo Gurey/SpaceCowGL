@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import org.lwjgl.Sys;
 
 import spacecow.buffs.Magnet;
-import spacecow.buffs.SuperSpeed;
 import spacecow.engine.Game;
 import spacecow.engine.GameObject;
 import spacecow.engine.Score;
 import spacecow.engine.TextureHandler;
+import spacecow.engine.Time;
 
 public class GameObjectHandler {
 
@@ -21,13 +21,13 @@ public class GameObjectHandler {
 
 	private Score score;
 	private TextureHandler texHandler;
-	private SuperSpeed superSpeed;
 	private Player player;
 	private Magnet magnet;
+	private Time time;
 
 	long nextStarBuff, nextScoreMultiplyer, nextCookie, nextAsteroid, nextMagnet;
 
-	public GameObjectHandler(Score score, TextureHandler texHandler, SuperSpeed superSpeed, Player player){
+	public GameObjectHandler(Score score, TextureHandler texHandler, Player player, Time time){
 		this.nextStarBuff=Sys.getTime()+50;
 		this.nextCookie=Sys.getTime()+15000;
 		this.nextScoreMultiplyer=Sys.getTime()+1000;
@@ -35,8 +35,8 @@ public class GameObjectHandler {
 		this.nextMagnet=(long) (Sys.getTime()+Math.random()*15000);
 		this.score = score;
 		this.texHandler = texHandler;
-		this.superSpeed = superSpeed;
 		this.player = player;
+		this.setTime(time);
 		createStars(80);
 	}
 
@@ -53,7 +53,7 @@ public class GameObjectHandler {
 	private void moveAllObjects(){
 		if (StarBuff.getAddStar()>=10) {
 			StarBuff.setAddStar(0);
-			starsArray.add(new Star(score, texHandler, -10, superSpeed));
+			starsArray.add(new Star(score, texHandler, -10));
 		}
 		for (Star st : starsArray) {
 			st.move();
@@ -84,7 +84,7 @@ public class GameObjectHandler {
 	private void checkIfNewObjects(){
 		//new Cookie, new cookies are created in a random range within 0.5 to 15 seconds.
 		if (Sys.getTime()>nextCookie) {
-			this.gameObjectArray.add(new Cookie(texHandler.getCookieTex(),score, player, magnet));
+			this.gameObjectArray.add(new Cookie(texHandler.getCookieTex(),score, player, magnet, time));
 			nextCookie = (long) (Sys.getTime()+500+(Math.random()*14500));
 		}
 		//new ScoreMulti, new score multi are created within a range of 0.2 to 2.7 seconds minus the score multi*5
@@ -99,7 +99,7 @@ public class GameObjectHandler {
 		}
 		//new Asteroid, created within the range of 0.5 to 1.8 seconds minus scoreMulti*5.
 		if (Sys.getTime()>nextAsteroid) {
-			this.gameObjectArray.add(new Asteroid(texHandler.getAsteroidTex(), score, player));
+			this.gameObjectArray.add(new Asteroid(texHandler.getAsteroidTex(), score, player, time));
 			nextAsteroid = (long) (Sys.getTime()+300+(Math.random()*1500-score.getScoreMulti()*5));
 			//The lowest spawn rate is every 300 milliseconds.
 			if (nextAsteroid<Sys.getTime()+300) {
@@ -115,7 +115,7 @@ public class GameObjectHandler {
 	//Created initial star count
 	private void createStars(int numberOfStars){
 		for (int i = 0; i < numberOfStars; i++) {
-			starsArray.add(new Star(score, texHandler, superSpeed));
+			starsArray.add(new Star(score, texHandler));
 		}
 	}
 	public void setMagnet(Magnet magnet){
@@ -129,5 +129,13 @@ public class GameObjectHandler {
 	}
 	public ArrayList<GameObject> getGameObjectRemove() {
 		return gameObjectRemove;
+	}
+
+	public Time getTime() {
+		return time;
+	}
+
+	public void setTime(Time time) {
+		this.time = time;
 	}
 }
