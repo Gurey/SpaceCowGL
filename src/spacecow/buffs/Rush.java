@@ -53,5 +53,9 @@ public class Rush{
 	public void setStartTIme(long startTIme) {
 		this.startTime = startTIme;
 	}
+	public void resetRush(){
+		available = true;
+		vel = 1;
+	}
 
 }

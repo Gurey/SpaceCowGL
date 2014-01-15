@@ -28,7 +28,9 @@ public final class TextureHandler{
 	private Texture asteroidTex;
 	private Texture magnet;
 	
-	public TextureHandler() {
+	private Texture optionsTex, startGameTex, highScoreTex;
+	
+	public TextureHandler(){
 		
 		 number1tex = loadTexture("res/number1.png");
 		 number2tex = loadTexture("res/number2.png");
@@ -46,6 +48,10 @@ public final class TextureHandler{
 		 plusTex = loadTexture("res/plus.png");
 		 asteroidTex = loadTexture("res/asteroid.png");
 		 magnet = (loadTexture("res/magnet.png"));
+		 
+		 optionsTex = loadTexture("res/options.png");
+		 startGameTex = loadTexture("res/startgame.png");
+		 highScoreTex = loadTexture("res/highscore.png");
 	}
 	//Loads a image based on the Path and puts it on a texture.
 	private Texture loadTexture(String path){
@@ -159,5 +165,14 @@ public final class TextureHandler{
 
 	public Texture getMagnet() {
 		return magnet;
+	}
+	public Texture getOptionsTex() {
+		return optionsTex;
+	}
+	public Texture getStartGameTex() {
+		return startGameTex;
+	}
+	public Texture getHighScoreTex() {
+		return highScoreTex;
 	}
 }

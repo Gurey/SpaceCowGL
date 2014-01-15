@@ -24,12 +24,13 @@ public class GameObjectHandler {
 	private Player player;
 	private Magnet magnet;
 	private Time time;
+	private short numberOfStars = 80;
 
 	long nextStarBuff, nextScoreMultiplyer, nextCookie, nextAsteroid, nextMagnet;
 
 	public GameObjectHandler(Score score, TextureHandler texHandler, Player player, Time time){
 		this.nextStarBuff=Sys.getTime()+50;
-		this.nextCookie=Sys.getTime()+15000;
+		this.nextCookie=(long) (Sys.getTime()+Math.random()*15000);
 		this.nextScoreMultiplyer=Sys.getTime()+1000;
 		this.nextAsteroid=Sys.getTime()+1000;
 		this.nextMagnet=(long) (Sys.getTime()+Math.random()*15000);
@@ -37,7 +38,7 @@ public class GameObjectHandler {
 		this.texHandler = texHandler;
 		this.player = player;
 		this.setTime(time);
-		createStars(80);
+		createStars(numberOfStars);
 	}
 
 	//Updates the object, remove all the objects, clears the remove Array, move all the other objects and then check if its time to create new objects 
@@ -137,5 +138,13 @@ public class GameObjectHandler {
 
 	public void setTime(Time time) {
 		this.time = time;
+	}
+
+	public short getNumberOfStars() {
+		return numberOfStars;
+	}
+
+	public void setNumberOfStars(short numberOfStars) {
+		this.numberOfStars = numberOfStars;
 	}
 }

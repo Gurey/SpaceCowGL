@@ -54,6 +54,7 @@ public class CountDown {
 			stateToSet = 3;
 		}
 		this.countdownState=stateToSet;
+		this.time = Sys.getTime();
 	}
 	
 }

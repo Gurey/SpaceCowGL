@@ -6,6 +6,7 @@ import org.newdawn.slick.Color;
 
 import spacecow.buffs.Magnet;
 import spacecow.buffs.Rush;
+import spacecow.engine.DrawText.Alignment;
 import spacecow.objects.Star;
 
 public class TextHandler {
@@ -30,9 +31,9 @@ public class TextHandler {
 		this.gOver = game.getgOver();
 		this.magnet = game.getMagnet();
 		this.rush = game.getRush();
-		this.drawNormal=new DrawText(35,false);
-		this.drawCenter=new DrawText(55, true);
-		this.drawTime=new DrawText(30, true);
+		this.drawNormal=new DrawText(35,Alignment.LEFT);
+		this.drawCenter=new DrawText(55, Alignment.CENTER);
+		this.drawTime=new DrawText(30, Alignment.CENTER);
 
 	}
 

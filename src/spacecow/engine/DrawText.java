@@ -9,21 +9,27 @@ import org.newdawn.slick.TrueTypeFont;
 public class DrawText {
 
 	private TrueTypeFont font;
-	private boolean isCentered;
+	public enum Alignment{LEFT,CENTER,RIGHT};
+	private Alignment alignment;
+	Font score;
 	
-	public DrawText(int size, boolean isCentered){
-		Font score = new Font("Arial", Font.BOLD, size);
+	public DrawText(int size, Alignment alignment){
+		score = new Font("Arial", Font.BOLD, size);
 		font = new TrueTypeFont(score, false);
-		this.isCentered = isCentered;
+		this.alignment = alignment;
 	}
 	//Printing text to the screen using the font.
 	public void drawString(float x, float y, String text, Color color){
-		if (this.isCentered) {
-		float textWidth = (float)font.getWidth(text)/2; //calculating the width of the text dividing by 2.
-		font.drawString(x - textWidth, y, text, color);
+		float textWidth=0;
+		if (this.alignment.equals(Alignment.CENTER)) {
+		textWidth = (float)font.getWidth(text)/2; //calculating the width of the text dividing by 2.
 		}
-		else{
-		font.drawString(x, y, text, color);
+		else if (this.alignment.equals(Alignment.RIGHT)) {
+		textWidth = (float)font.getWidth(text);
 		}
+		font.drawString(x-textWidth, y, text, color);
+	}
+	public boolean canPrint(char c){
+		return score.canDisplay(c);
 	}
 }
