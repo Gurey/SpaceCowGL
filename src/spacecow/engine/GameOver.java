@@ -1,6 +1,7 @@
 package spacecow.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import org.lwjgl.LWJGLException;
@@ -16,7 +17,7 @@ public class GameOver {
 
 	ArrayList<Star> starsArray;
 	private long finalScore;
-	private boolean keyReleased;
+	private boolean keyReleased, scoreSubmited;
 	private String playerName, stringToPrint;
 	private DrawText userInput;
 	private ArrayList<HighScore> highScores;
@@ -71,10 +72,16 @@ public class GameOver {
 		playerName = playerName.trim();
 	}
 	public void submitScore(){
-		if (!playerName.equals("") && playerName.length()>=3 && Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+		if (!playerName.equals("") && playerName.length()>=3 && Keyboard.isKeyDown(Keyboard.KEY_RETURN) && !scoreSubmited ) {
 			highScores.add(new HighScore(finalScore, new Date(), playerName));
+			scoreSubmited = true;
+		}
+		if (scoreSubmited && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
 			gameState.setStatus(Status.MENU);
+			scoreSubmited = false;
+			Collections.sort(highScores);
 		}
 	}
+	
 
 }

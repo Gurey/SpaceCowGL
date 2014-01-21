@@ -12,6 +12,7 @@ public class Magnet {
 	private boolean idle=true;
 	private long timeLeft;
 	private float vel;
+	private float starVel;
 	private float xDiff=0, yDiff=0; 
 	
 	public ArrayList<GameObject> gameObjArr;
@@ -27,6 +28,12 @@ public class Magnet {
 	public void initMagnet(){
 	idle = false;
 	timeLeft = Sys.getTime()+5000;
+	for (GameObject go : gameObjArr) {
+		if (go.isMagnetic()) {
+			go.setSpeed(0);
+		}
+	}
+	starVel = 0;
 	}
 	//Updated the state of the magnet moving all objects affected by it towards the player based on the difference of the distance.
 	public void update(){
@@ -34,14 +41,15 @@ public class Magnet {
 		float texWC = player.getX()+(player.getTexture().getTextureWidth()/2);
 		float texHC = player.getY()+(player.getTexture().getTextureHeight()/2);
 		//Increase the velocity of the magnet if max velocity is not reached.  
-		if (this.vel<18) {
+		if (this.vel<18 && Sys.getTime()<timeLeft) {
 			vel+=0.07f;
 		}
 		//Checking each corner based from the player witch direction the object should move.
 		for (GameObject sb : gameObjArr){
-			if (sb.isMagnetic()) {	
-			sb.setSpeed(0);
+			if (sb.isMagnetic()) {
 			//upper right block
+				sb.setSpeed(starVel);
+				
 			if (sb.getX()>=texWC && sb.getY()<=texHC) {
 				 xDiff = sb.getX() - texWC;
 				 yDiff = texHC - sb.getY();
@@ -94,15 +102,17 @@ public class Magnet {
 				}
 			}
 		}
+		
 		}
 		// if time is up, this code sets everything to normal again.
-		if (Sys.getTime()>timeLeft) {
-			idle = true;
-			vel = 0;
-			for (GameObject sb : gameObjArr) {
-				if (sb.isMagnetic()) {
-					sb.setSpeed(sb.getBaseSpeed());
-				}
+		if (Sys.getTime()>timeLeft && vel>0) {
+			vel -= 0.3;
+			if (vel<16) {
+				starVel += 0.14529;
+			}
+			if (vel<0) {
+				idle = true;
+				System.out.println(starVel);
 			}
 		}
 		}
@@ -122,7 +132,7 @@ public class Magnet {
 	}
 	//Return seconds left, used for printing out on screen.
 	public long getTimeLeft(){
-		return (timeLeft-Sys.getTime())/Sys.getTimerResolution();
+		return (timeLeft-Sys.getTime());
 	}
 	
 }

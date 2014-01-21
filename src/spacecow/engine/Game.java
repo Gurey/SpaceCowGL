@@ -18,8 +18,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
 	
-	public static int dWidth = 1400;
-	public static int dHeight = 750;
+	public static int dWidth = Display.getDesktopDisplayMode().getWidth();
+	public static int dHeight = Display.getDesktopDisplayMode().getHeight();
 	
 	private Score score;
 	private GameObjectHandler gameObjHandler;
@@ -34,6 +34,7 @@ public class Game {
 	private StartMenu startMenu;
 	private CountDown count;
 	private ArrayList<HighScore> highScoreArray;
+	private DisplayConfig dConfig;
 	
 	TextHandler textHandler;
 
@@ -54,6 +55,7 @@ public class Game {
 		startMenu = new StartMenu(gameObjHandler.getStarsArray(), texHandler, gameState, highScoreArray);
 		count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
 		textHandler = new TextHandler(this);
+		dConfig = new DisplayConfig();
 	}
 	
 	//Set up the display and create it.
@@ -67,6 +69,7 @@ public class Game {
 			System.exit(0);
 		}
 		glViewport(0, 0, dWidth, dHeight);
+		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		
 		glEnable(GL_TEXTURE_2D);
@@ -79,23 +82,23 @@ public class Game {
 		glOrtho(0, dWidth, dHeight, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 		
-		
 	}
 	
 	public void start(){
 		gameState.setStatus(Status.MENU);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
-			
 		while (!(gameState.getStatus()==Status.STARTGAME)) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
+				dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+			}
 			render();
 			startMenu.update();
+			Display.update();
+			Display.sync(60);
 			if (gameState.getStatus().equals(Status.EXIT) || Display.isCloseRequested()){
 				Display.destroy();
 				return;
 			}
-			Display.update();
-			Display.sync(60);
-			
 		}
 		//Starts the CoundDown of the game, exits when countdown is over.
 		count.setCountDownState(3);
@@ -112,7 +115,7 @@ public class Game {
 		}
 		//Sets the Score to 0 and the time left to XX seconds.
 		score.setScore(0);
-		time.setTimeLeft(2);
+		time.setTimeLeft(60);
 		rush.resetRush();
 		//init the Game, running until the Player press Esc or the time runs out.
 		while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {

@@ -1,6 +1,7 @@
 package spacecow.gui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.opengl.Texture;
@@ -14,6 +15,7 @@ import spacecow.objects.Star;
 public class StartMenu {
 
 	private ArrayList<Star> starArray;
+	private ArrayList<HighScore> highScores;
 	private TextureHandler texHandler;
 	private Texture startGameTex, highScoresTex, optionsTex, pointerTex;
 	private GameState gameState;
@@ -32,7 +34,8 @@ public class StartMenu {
 		this.keyRealeased = true;
 		this.pointerState = 1;
 		this.pointerStateMax = 4;
-		this.highScoreMenu = new HighScoreMenu(highScores);
+		this.highScores = highScores;
+		this.highScoreMenu = new HighScoreMenu(this.highScores);
 	}
 	
 	public void update(){

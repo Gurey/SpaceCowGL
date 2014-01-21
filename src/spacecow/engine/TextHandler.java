@@ -68,6 +68,7 @@ public class TextHandler {
 		}
 	}
 	private void drawMagnetTimeLeft(){
+		System.out.println(magnet.getTimeLeft());
 		drawCenter.drawString((float)Game.dWidth/2, Game.dHeight-100, ""+(magnet.getTimeLeft()+1), Color.white);
 	}
 	//Printing out "Game Over!" in red and centered and the final score in white also centered.
@@ -83,7 +84,7 @@ public class TextHandler {
 		drawScoreMulti();
 		drawStarNr();
 		drawTimeLeft();
-		if (!magnet.isAvailable()) drawMagnetTimeLeft();
+		if (!magnet.isAvailable() && magnet.getTimeLeft()>0) drawMagnetTimeLeft();
 		Color.white.bind();
 	}
 	//Updated the text in the GameOver phase.

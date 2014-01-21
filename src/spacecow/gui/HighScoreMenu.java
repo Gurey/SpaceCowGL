@@ -1,6 +1,7 @@
 package spacecow.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -23,9 +24,9 @@ public class HighScoreMenu {
 		setNameText(new DrawText(30, Alignment.LEFT));
 	}
 	public void printScore(){
-		float pad = 0;
+		float pad = 100;
 		for (HighScore hs : highScores) {
-			scoreText.drawString(Game.dWidth-10, pad, ""+hs.getScore(), Color.white);
+			scoreText.drawString(Game.dWidth-100, pad, String.format("%,d", hs.getScore()), Color.white);
 			nameText.drawString(Game.dWidth/2, pad, (highScores.indexOf(hs)+1)+". "+hs.getName(), Color.white);
 			pad+=40;
 		}
@@ -55,5 +56,12 @@ public class HighScoreMenu {
 	public void setHighScores(ArrayList<HighScore> highScores) {
 		this.highScores = highScores;
 	}
-	
+	public ArrayList<HighScore> flipArray(ArrayList<HighScore>highScoreArray){
+		ArrayList<HighScore> hs = highScoreArray;
+		int i = highScoreArray.size();
+		while (i>0) {
+			
+		}
+		return highScores;
+	}
 }

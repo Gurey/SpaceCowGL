@@ -2,7 +2,7 @@ package spacecow.engine;
 
 import java.util.Date;
 
-public class HighScore {
+public class HighScore implements Comparable<HighScore> {
 
 	private long score;
 	private Date date;
@@ -36,5 +36,14 @@ public class HighScore {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int compareTo(HighScore o) {
+	if (this.score==o.getScore())	
+	return 0;
+	else if (this.score<o.getScore())
+	return +1;
+	else return -1;
 	}
 }
