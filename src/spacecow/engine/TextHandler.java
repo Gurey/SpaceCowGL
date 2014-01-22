@@ -69,7 +69,8 @@ public class TextHandler {
 	}
 	private void drawMagnetTimeLeft(){
 		System.out.println(magnet.getTimeLeft());
-		drawCenter.drawString((float)Game.dWidth/2, Game.dHeight-100, ""+(magnet.getTimeLeft()+1), Color.white);
+		drawCenter.drawString((float)Game.dWidth/2, Game.dHeight-100, String.format("%,d", magnet.getTimeLeft()), Color.white);
+		System.out.println(String.format("Score: %,d", magnet.getTimeLeft()));
 	}
 	//Printing out "Game Over!" in red and centered and the final score in white also centered.
 	private void drawGameOver(){
