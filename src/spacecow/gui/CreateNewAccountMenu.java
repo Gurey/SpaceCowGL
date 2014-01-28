@@ -1,10 +1,16 @@
-package spacecow.engine;
+package spacecow.gui;
 
 import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
+import spacecow.engine.DrawText;
+import spacecow.engine.Game;
+import spacecow.engine.GameState;
+import spacecow.engine.KeyboadTextInput;
+import spacecow.engine.Pointer;
+import spacecow.engine.TextureHandler;
 import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.GameState.Status;
 import spacecow.objects.Star;
@@ -16,8 +22,8 @@ public class CreateNewAccountMenu {
 	private GameState state;
 	private DrawText drawInfo;
 	private DrawText drawInput;
-	private String accountName, password, passSecret;
-	private float textPosX, accPosY, passPosY, createPosY;
+	private String accountName, password, passSecret, password2, backString;
+	private float textPosX, accPosY, passPosY, pass2PosY, backYPos;
 	private KeyboadTextInput input;
 	private Pointer pointer;
 	private boolean stateChanged;
@@ -31,11 +37,14 @@ public class CreateNewAccountMenu {
 		this.textPosX = Game.dWidth/2;
 		this.accPosY = (Game.dHeight/2)-50;
 		this.passPosY = (Game.dHeight/2)+50;
-		this.createPosY = (Game.dHeight/2)+150;
+		this.pass2PosY = (Game.dHeight/2)+150;
+		this.backYPos = (Game.dHeight/2)+250;
 		this.password = "";
+		this.password2 = "";
 		this.accountName = "";
+		this.backString = "<<<Back  ";
 		this.input = new KeyboadTextInput();
-		this.pointer = new Pointer(350,accPosY, 100, 3, 1, textureHandler);
+		this.pointer = new Pointer(350,accPosY, 100, 4, 1, textureHandler);
 	}
 	
 	public void update(){
@@ -45,14 +54,20 @@ public class CreateNewAccountMenu {
 		pointer.updatePointerState();
 		drawInfo.drawString(textPosX, accPosY, "Name: ", Color.white);
 		drawInfo.drawString(textPosX, passPosY, "Password: ", Color.white);
-		drawInfo.drawString(textPosX, createPosY, "Repeat password: ", Color.white);
+		drawInfo.drawString(textPosX, pass2PosY, "Repeat: ", Color.white);
+		drawInfo.drawString(textPosX, backYPos, backString, Color.white);
 		getInput();
 		drawInput.drawString(textPosX, accPosY, accountName, Color.white);
 		passSecret = "";
 		for (int i = 0; i < password.length(); i++) {
 			passSecret += "*";
 		}
-		drawInput.drawString(textPosX, passPosY, passSecret, Color.white);	
+		drawInput.drawString(textPosX, passPosY, passSecret, Color.white);
+		passSecret = "";
+		for (int i = 0; i < password2.length(); i++) {
+			passSecret += "*";
+		}
+		drawInput.drawString(textPosX, pass2PosY, passSecret, Color.white);
 		checkIfExe();
 	}
 	
@@ -66,6 +81,11 @@ public class CreateNewAccountMenu {
 		case 2:
 			password = input.getInput(drawInput, password);
 			password = password.trim();
+			break;
+		case 3:
+			password2 = input.getInput(drawInput, password2);
+			password2 = password2.trim();
+			break;
 		default:
 			break;
 		}
@@ -79,10 +99,14 @@ public class CreateNewAccountMenu {
 			switch (pointer.getPointerState()) {
 			case 1:
 			case 2:
-				state.setStatus(Status.MENU);
+//				state.setStatus(Status.MENU);
 				break;
 			case 3:
 				state.setStatus(Status.CREATENEW);
+				break;
+			case 4:
+				state.setStatus(Status.LOGON);
+				stateChanged = false;
 				break;
 			default:
 				break;

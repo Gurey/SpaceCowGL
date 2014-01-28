@@ -28,6 +28,7 @@ import org.lwjgl.opengl.DisplayMode;
 import spacecow.buffs.Magnet;
 import spacecow.buffs.Rush;
 import spacecow.engine.GameState.Status;
+import spacecow.gui.CreateNewAccountMenu;
 import spacecow.gui.LogonMenu;
 import spacecow.gui.StartMenu;
 import spacecow.objects.GameObjectHandler;
@@ -53,6 +54,7 @@ public class Game {
 	private ArrayList<HighScore> highScoreArray;
 	private DisplayConfig dConfig;
 	private LogonMenu logonMenu;
+	private CreateNewAccountMenu createNew;
 	
 	TextHandler textHandler;
 
@@ -75,6 +77,7 @@ public class Game {
 		textHandler = new TextHandler(this);
 		dConfig = new DisplayConfig();
 		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
+		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
 	}
 	
 	//Set up the display and create it.
@@ -109,7 +112,8 @@ public class Game {
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
 		while (!Display.isCloseRequested() && (gameState.getStatus()==Status.LOGON || gameState.getStatus()==Status.CREATENEW)){
 			render();
-			logonMenu.update();
+			if (gameState.getStatus()==Status.LOGON) logonMenu.update();
+			else createNew.update();
 			Display.update();
 			Display.sync(60);
 			

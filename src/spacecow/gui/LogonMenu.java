@@ -78,7 +78,7 @@ public class LogonMenu {
 	}
 	
 	public void checkIfExe(){
-		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && pointer.getPointerState()<3) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
 			stateChanged = true;
 		}
 		else if (stateChanged && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)){
@@ -88,7 +88,8 @@ public class LogonMenu {
 				state.setStatus(Status.MENU);
 				break;
 			case 3:
-//				state.setStatus(Status.CREATENEW);
+				state.setStatus(Status.CREATENEW);
+				stateChanged = false;
 				break;
 			default:
 				break;
