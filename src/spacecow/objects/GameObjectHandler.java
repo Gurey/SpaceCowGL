@@ -110,7 +110,7 @@ public class GameObjectHandler {
 		//new Magnet, created within the range of 0.5 to 6.5 seconds.
 		if (Sys.getTime()>nextMagnet) {
 			this.gameObjectArray.add(new MagnetObj(texHandler.getMagnet(), score, player, magnet));
-			nextMagnet = (long) (Sys.getTime()+500+(Math.random()*3000));
+			nextMagnet = (long) (Sys.getTime()+500+(Math.random()*6000));
 		}
 	}
 	//Created initial star count

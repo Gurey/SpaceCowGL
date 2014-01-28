@@ -1,14 +1,28 @@
 package spacecow.engine;
 
+
+
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
+import org.newdawn.slick.util.ResourceLocation;
 
-import static org.lwjgl.opengl.GL11.*;
-
-public final class TextureHandler{
+public class TextureHandler{
 	
 	
 	private Texture number1tex;
@@ -30,37 +44,38 @@ public final class TextureHandler{
 	
 	private Texture optionsTex, startGameTex, highScoreTex;
 	
+	
 	public TextureHandler(){
 		
-		 number1tex = loadTexture("res/number1.png");
-		 number2tex = loadTexture("res/number2.png");
-		 number3tex = loadTexture("res/number3.png");
+		 number1tex = loadTexture("number1.png");
+		 number2tex = loadTexture("number2.png");
+		 number3tex = loadTexture("number3.png");
 		
-		 star1Tex = loadTexture("/res/Star1.png");
-		 star2Tex = loadTexture("/res/Star2.png");
-		 star3Tex = loadTexture("/res/Star3.png");
-		 star4Tex = loadTexture("/res/Star4.png");
-		 star5Tex = loadTexture("/res/Star5.png");
+		 star1Tex = loadTexture("Star1.png");
+		 star2Tex = loadTexture("Star2.png");
+		 star3Tex = loadTexture("Star3.png");
+		 star4Tex = loadTexture("Star4.png");
+		 star5Tex = loadTexture("Star5.png");
 		
-		 cowTex = loadTexture("res/moo2.png");
-		 starBuffTex = loadTexture("res/StarBuff.png");
-		 cookieTex = loadTexture("res/Cookie.png");
-		 plusTex = loadTexture("res/plus.png");
-		 asteroidTex = loadTexture("res/asteroid.png");
-		 magnet = (loadTexture("res/magnet.png"));
+		 cowTex = loadTexture("cow.png");
+		 starBuffTex = loadTexture("StarBuff.png");
+		 cookieTex = loadTexture("Cookie.png");
+		 plusTex = loadTexture("plus.png");
+		 asteroidTex = loadTexture("asteroid.png");
+		 magnet = (loadTexture("magnet.png"));
 		 
-		 optionsTex = loadTexture("res/options.png");
-		 startGameTex = loadTexture("res/startgame.png");
-		 highScoreTex = loadTexture("res/highscore.png");
+		 optionsTex = loadTexture("options.png");
+		 startGameTex = loadTexture("startgame.png");
+		 highScoreTex = loadTexture("highscore.png");
 	}
 	//Loads a image based on the Path and puts it on a texture.
-	private Texture loadTexture(String path){
+	private Texture loadTexture(String file){
 		Texture tex = null;
 		try {
-			tex = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(path));
+			InputStream path = getClass().getClassLoader().getResourceAsStream("images/"+file);
+			tex = TextureLoader.getTexture("PNG", path);
 		} catch (IOException e) {
-			// TODO: handle exception
-		}
+			e.printStackTrace();		}
 		return tex;
 	}
 	//Draw a texture on the screen based on the x and y values it takes in.

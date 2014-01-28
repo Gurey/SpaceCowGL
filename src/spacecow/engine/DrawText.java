@@ -32,4 +32,9 @@ public class DrawText {
 	public boolean canPrint(char c){
 		return score.canDisplay(c);
 	}
+	public float getTextWidht(String s){
+		float width;
+		width = (float) font.getWidth(s);
+		return width;
+	}
 }

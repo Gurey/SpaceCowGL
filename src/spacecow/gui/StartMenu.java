@@ -1,7 +1,6 @@
 package spacecow.gui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.opengl.Texture;
@@ -9,6 +8,7 @@ import org.newdawn.slick.opengl.Texture;
 import spacecow.engine.GameState;
 import spacecow.engine.GameState.Status;
 import spacecow.engine.HighScore;
+import spacecow.engine.Pointer;
 import spacecow.engine.TextureHandler;
 import spacecow.objects.Star;
 
@@ -17,11 +17,10 @@ public class StartMenu {
 	private ArrayList<Star> starArray;
 	private ArrayList<HighScore> highScores;
 	private TextureHandler texHandler;
-	private Texture startGameTex, highScoresTex, optionsTex, pointerTex;
+	private Texture startGameTex, highScoresTex, optionsTex;
 	private GameState gameState;
-	private boolean keyRealeased;
-	private int pointerState, pointerStateMax;
 	private HighScoreMenu highScoreMenu;
+	private Pointer pointer;
 	
 	public StartMenu(ArrayList<Star> starArray, TextureHandler texHandler, GameState gameState, ArrayList<HighScore> highScores){
 		this.starArray = starArray;
@@ -29,13 +28,10 @@ public class StartMenu {
 		this.startGameTex = texHandler.getStartGameTex();
 		this.highScoresTex = texHandler.getHighScoreTex();
 		this.optionsTex = texHandler.getOptionsTex();
-		this.pointerTex = texHandler.getStarBuffTex();
 		this.gameState=gameState;
-		this.keyRealeased = true;
-		this.pointerState = 1;
-		this.pointerStateMax = 4;
 		this.highScores = highScores;
 		this.highScoreMenu = new HighScoreMenu(this.highScores);
+		this.pointer = new Pointer(40,100, 100, 4, 1, texHandler);
 	}
 	
 	public void update(){
@@ -45,52 +41,15 @@ public class StartMenu {
 		texHandler.drawTexture(startGameTex, 100, 100);
 		texHandler.drawTexture(highScoresTex, 100, 200);
 		texHandler.drawTexture(optionsTex, 100, 300);
-		updatePointerState();
-		drawPointer();
+		pointer.updatePointerState();
 		checkIfExe();
 		if (gameState.getStatus()==Status.HIGHSCORE) {
 			highScoreMenu.printScore();
 		}
 	}
-	public void updatePointerState(){
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && keyRealeased) {
-			pointerState++;
-			keyRealeased=false;
-			if (pointerState>pointerStateMax) pointerState=pointerStateMax;
-		}
-		else if(Keyboard.isKeyDown(Keyboard.KEY_UP)&& keyRealeased){
-			pointerState--;
-			keyRealeased=false;
-			if(pointerState<1) pointerState=1;
-		}
-		else if (!Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			keyRealeased = true;
-		}
-	}
-	
-	public void drawPointer(){
-		switch (pointerState) {
-		case 1:
-			texHandler.drawTexture(pointerTex, 40, 100);
-			break;
-			
-		case 2:
-			texHandler.drawTexture(pointerTex, 40, 200);
-			break;
-			
-		case 3:
-			texHandler.drawTexture(pointerTex, 40, 300);
-			break;
-		case 4:
-			texHandler.drawTexture(pointerTex, 40, 400);
-			break;
-		default:
-			break;
-		}
-	}
 	public void checkIfExe(){
 		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
-		switch (pointerState) {
+		switch (pointer.getPointerState()) {
 		case 1:
 			gameState.setStatus(Status.STARTGAME);
 			break;
@@ -132,9 +91,5 @@ public class StartMenu {
 
 	public GameState getGameState() {
 		return gameState;
-	}
-
-	public Texture getPointerTex() {
-		return pointerTex;
 	}
 }

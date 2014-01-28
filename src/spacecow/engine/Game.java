@@ -1,6 +1,23 @@
 package spacecow.engine;
 
 
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glViewport;
+
 import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
@@ -11,10 +28,10 @@ import org.lwjgl.opengl.DisplayMode;
 import spacecow.buffs.Magnet;
 import spacecow.buffs.Rush;
 import spacecow.engine.GameState.Status;
+import spacecow.gui.LogonMenu;
 import spacecow.gui.StartMenu;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
-import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
 	
@@ -35,6 +52,7 @@ public class Game {
 	private CountDown count;
 	private ArrayList<HighScore> highScoreArray;
 	private DisplayConfig dConfig;
+	private LogonMenu logonMenu;
 	
 	TextHandler textHandler;
 
@@ -56,6 +74,7 @@ public class Game {
 		count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
 		textHandler = new TextHandler(this);
 		dConfig = new DisplayConfig();
+		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
 	}
 	
 	//Set up the display and create it.
@@ -85,8 +104,16 @@ public class Game {
 	}
 	
 	public void start(){
-		gameState.setStatus(Status.MENU);
+		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
+		while (!Display.isCloseRequested() && (gameState.getStatus()==Status.LOGON || gameState.getStatus()==Status.CREATENEW)){
+			render();
+			logonMenu.update();
+			Display.update();
+			Display.sync(60);
+			
+		}
 		while (!(gameState.getStatus()==Status.STARTGAME)) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
 				dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
@@ -127,6 +154,13 @@ public class Game {
 		//Sets the finalscore to the current score.
 		gOver.setFinalScore(score.getScore());
 		//Run gameover until the players wants to exit.
+		Keyboard.destroy();
+		try {
+			Keyboard.create();
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && time.getSecondsLeft()<=0 && gameState.getStatus().equals(Status.STARTGAME)) {
 			render();
 			gOver.update();
