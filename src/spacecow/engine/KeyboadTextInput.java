@@ -16,7 +16,6 @@ public class KeyboadTextInput {
 				stringToEdit += keyPressed; 
 				System.out.print(keyPressed);
 			}
-
 		}
 		else if (keyReleased && Keyboard.getEventKeyState() && Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
 			keyReleased = false;

@@ -99,10 +99,9 @@ public class CreateNewAccountMenu {
 			switch (pointer.getPointerState()) {
 			case 1:
 			case 2:
-//				state.setStatus(Status.MENU);
-				break;
 			case 3:
-				state.setStatus(Status.CREATENEW);
+//				state.setStatus(Status.CREATENEW);
+				stateChanged = false;
 				break;
 			case 4:
 				state.setStatus(Status.LOGON);

@@ -53,12 +53,5 @@ public class HighScoreMenu {
 	public void setHighScores(ArrayList<HighScore> highScores) {
 		this.highScores = highScores;
 	}
-	public ArrayList<HighScore> flipArray(ArrayList<HighScore>highScoreArray){
-		ArrayList<HighScore> hs = highScoreArray;
-		int i = highScoreArray.size();
-		while (i>0) {
-			
-		}
-		return highScores;
-	}
+	
 }

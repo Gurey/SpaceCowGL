@@ -95,6 +95,7 @@ public class LogonMenu {
 				break;
 			}
 		}
+		Keyboard.poll();
 	}
 
 	public ArrayList<Star> getStarArrayList() {
