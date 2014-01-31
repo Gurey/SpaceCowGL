@@ -24,6 +24,7 @@ public class MagnetObj extends GameObject {
 			magnet.initMagnet();
 		}	
 		else magnet.incTime(3000);
+		score.setMagnetCol(score.getMagnetCol()+1);
 	
 	}
 

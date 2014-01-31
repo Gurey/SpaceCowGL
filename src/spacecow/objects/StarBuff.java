@@ -19,6 +19,7 @@ public class StarBuff extends GameObject {
 	public void collisionAction(){
 		addStar++;
 		score.incScore(100*score.getScoreMulti());
+		score.setStarCol(score.getStarCol()+1);
 	}
 	public static int getAddStar() {
 		return addStar;

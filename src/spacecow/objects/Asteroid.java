@@ -23,6 +23,8 @@ public class Asteroid extends GameObject {
 	@Override
 	public void collisionAction(){
 		time.incTimeLeft(-10);
+		score.setAstroidCol(score.getAstroidCol()+1);
+		System.out.println(score.getAstroidCol());
 	}
 
 }

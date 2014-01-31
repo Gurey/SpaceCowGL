@@ -24,6 +24,7 @@ public class Cookie extends GameObject {
 	public void collisionAction(){
 		time.incTimeLeft(10);
 		score.incScore(10000);
+		score.setCookiaCol(score.getCookiaCol()+1);
 	}
 	
 }
