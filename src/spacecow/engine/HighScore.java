@@ -1,5 +1,6 @@
 package spacecow.engine;
 
+import java.security.MessageDigest;
 import java.util.Date;
 
 public class HighScore implements Comparable<HighScore> {
@@ -12,6 +13,7 @@ public class HighScore implements Comparable<HighScore> {
 		this.score = score;
 		this.date = date;
 		this.name = name.trim();
+		
 	}
 
 	public long getScore() {

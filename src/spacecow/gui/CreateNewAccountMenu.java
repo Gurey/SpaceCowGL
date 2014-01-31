@@ -99,8 +99,11 @@ public class CreateNewAccountMenu {
 			switch (pointer.getPointerState()) {
 			case 1:
 			case 2:
-			case 3:
-//				state.setStatus(Status.CREATENEW);
+			case 3: 
+				if (!accountName.isEmpty() && password.equals(password2)) {
+				state.setStatus(Status.MENU);
+				System.out.println("New account created");
+				}
 				stateChanged = false;
 				break;
 			case 4:

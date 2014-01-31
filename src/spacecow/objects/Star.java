@@ -61,7 +61,6 @@ public class Star{
 		this.changePos(this.yVel); 												//moves the star
 		texHandler.drawTexture(this.starIm, this.getCenterX(), this.centerY);	//Draws the star
 		if (this.centerY>gbHeight) { 											//if the star is outside the display
-			score.incScore(1); 													//score is increased by 1
 			this.yVel=getStarRanSpeed(); 										//give the star a new random speed
 			this.centerX=(int) (0+Math.random()*gbWidth); 						//give the star and new random X position 
 			setStarim(this);													//Give the Star a new image based on the new speed

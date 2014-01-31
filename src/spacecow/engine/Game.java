@@ -181,9 +181,11 @@ public class Game {
 		this.gameState.setStatus(Status.MENU);
 		this.gameObjHandler.getGameObjectArray().clear();
 		this.score.setScoreMulti(1);
+		this.score.resetCollisions();
 		while (gameObjHandler.getStarsArray().size()>gameObjHandler.getNumberOfStars()) {
 			gameObjHandler.getStarsArray().remove(gameObjHandler.getStarsArray().size()-1);
 		}
+		System.out.println(score.getAstroidCol());
 	}
 	//updates all components in the Game phase.
 	public void update(){

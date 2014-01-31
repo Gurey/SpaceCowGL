@@ -1,9 +1,6 @@
 package spacecow.engine;
 
-
 import org.lwjgl.Sys;
-
-
 
 public class Score {
 	
@@ -11,6 +8,7 @@ public class Score {
 	private int scoreMulti=1;
 	private long scoreMultiTime;
 	private boolean removeMulti = false;
+	private int magnetCol, multiCol, cookiaCol, astroidCol, starCol;
 	
 	//Increase the score, multiplying it with the current score multiplyer.
 	public void incScore(int points){
@@ -34,6 +32,13 @@ public class Score {
 			}
 		}
 	}
+	public void resetCollisions(){
+		this.astroidCol = 0;
+		this.cookiaCol = 0;
+		this.magnetCol = 0;
+		this.multiCol = 0;
+		this.starCol = 0;
+	}
 	public int getScoreMulti(){
 		return scoreMulti;
 	}
@@ -45,5 +50,35 @@ public class Score {
 	}
 	public void setScore(long score){
 		this.score = score;
+	}
+	public int getMagnetCol() {
+		return magnetCol;
+	}
+	public int getMultiCol() {
+		return multiCol;
+	}
+	public int getCookiaCol() {
+		return cookiaCol;
+	}
+	public int getAstroidCol() {
+		return astroidCol;
+	}
+	public int getStarCol() {
+		return starCol;
+	}
+	public void setMagnetCol(int magnetCol) {
+		this.magnetCol = magnetCol;
+	}
+	public void setMultiCol(int multiCol) {
+		this.multiCol = multiCol;
+	}
+	public void setCookiaCol(int cookiaCol) {
+		this.cookiaCol = cookiaCol;
+	}
+	public void setAstroidCol(int astroidCol) {
+		this.astroidCol = astroidCol;
+	}
+	public void setStarCol(int starCol) {
+		this.starCol = starCol;
 	}
 }
