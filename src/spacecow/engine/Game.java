@@ -34,6 +34,7 @@ import spacecow.engine.GameState.Status;
 import spacecow.gui.CreateNewAccountMenu;
 import spacecow.gui.HighScoreMenu;
 import spacecow.gui.LogonMenu;
+import spacecow.gui.LostPassword;
 import spacecow.gui.StartMenu;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
@@ -64,6 +65,7 @@ public class Game {
 	private CreateNewAccountMenu createNew;
 	private ServerConnection serverConnection;
 	private HighScoreMenu scoreMenu;
+	private LostPassword lostPassword;
 
 	TextHandler textHandler;
 
@@ -93,6 +95,7 @@ public class Game {
 		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		setScoreMenu(new HighScoreMenu(gameObjHandler.getStarsArray(), texHandler, gameState));
+		lostPassword = new LostPassword(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 	}
 
 	//Set up the display and create it.
@@ -125,10 +128,15 @@ public class Game {
 		//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
-			while (!Display.isCloseRequested() && (gameState.getStatus()==Status.LOGON || gameState.getStatus()==Status.CREATENEW) && !(gameState.getStatus()==Status.EXIT)){
+			while (!Display.isCloseRequested() 
+					&& (gameState.getStatus()==Status.LOGON 
+					|| gameState.getStatus()==Status.CREATENEW 
+					|| gameState.getStatus()==Status.LOSTPASSWORD) 
+					&& !(gameState.getStatus()==Status.EXIT)){
 				render();
 				if (gameState.getStatus()==Status.LOGON) logonMenu.update();
-				else createNew.update();
+				else if(gameState.getStatus()==Status.CREATENEW) createNew.update();
+				else lostPassword.update();
 				Display.update();
 				Display.sync(60);
 

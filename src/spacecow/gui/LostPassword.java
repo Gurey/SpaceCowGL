@@ -8,32 +8,32 @@ import org.newdawn.slick.Color;
 import com.google.gson.Gson;
 
 import spacecow.engine.DrawText;
-import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.Game;
 import spacecow.engine.GameState;
-import spacecow.engine.GameState.Status;
 import spacecow.engine.KeyboadTextInput;
 import spacecow.engine.Pointer;
 import spacecow.engine.TextureHandler;
+import spacecow.engine.DrawText.Alignment;
+import spacecow.engine.GameState.Status;
 import spacecow.objects.Star;
 import spacecow.serverconnection.Json;
 import spacecow.serverconnection.ServerConnection;
 
-public class LogonMenu {
+public class LostPassword {
 
 	private ArrayList<Star> starArrayList;
 	private TextureHandler textureHandler;
 	private GameState state;
 	private DrawText drawInfo;
 	private DrawText drawInput;
-	private String accountName, password, passSecret;
-	private float textPosX, accPosY, passPosY, createPosY;
+	private String mail1, mail2, passSecret;
+	private float textPosX, mailPosY1, mailPosY2, createPosY;
 	private KeyboadTextInput input;
 	private Pointer pointer;
 	private boolean stateChanged;
 	private ServerConnection connection;
-	
-	public LogonMenu(ArrayList<Star> starArrayList, TextureHandler textureHandler, GameState state, ServerConnection connection){
+
+	public LostPassword(ArrayList<Star> starArrayList, TextureHandler textureHandler, GameState state, ServerConnection connection) {
 		this.connection = connection;
 		this.setStarArrayList(starArrayList);
 		this.setTextureHandler(textureHandler);
@@ -41,13 +41,13 @@ public class LogonMenu {
 		this.drawInfo =  new DrawText(50, Alignment.RIGHT);
 		this.drawInput = new DrawText(50, Alignment.LEFT);
 		this.textPosX = Game.dWidth/2;
-		this.accPosY = (Game.dHeight/2)-150;
-		this.passPosY = (Game.dHeight/2)-50;
-		this.createPosY = (Game.dHeight/2)+50;
-		this.password = "";
-		this.accountName = "";
+		this.mailPosY1 = (Game.dHeight/2)-50;
+		this.mailPosY2 = (Game.dHeight/2)+50;
+		this.createPosY = (Game.dHeight/2)+150;
+		this.mail2 = "";
+		this.mail1 = "";
 		this.input = new KeyboadTextInput();
-		this.pointer = new Pointer(350,accPosY, 100, 4, 1, textureHandler);
+		this.pointer = new Pointer(350,mailPosY1, 100, 2, 1, textureHandler);
 	}
 	
 	public void update(){
@@ -55,31 +55,26 @@ public class LogonMenu {
 			star.move();
 		}
 		pointer.updatePointerState();
-		drawInfo.drawString(textPosX, accPosY, "Name: ", Color.white);
-		drawInfo.drawString(textPosX, passPosY, "Password: ", Color.white);
-		drawInfo.drawString(textPosX, createPosY, "Create new  ", Color.white);
+		drawInfo.drawString(textPosX, mailPosY1, "eMail: ", Color.white);
+		drawInfo.drawString(textPosX, mailPosY2, "eMail again: ", Color.white);
 		getInput();
-		drawInput.drawString(textPosX, accPosY, accountName, Color.white);
-		passSecret = "";
-		for (int i = 0; i < password.length(); i++) {
-			passSecret += "*";
-		}
-		drawInput.drawString(textPosX, passPosY, passSecret, Color.white);
+		drawInput.drawString(textPosX, mailPosY1, mail1, Color.white);
+		drawInput.drawString(textPosX, mailPosY2, mail2, Color.white);
 		checkIfExe();
 	}
 	
 	public void getInput(){
 		switch (pointer.getPointerState()) {
 		case 1:
-			accountName = input.getInput(drawInput, accountName,12);
-			accountName = accountName.trim();
-			accountName = accountName.replaceAll("\\W", "");
+			mail1 = input.getInput(drawInput, mail1,30);
+			mail1 = mail1.trim();
 			break;
 		case 2:
-			password = input.getInput(drawInput, password,15);
-			password = password.trim();
+			mail2 = input.getInput(drawInput, mail2,30);
+			mail2 = mail2.trim();
 		default:
 			break;
+			
 		}
 	}
 	
@@ -87,29 +82,15 @@ public class LogonMenu {
 		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
 			stateChanged = true;
 		}
-		else if (stateChanged && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)){
-			switch (pointer.getPointerState()) {
-			case 1:
-			case 2:
+		else if (stateChanged && !Keyboard.isKeyDown(Keyboard.KEY_RETURN) && mail1.equals(mail2)){
 				Json jSon = new Json();
-				jSon.setType("LOGIN");
-				jSon.setName(accountName);
-				jSon.setPassword(password);
+				jSon.setType("LOSTPASS");
+				jSon.seteMail(mail1);
 				connection.send(new Gson().toJson(jSon, Json.class));
 				stateChanged = false;
-				break;
-			case 3:
-				state.setStatus(Status.CREATENEW);
-				stateChanged = false;
-				break;
-			case 4:
-				state.setStatus(Status.LOSTPASSWORD);
-			default:
-				break;
-			}
 		}
 	}
-
+	
 	public ArrayList<Star> getStarArrayList() {
 		return starArrayList;
 	}
@@ -143,19 +124,19 @@ public class LogonMenu {
 	}
 
 	public String getAccountName() {
-		return accountName;
+		return mail1;
 	}
 
 	public void setAccountName(String accountName) {
-		this.accountName = accountName;
+		this.mail1 = accountName;
 	}
 
 	public String getPassword() {
-		return password;
+		return mail2;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.mail2 = password;
 	}
 
 	public String getPassSecret() {
@@ -168,5 +149,4 @@ public class LogonMenu {
 	public void setConnection(ServerConnection connection){
 		this.connection = connection;
 	}
-	
 }

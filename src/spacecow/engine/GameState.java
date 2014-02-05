@@ -2,7 +2,7 @@ package spacecow.engine;
 
 public class GameState {
 
-	public enum Status {STARTGAME, OPTIONS, HIGHSCORE, MENU, EXIT, LOGON, CREATENEW};
+	public enum Status {STARTGAME, OPTIONS, HIGHSCORE, MENU, EXIT, LOGON, CREATENEW, LOSTPASSWORD};
 	
 	private Status status;
 

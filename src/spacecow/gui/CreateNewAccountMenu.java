@@ -84,20 +84,20 @@ public class CreateNewAccountMenu {
 	public void getInput(){
 		switch (pointer.getPointerState()) {
 		case 1:
-			accountName = input.getInput(drawInput, accountName);
+			accountName = input.getInput(drawInput, accountName,12);
 			accountName = accountName.trim();
 			accountName = accountName.replaceAll("\\W", "");
 			break;
 		case 2:
-			password = input.getInput(drawInput, password);
+			password = input.getInput(drawInput, password,15);
 			password = password.trim();
 			break;
 		case 3:
-			password2 = input.getInput(drawInput, password2);
+			password2 = input.getInput(drawInput, password2,15);
 			password2 = password2.trim();
 			break;
 		case 4:
-			eMail = input.getInput(drawInput, eMail);
+			eMail = input.getInput(drawInput, eMail,20);
 			eMail.trim();
 		default:
 			break;

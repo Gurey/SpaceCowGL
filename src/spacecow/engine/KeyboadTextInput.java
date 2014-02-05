@@ -7,12 +7,12 @@ public class KeyboadTextInput {
 	private boolean keyReleased;
 	private String stringToSendBack;
 	
-	public String getInput(DrawText drawText, String stringToEdit){
+	public String getInput(DrawText drawText, String stringToEdit, int stringMaxSize){
 		char keyPressed = Keyboard.CHAR_NONE;
 		if (keyReleased && Keyboard.getEventKeyState() && !Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
 			keyPressed = Keyboard.getEventCharacter();
 			keyReleased = false;
-			if (drawText.canPrint(keyPressed) && !(stringToEdit.length()>=12)) {
+			if (drawText.canPrint(keyPressed) && !(stringToEdit.length()>=stringMaxSize)) {
 				stringToEdit += keyPressed; 
 				System.out.print(keyPressed);
 			}
