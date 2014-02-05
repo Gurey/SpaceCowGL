@@ -104,6 +104,7 @@ public class LogonMenu {
 				break;
 			case 4:
 				state.setStatus(Status.LOSTPASSWORD);
+				stateChanged = false;
 			default:
 				break;
 			}

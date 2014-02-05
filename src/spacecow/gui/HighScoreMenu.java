@@ -30,15 +30,15 @@ public class HighScoreMenu {
 		this.starAr = starArray;
 		this.textureHandler = texHandler;
 		this.gameState = gameState;
-		this.top10 = new Json[1];
-		this.personalTop10 =  new Json[1];
-		this.bestAvg = new Json[1];
+		this.top10 = new Json[0];
+		this.personalTop10 =  new Json[0];
+		this.bestAvg = new Json[0];
 		menuText = new DrawText(40, Alignment.LEFT);
 		scoreText = new DrawText(35, Alignment.RIGHT);
 		setNameText(new DrawText(35, Alignment.LEFT));
 		this.pointer = new Pointer(40,100, 100, 4, 1, texHandler);
 	}
-	
+
 	public void update(){
 		for (Star star : starAr) {
 			star.move();
@@ -68,8 +68,9 @@ public class HighScoreMenu {
 	public void printScore(Json[] jsonArray, String title){
 		float pad = 100;
 		nameText.drawString((Game.dWidth/2)-100, 50, title, Color.white);
-		if (jsonArray.length>1) {			
+		if (jsonArray.length>0) {	
 			for (Json hs : jsonArray) {
+				if (hs.getName().isEmpty()) return; 
 				scoreText.drawString(Game.dWidth-100, pad, String.format("%,d", hs.getScore()), Color.white);
 				nameText.drawString((Game.dWidth/2)-100, pad, hs.getName(), Color.white);
 				pad+=60;

@@ -27,7 +27,7 @@ public class LostPassword {
 	private DrawText drawInfo;
 	private DrawText drawInput;
 	private String mail1, mail2, passSecret;
-	private float textPosX, mailPosY1, mailPosY2, createPosY;
+	private float textPosX, mailPosY1, mailPosY2, backPosY;
 	private KeyboadTextInput input;
 	private Pointer pointer;
 	private boolean stateChanged;
@@ -43,11 +43,11 @@ public class LostPassword {
 		this.textPosX = Game.dWidth/2;
 		this.mailPosY1 = (Game.dHeight/2)-50;
 		this.mailPosY2 = (Game.dHeight/2)+50;
-		this.createPosY = (Game.dHeight/2)+150;
+		this.backPosY = (Game.dHeight/2)+150;
 		this.mail2 = "";
 		this.mail1 = "";
 		this.input = new KeyboadTextInput();
-		this.pointer = new Pointer(350,mailPosY1, 100, 2, 1, textureHandler);
+		this.pointer = new Pointer(350,mailPosY1, 100, 3, 1, textureHandler);
 	}
 	
 	public void update(){
@@ -57,6 +57,7 @@ public class LostPassword {
 		pointer.updatePointerState();
 		drawInfo.drawString(textPosX, mailPosY1, "eMail: ", Color.white);
 		drawInfo.drawString(textPosX, mailPosY2, "eMail again: ", Color.white);
+		drawInfo.drawString(textPosX, backPosY, "<- Back", Color.white);
 		getInput();
 		drawInput.drawString(textPosX, mailPosY1, mail1, Color.white);
 		drawInput.drawString(textPosX, mailPosY2, mail2, Color.white);
@@ -82,12 +83,16 @@ public class LostPassword {
 		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
 			stateChanged = true;
 		}
-		else if (stateChanged && !Keyboard.isKeyDown(Keyboard.KEY_RETURN) && mail1.equals(mail2)){
+		else if (stateChanged && !Keyboard.isKeyDown(Keyboard.KEY_RETURN) && mail1.equals(mail2) && pointer.getPointerState()<3){
 				Json jSon = new Json();
 				jSon.setType("LOSTPASS");
 				jSon.seteMail(mail1);
 				connection.send(new Gson().toJson(jSon, Json.class));
 				stateChanged = false;
+		}
+		else if (stateChanged && !Keyboard.isKeyDown(Keyboard.KEY_RETURN) && pointer.getPointerState()==3) {
+			state.setStatus(Status.LOGON);
+			stateChanged = false;
 		}
 	}
 	
