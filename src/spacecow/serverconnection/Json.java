@@ -4,7 +4,8 @@ public class Json {
 
 	private String type, name, password, eMail;
 	private int accID, time, astoids, multi, cookies, stars, magnets;
-	long score, avgScore;
+	private long score, avgScore;
+	private Json[] jsonArray;
 	
 	public long getAvgScore() {
 		return avgScore;
@@ -108,6 +109,14 @@ public class Json {
 
 	public void seteMail(String eMail) {
 		this.eMail = eMail;
+	}
+
+	public Json[] getJsonArray() {
+		return jsonArray;
+	}
+
+	public void setJsonArray(Json[] jsonArray) {
+		this.jsonArray = jsonArray;
 	}
 	
 }

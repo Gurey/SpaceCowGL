@@ -56,7 +56,7 @@ public class ServerConnection implements Runnable {
 			msgIn = in.readLine();
 			if (msgIn != null) {
 				Json json = gson.fromJson(msgIn, Json.class);
-				System.out.println(msgIn);
+				System.out.println("Incomming: "+msgIn);
 				handleQuery(json);
 			}
 		} catch (IOException e) {
@@ -64,7 +64,7 @@ public class ServerConnection implements Runnable {
 		}
 	}
 	public void send(String msg){
-		System.out.println(msg);
+		System.out.println("Outgoing: "+msg);
 		out.println(msg);
 		out.flush();
 	}
@@ -94,6 +94,12 @@ public class ServerConnection implements Runnable {
 		case "STATS":
 			game.getStartMenu().setPlayerStats(json);
 			System.out.println("Stats loaded from server!");
+			break;
+		case "TOPTEN":
+			game.getScoreMenu().setHighscore(json.getJsonArray());
+			break;
+		case "PERSONALTOPTEN":
+			game.getScoreMenu().setPersonalTop10(json.getJsonArray());
 			break;
 		default:
 			break;

@@ -49,5 +49,8 @@ public class Pointer {
 	public int getPointerState(){
 		return pointerState;
 	}
+	public void setPointerState(int state){
+		this.pointerState = state;
+	}
 	
 }

@@ -6,6 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
+import com.google.gson.Gson;
+
 import spacecow.engine.DrawText;
 import spacecow.engine.GameState;
 import spacecow.engine.DrawText.Alignment;
@@ -16,21 +18,21 @@ import spacecow.engine.Pointer;
 import spacecow.engine.TextureHandler;
 import spacecow.objects.Star;
 import spacecow.serverconnection.Json;
+import spacecow.serverconnection.ServerConnection;
 
 public class StartMenu {
 
 	private ArrayList<Star> starArray;
-	private ArrayList<HighScore> highScores;
 	private TextureHandler texHandler;
 	private Texture startGameTex, highScoresTex, optionsTex;
 	private GameState gameState;
-	private HighScoreMenu highScoreMenu;
 	private Pointer pointer;
 	private Json playerStats;
 	private DrawText statText;
 	private DrawText statVal;
+	private ServerConnection connection;
 	
-	public StartMenu(ArrayList<Star> starArray, TextureHandler texHandler, GameState gameState, ArrayList<HighScore> highScores){
+	public StartMenu(ArrayList<Star> starArray, TextureHandler texHandler, GameState gameState){
 		this.playerStats = new Json();
 		this.starArray = starArray;
 		this.texHandler = texHandler;
@@ -38,8 +40,6 @@ public class StartMenu {
 		this.highScoresTex = texHandler.getHighScoreTex();
 		this.optionsTex = texHandler.getOptionsTex();
 		this.gameState=gameState;
-		this.highScores = highScores;
-		this.highScoreMenu = new HighScoreMenu(this.highScores);
 		this.pointer = new Pointer(40,100, 100, 4, 1, texHandler);
 		this.statText = new DrawText(35, Alignment.LEFT);
 		this.statVal = new DrawText(35, Alignment.RIGHT);
@@ -54,13 +54,11 @@ public class StartMenu {
 		texHandler.drawTexture(optionsTex, 100, 300);
 		pointer.updatePointerState();
 		
-		if (pointer.getPointerState()==1 && gameState.getStatus() == Status.MENU) {
+		if (pointer.getPointerState()==1) {
 			printStats();
 		}
 		checkIfExe();
-		if (gameState.getStatus()==Status.HIGHSCORE) {
-			highScoreMenu.printScore();
-		}
+		
 	}
 	public void checkIfExe(){
 		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
@@ -68,11 +66,9 @@ public class StartMenu {
 		case 1:
 			gameState.setStatus(Status.STARTGAME);
 			break;
-			
 		case 2:
 			gameState.setStatus(Status.HIGHSCORE);
 			break;
-			
 		case 3:
 			gameState.setStatus(Status.OPTIONS);
 			break;

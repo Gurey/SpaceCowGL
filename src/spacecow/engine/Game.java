@@ -26,23 +26,27 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import com.google.gson.Gson;
+
 import spacecow.buffs.Magnet;
 import spacecow.buffs.Rush;
 import spacecow.engine.GameState.Status;
 import spacecow.gui.CreateNewAccountMenu;
+import spacecow.gui.HighScoreMenu;
 import spacecow.gui.LogonMenu;
 import spacecow.gui.StartMenu;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
+import spacecow.serverconnection.Json;
 import spacecow.serverconnection.ServerConnection;
 
 public class Game {
-	
+
 	public static int dWidth = Display.getDesktopDisplayMode().getWidth();
 	public static int dHeight = Display.getDesktopDisplayMode().getHeight();
-	
+
 	private int accID = 0;
-	
+
 	private Score score;
 	private GameObjectHandler gameObjHandler;
 	private Magnet magnet;
@@ -55,12 +59,12 @@ public class Game {
 	private GameState gameState;
 	private StartMenu startMenu;
 	private CountDown count;
-	private ArrayList<HighScore> highScoreArray;
 	private DisplayConfig dConfig;
 	private LogonMenu logonMenu;
 	private CreateNewAccountMenu createNew;
 	private ServerConnection serverConnection;
-	
+	private HighScoreMenu scoreMenu;
+
 	TextHandler textHandler;
 
 	public Game(){
@@ -72,7 +76,6 @@ public class Game {
 		} catch (Exception e) {
 		}
 		setFps(new FPS());
-		this.highScoreArray = new ArrayList<>();
 		gameState = new GameState();
 		rush = new Rush();
 		time = new Time();
@@ -83,14 +86,15 @@ public class Game {
 		magnet = new Magnet(gameObjHandler.getGameObjectArray(), player);
 		gOver = new GameOver(gameObjHandler.getStarsArray(), gameState, score, serverConnection);
 		gameObjHandler.setMagnet(magnet);
-		startMenu = new StartMenu(gameObjHandler.getStarsArray(), texHandler, gameState, highScoreArray);
+		startMenu = new StartMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
 		count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
 		textHandler = new TextHandler(this);
 		dConfig = new DisplayConfig();
 		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
+		setScoreMenu(new HighScoreMenu(gameObjHandler.getStarsArray(), texHandler, gameState));
 	}
-	
+
 	//Set up the display and create it.
 	public void initGL(){
 		try {
@@ -104,94 +108,114 @@ public class Game {
 		glViewport(0, 0, dWidth, dHeight);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		
+
 		glEnable(GL_TEXTURE_2D);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		//Ortho is the dimentions of the game in x, y and z axis
 		glOrtho(0, dWidth, dHeight, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
-		
+
 	}
-	
+
 	public void start(){
-//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+		//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
-		while (!Display.isCloseRequested() && (gameState.getStatus()==Status.LOGON || gameState.getStatus()==Status.CREATENEW) && !(gameState.getStatus()==Status.EXIT)){
-			render();
-			if (gameState.getStatus()==Status.LOGON) logonMenu.update();
-			else createNew.update();
-			Display.update();
-			Display.sync(60);
-			
-		}
-		while (!(gameState.getStatus()==Status.STARTGAME)) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
-				dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+			while (!Display.isCloseRequested() && (gameState.getStatus()==Status.LOGON || gameState.getStatus()==Status.CREATENEW) && !(gameState.getStatus()==Status.EXIT)){
+				render();
+				if (gameState.getStatus()==Status.LOGON) logonMenu.update();
+				else createNew.update();
+				Display.update();
+				Display.sync(60);
+
 			}
-			render();
-			startMenu.update();
-			Display.update();
-			Display.sync(60);
-			if (gameState.getStatus().equals(Status.EXIT) || Display.isCloseRequested()){
-				serverConnection.closeAllConnections();
-				Display.destroy();
-				return;
+			updateTopLists();
+			while (!(gameState.getStatus()==Status.STARTGAME)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
+					dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+				}
+				render();
+				switch (gameState.getStatus()) {
+				case MENU:
+					startMenu.update();
+					break;
+				case HIGHSCORE:
+					scoreMenu.update();
+					break;
+				case OPTIONS:
+					startMenu.update();
+				default:
+					break;
+				}
+				Display.update();
+				Display.sync(60);
+				if (gameState.getStatus().equals(Status.EXIT) || Display.isCloseRequested()){
+					serverConnection.closeAllConnections();
+					Display.destroy();
+					return;
+				}
 			}
-		}
-		//Starts the CoundDown of the game, exits when countdown is over.
-		count.setCountDownState(3);
-		while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && gameState.getStatus().equals(Status.STARTGAME)) {
-			render();
-			if (count.getCountdownState()<=0) {
-				break;
+			//Starts the CoundDown of the game, exits when countdown is over.
+			count.setCountDownState(3);
+			while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && gameState.getStatus().equals(Status.STARTGAME)) {
+				render();
+				if (count.getCountdownState()<=0) {
+					break;
+				}
+				player.update();
+				rush.update();
+				count.countDown();
+				Display.update();
+				Display.sync(60);
 			}
-			player.update();
-			rush.update();
-			count.countDown();
-			Display.update();
-			Display.sync(60);
+			//Sets the Score to 0 and the time left to XX seconds.
+			score.setScore(0);
+			time.setTimeLeft(60);
+			long startTime = Sys.getTime();
+			rush.resetRush();
+			//init the Game, running until the Player press Esc or the time runs out.
+			while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
+				render();
+				update();
+				Display.update();
+				Display.sync(60);
+			}
+			//Sets the finalscore to the current score.
+			gOver.setFinalScore(score.getScore());
+			//Run gameover until the players wants to exit.
+			Keyboard.destroy();
+			try {
+				Keyboard.create();
+			} catch (LWJGLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gOver.setDuration(Sys.getTime()-startTime);
+			while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && time.getSecondsLeft()<=0 && gameState.getStatus().equals(Status.STARTGAME)) {
+				render();
+				gOver.update();
+				textHandler.updateGameOver();
+				Display.update();
+				Display.sync(60);
+			}
+			resetGame();
 		}
-		//Sets the Score to 0 and the time left to XX seconds.
-		score.setScore(0);
-		time.setTimeLeft(60);
-		long startTime = Sys.getTime();
-		rush.resetRush();
-		//init the Game, running until the Player press Esc or the time runs out.
-		while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
-			render();
-			update();
-			Display.update();
-			Display.sync(60);
-		}
-		//Sets the finalscore to the current score.
-		gOver.setFinalScore(score.getScore());
-		//Run gameover until the players wants to exit.
-		Keyboard.destroy();
-		try {
-			Keyboard.create();
-		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		gOver.setDuration(Sys.getTime()-startTime);
-		while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && time.getSecondsLeft()<=0 && gameState.getStatus().equals(Status.STARTGAME)) {
-			render();
-			gOver.update();
-			textHandler.updateGameOver();
-			Display.update();
-			Display.sync(60);
-		}
-		resetGame();
-		}
-		
+
 		serverConnection.closeAllConnections();
 		System.out.println("Connections Closed!");
 		Display.destroy();
+	}
+
+	private void updateTopLists() {
+		Json j = new Json();
+		j.setType("TOPTEN");
+		serverConnection.send(new Gson().toJson(j, Json.class));
+		j.setType("PERSONALTOPTEN");
+		serverConnection.send(new Gson().toJson(j, Json.class));
 	}
 
 	private void resetGame() {
@@ -253,19 +277,19 @@ public class Game {
 		return startMenu;
 	}
 
-	public ArrayList<HighScore> getHighScoreArray() {
-		return highScoreArray;
-	}
-
-	public void setHighScoreArray(ArrayList<HighScore> highScoreArray) {
-		this.highScoreArray = highScoreArray;
-	}
-
 	public int getAccID() {
 		return accID;
 	}
 
 	public void setAccID(int accID) {
 		this.accID = accID;
+	}
+
+	public HighScoreMenu getScoreMenu() {
+		return scoreMenu;
+	}
+
+	public void setScoreMenu(HighScoreMenu scoreMenu) {
+		this.scoreMenu = scoreMenu;
 	}
 }
