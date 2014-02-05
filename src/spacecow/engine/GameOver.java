@@ -4,62 +4,100 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
+
+import com.google.gson.Gson;
 
 import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.GameState.Status;
 import spacecow.objects.Star;
+import spacecow.serverconnection.Json;
+import spacecow.serverconnection.ServerConnection;
 
 public class GameOver {
 
 	ArrayList<Star> starsArray;
 	private long finalScore;
-	private boolean scoreSubmited;
-	private String playerName, stringToPrint;
+	private boolean scoreSubmited, enterKeyPressed;
+	private String stringToPrint;
 	private DrawText userInput;
-	private ArrayList<HighScore> highScores;
 	private GameState gameState;
-	private KeyboadTextInput input;
+	private Score score;
+	private long duration;
+	private ServerConnection connection;
 
-	public GameOver(ArrayList<Star> starsArray, ArrayList<HighScore> highScores, GameState gameState){
+	public GameOver(ArrayList<Star> starsArray, GameState gameState, Score score, ServerConnection connection){
+		this.connection = connection;
+		this.score = score;
 		this.gameState = gameState;
-		this.highScores = highScores;
 		this.starsArray=starsArray;
-		this.playerName = "";
+		this.scoreSubmited = false;
 		this.userInput = new DrawText(40, Alignment.CENTER);
-		this.input = new KeyboadTextInput();
 	}
 	//Moves the stars in the background.
 	public void update(){
 		for (Star star : starsArray) {
 			star.move();
 		}
-		Keyboard.poll();
-		playerName = input.getInput(userInput, playerName);
-		playerName = playerName.trim();
-		stringToPrint = "Enter Name: "+playerName+" <";
-
+		
+		stringToPrint = "| Stars: "+score.getStarCol()
+				+" | Multi: "+score.getMultiCol()
+				+" | Cookies: "+score.getCookiaCol()
+				+" | Magnets: "+score.getMagnetCol()
+				+" | Asteroids: "+score.getAstroidCol()
+				+" | Duration: "+(duration/Sys.getTimerResolution()+1)
+				+" |";
+		
 		userInput.drawString(Game.dWidth/2, Game.dHeight-100, stringToPrint, Color.white);
 		submitScore();
+		checkEnter();
 	}
-
+	public void submitScore(){
+		if (!scoreSubmited) {
+			Json scoreToSubmit = new Json();
+			scoreToSubmit.setType("NEWSCORE");
+			scoreToSubmit.setScore(finalScore);
+			scoreToSubmit.setStars(score.getStarCol());
+			scoreToSubmit.setMulti(score.getMultiCol());
+			scoreToSubmit.setCookies(score.getCookiaCol());
+			scoreToSubmit.setMagnets(score.getMagnetCol());
+			scoreToSubmit.setAstoids(score.getAstroidCol());
+			scoreToSubmit.setTime((int) ((duration/Sys.getTimerResolution())+1));
+			connection.send(new Gson().toJson(scoreToSubmit, Json.class));
+			scoreSubmited = true;
+		}
+	}
+	public void checkEnter(){
+		if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+			enterKeyPressed = true;
+		}
+		if (scoreSubmited && !Keyboard.isKeyDown(Keyboard.KEY_RETURN) && enterKeyPressed) {
+			gameState.setStatus(Status.MENU);
+			scoreSubmited = false;
+			enterKeyPressed = false;
+		}
+	}
+	
+	public boolean isScoreSubmited() {
+		return scoreSubmited;
+	}
+	public void setScoreSubmited(boolean scoreSubmited) {
+		this.scoreSubmited = scoreSubmited;
+	}
 	public long getFinalScore() {
 		return finalScore;
 	}
 	public void setFinalScore(long score){
 		this.finalScore = score;
 	}
-	public void submitScore(){
-		if (!playerName.equals("") && playerName.length()>=3 && Keyboard.isKeyDown(Keyboard.KEY_RETURN) && !scoreSubmited ) {
-			highScores.add(new HighScore(finalScore, new Date(), playerName));
-			scoreSubmited = true;
-		}
-		if (scoreSubmited && !Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
-			gameState.setStatus(Status.MENU);
-			scoreSubmited = false;
-			Collections.sort(highScores);
-		}
+	
+	public long getDuration() {
+		return duration;
+	}
+	public void setDuration(long startTime) {
+		this.duration = startTime;
 	}
 	
 

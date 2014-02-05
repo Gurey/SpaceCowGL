@@ -31,5 +31,10 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="SpaceCowGL/Slick/SlickNative"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="Gson/gson-2.2.4.jar" sourcepath="Gson/gson-2.2.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SpaceCowGL/Gson/gson-2.2.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

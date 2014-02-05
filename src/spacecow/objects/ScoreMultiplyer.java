@@ -18,5 +18,6 @@ public class ScoreMultiplyer extends GameObject {
 	public void collisionAction(){
 		score.scoreMulti();
 		score.incScore(1000);
+		score.setMultiCol(score.getMultiCol()+1);
 	}	
 }

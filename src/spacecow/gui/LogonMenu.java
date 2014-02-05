@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import spacecow.engine.DrawText;
 import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.Game;
@@ -14,6 +17,8 @@ import spacecow.engine.KeyboadTextInput;
 import spacecow.engine.Pointer;
 import spacecow.engine.TextureHandler;
 import spacecow.objects.Star;
+import spacecow.serverconnection.Json;
+import spacecow.serverconnection.ServerConnection;
 
 public class LogonMenu {
 
@@ -27,8 +32,10 @@ public class LogonMenu {
 	private KeyboadTextInput input;
 	private Pointer pointer;
 	private boolean stateChanged;
+	private ServerConnection connection;
 	
-	public LogonMenu(ArrayList<Star> starArrayList, TextureHandler textureHandler, GameState state){
+	public LogonMenu(ArrayList<Star> starArrayList, TextureHandler textureHandler, GameState state, ServerConnection connection){
+		this.connection = connection;
 		this.setStarArrayList(starArrayList);
 		this.setTextureHandler(textureHandler);
 		this.setState(state);
@@ -58,7 +65,7 @@ public class LogonMenu {
 		for (int i = 0; i < password.length(); i++) {
 			passSecret += "*";
 		}
-		drawInput.drawString(textPosX, passPosY, passSecret, Color.white);	
+		drawInput.drawString(textPosX, passPosY, passSecret, Color.white);
 		checkIfExe();
 	}
 	
@@ -85,7 +92,12 @@ public class LogonMenu {
 			switch (pointer.getPointerState()) {
 			case 1:
 			case 2:
-				state.setStatus(Status.MENU);
+				Json jSon = new Json();
+				jSon.setType("LOGIN");
+				jSon.setName(accountName);
+				jSon.setPassword(password);
+				connection.send(new Gson().toJson(jSon, Json.class));
+				stateChanged = false;
 				break;
 			case 3:
 				state.setStatus(Status.CREATENEW);
@@ -95,7 +107,6 @@ public class LogonMenu {
 				break;
 			}
 		}
-		Keyboard.poll();
 	}
 
 	public ArrayList<Star> getStarArrayList() {
@@ -152,6 +163,9 @@ public class LogonMenu {
 
 	public void setPassSecret(String passSecret) {
 		this.passSecret = passSecret;
+	}
+	public void setConnection(ServerConnection connection){
+		this.connection = connection;
 	}
 	
 }

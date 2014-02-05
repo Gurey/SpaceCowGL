@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -33,11 +34,14 @@ import spacecow.gui.LogonMenu;
 import spacecow.gui.StartMenu;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
+import spacecow.serverconnection.ServerConnection;
 
 public class Game {
 	
 	public static int dWidth = Display.getDesktopDisplayMode().getWidth();
 	public static int dHeight = Display.getDesktopDisplayMode().getHeight();
+	
+	private int accID = 0;
 	
 	private Score score;
 	private GameObjectHandler gameObjHandler;
@@ -55,11 +59,18 @@ public class Game {
 	private DisplayConfig dConfig;
 	private LogonMenu logonMenu;
 	private CreateNewAccountMenu createNew;
+	private ServerConnection serverConnection;
 	
 	TextHandler textHandler;
 
 	public Game(){
 		initGL();
+		try {
+			serverConnection = new ServerConnection(this);
+			Thread t = new Thread(serverConnection);
+			t.start();
+		} catch (Exception e) {
+		}
 		setFps(new FPS());
 		this.highScoreArray = new ArrayList<>();
 		gameState = new GameState();
@@ -70,14 +81,14 @@ public class Game {
 		player = new Player(texHandler, rush);
 		gameObjHandler = new GameObjectHandler(score, texHandler, player, time);
 		magnet = new Magnet(gameObjHandler.getGameObjectArray(), player);
-		gOver = new GameOver(gameObjHandler.getStarsArray(), highScoreArray, gameState);
+		gOver = new GameOver(gameObjHandler.getStarsArray(), gameState, score, serverConnection);
 		gameObjHandler.setMagnet(magnet);
 		startMenu = new StartMenu(gameObjHandler.getStarsArray(), texHandler, gameState, highScoreArray);
 		count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
 		textHandler = new TextHandler(this);
 		dConfig = new DisplayConfig();
-		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
-		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
+		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
+		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 	}
 	
 	//Set up the display and create it.
@@ -107,10 +118,10 @@ public class Game {
 	}
 	
 	public void start(){
-		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
-		while (!Display.isCloseRequested() && (gameState.getStatus()==Status.LOGON || gameState.getStatus()==Status.CREATENEW)){
+		while (!Display.isCloseRequested() && (gameState.getStatus()==Status.LOGON || gameState.getStatus()==Status.CREATENEW) && !(gameState.getStatus()==Status.EXIT)){
 			render();
 			if (gameState.getStatus()==Status.LOGON) logonMenu.update();
 			else createNew.update();
@@ -127,6 +138,7 @@ public class Game {
 			Display.update();
 			Display.sync(60);
 			if (gameState.getStatus().equals(Status.EXIT) || Display.isCloseRequested()){
+				serverConnection.closeAllConnections();
 				Display.destroy();
 				return;
 			}
@@ -147,6 +159,7 @@ public class Game {
 		//Sets the Score to 0 and the time left to XX seconds.
 		score.setScore(0);
 		time.setTimeLeft(60);
+		long startTime = Sys.getTime();
 		rush.resetRush();
 		//init the Game, running until the Player press Esc or the time runs out.
 		while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
@@ -165,6 +178,7 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		gOver.setDuration(Sys.getTime()-startTime);
 		while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && time.getSecondsLeft()<=0 && gameState.getStatus().equals(Status.STARTGAME)) {
 			render();
 			gOver.update();
@@ -174,6 +188,9 @@ public class Game {
 		}
 		resetGame();
 		}
+		
+		serverConnection.closeAllConnections();
+		System.out.println("Connections Closed!");
 		Display.destroy();
 	}
 
@@ -185,7 +202,6 @@ public class Game {
 		while (gameObjHandler.getStarsArray().size()>gameObjHandler.getNumberOfStars()) {
 			gameObjHandler.getStarsArray().remove(gameObjHandler.getStarsArray().size()-1);
 		}
-		System.out.println(score.getAstroidCol());
 	}
 	//updates all components in the Game phase.
 	public void update(){
@@ -243,5 +259,13 @@ public class Game {
 
 	public void setHighScoreArray(ArrayList<HighScore> highScoreArray) {
 		this.highScoreArray = highScoreArray;
+	}
+
+	public int getAccID() {
+		return accID;
+	}
+
+	public void setAccID(int accID) {
+		this.accID = accID;
 	}
 }

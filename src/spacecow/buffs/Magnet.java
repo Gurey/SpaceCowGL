@@ -112,7 +112,6 @@ public class Magnet {
 			}
 			if (vel<0) {
 				idle = true;
-				System.out.println(starVel);
 			}
 		}
 		}
