@@ -48,7 +48,7 @@ public class LogonMenu {
 		this.password = "";
 		this.accountName = "";
 		this.input = new KeyboadTextInput();
-		this.pointer = new Pointer(350,accPosY, 100, 4, 1, textureHandler);
+		this.pointer = new Pointer(300,accPosY, 100, 4, 1, textureHandler);
 	}
 	
 	public void update(){
@@ -59,7 +59,7 @@ public class LogonMenu {
 		drawInfo.drawString(textPosX, accPosY, "Name: ", Color.white);
 		drawInfo.drawString(textPosX, passPosY, "Password: ", Color.white);
 		drawInfo.drawString(textPosX, createPosY, "Create new  ", Color.white);
-		drawInfo.drawString(textPosX, lostPosY, "Lost Password", Color.white);
+		drawInfo.drawString(textPosX, lostPosY, "Lost Password  ", Color.white);
 		getInput();
 		drawInput.drawString(textPosX, accPosY, accountName, Color.white);
 		passSecret = "";

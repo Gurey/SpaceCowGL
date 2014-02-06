@@ -18,24 +18,25 @@ import spacecow.serverconnection.Json;
 
 public class HighScoreMenu {
 
-	private DrawText scoreText, nameText, menuText;
+	private DrawText scoreText, nameText, menuText, dateText;
 	private Json[] top10, personalTop10, bestAvg;
 	private ArrayList<Star> starAr;
-	private TextureHandler textureHandler;
 	private GameState gameState;
 	private Pointer pointer;
 	private boolean enterKeyPressed;
+	private float xPos;
 
 	public HighScoreMenu(ArrayList<Star> starArray, TextureHandler texHandler, GameState gameState){
 		this.starAr = starArray;
-		this.textureHandler = texHandler;
 		this.gameState = gameState;
+		this.xPos = (Game.dWidth/2);
 		this.top10 = new Json[0];
 		this.personalTop10 =  new Json[0];
 		this.bestAvg = new Json[0];
 		menuText = new DrawText(40, Alignment.LEFT);
 		scoreText = new DrawText(35, Alignment.RIGHT);
 		setNameText(new DrawText(35, Alignment.LEFT));
+		this.dateText = new DrawText(35, Alignment.LEFT);
 		this.pointer = new Pointer(40,100, 100, 4, 1, texHandler);
 	}
 
@@ -68,13 +69,15 @@ public class HighScoreMenu {
 	public void printScore(Json[] jsonArray, String title){
 		float pad = 100;
 		int rank = 1;
-		nameText.drawString((Game.dWidth/2)-100, 50, title, Color.white);
+		nameText.drawString((Game.dWidth/2)-200, 50, title, Color.white);
 		if (jsonArray.length>0) {	
-			for (Json hs : jsonArray) {
-				if (hs.getName().isEmpty()) return; 
-				scoreText.drawString(Game.dWidth-100, pad, String.format("%,d", hs.getScore()), Color.white);
-				if (!jsonArray.equals(personalTop10)) nameText.drawString((Game.dWidth/2)-100, pad, rank+". "+hs.getName(), Color.white);
-				else nameText.drawString((Game.dWidth/2)-100, pad, hs.getName()+".", Color.white);
+			for (Json json : jsonArray) {
+				if (json.getName().isEmpty()) return; 
+				scoreText.drawString(Game.dWidth-200, pad, String.format("%,d", json.getScore()), Color.white);
+				dateText.drawString(xPos+50, pad, ""+json.getDate(), Color.white);
+				if (!jsonArray.equals(personalTop10))
+					nameText.drawString((Game.dWidth/2)-200, pad, rank+". "+json.getName(), Color.white);
+				else nameText.drawString((Game.dWidth/2)-200, pad, json.getName()+".", Color.white);
 				rank++;
 				pad+=60;
 			}

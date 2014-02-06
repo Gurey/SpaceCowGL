@@ -1,11 +1,14 @@
 package spacecow.serverconnection;
 
+import java.sql.Date;
+
 public class Json {
 
 	private String type, name, password, eMail;
 	private int accID, time, astoids, multi, cookies, stars, magnets;
 	private long score, avgScore;
 	private Json[] jsonArray;
+	private Date date;
 	
 	public long getAvgScore() {
 		return avgScore;
@@ -117,6 +120,14 @@ public class Json {
 
 	public void setJsonArray(Json[] jsonArray) {
 		this.jsonArray = jsonArray;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 }

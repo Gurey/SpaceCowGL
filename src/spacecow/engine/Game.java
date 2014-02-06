@@ -132,6 +132,11 @@ public class Game {
 					|| gameState.getStatus()==Status.LOSTPASSWORD) 
 					&& !(gameState.getStatus()==Status.EXIT)){
 				render();
+				if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+					Display.destroy();
+					serverConnection.closeAllConnections();
+					return;
+				}
 				if (gameState.getStatus()==Status.LOGON) logonMenu.update();
 				else if(gameState.getStatus()==Status.CREATENEW) createNew.update();
 				else lostPassword.update();
@@ -183,6 +188,7 @@ public class Game {
 			time.setTimeLeft(60);
 			long startTime = Sys.getTime();
 			rush.resetRush();
+			gameObjHandler.resetObjectTimers();
 			//init the Game, running until the Player press Esc or the time runs out.
 			while (!isEscPressed() && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
 				render();

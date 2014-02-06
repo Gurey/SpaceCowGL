@@ -29,16 +29,20 @@ public class GameObjectHandler {
 	long nextStarBuff, nextScoreMultiplyer, nextCookie, nextAsteroid, nextMagnet;
 
 	public GameObjectHandler(Score score, TextureHandler texHandler, Player player, Time time){
-		this.nextStarBuff=Sys.getTime()+50;
-		this.nextCookie=(long) (Sys.getTime()+Math.random()*15000);
-		this.nextScoreMultiplyer=Sys.getTime()+1000;
-		this.nextAsteroid=Sys.getTime()+1000;
-		this.nextMagnet=(long) (Sys.getTime()+Math.random()*15000);
+		resetObjectTimers();
 		this.score = score;
 		this.texHandler = texHandler;
 		this.player = player;
 		this.setTime(time);
 		createStars(numberOfStars);
+	}
+
+	public void resetObjectTimers() {
+		this.nextStarBuff=Sys.getTime()+50;
+		this.nextCookie=(long) (Sys.getTime()+Math.random()*15000);
+		this.nextScoreMultiplyer=Sys.getTime()+1000;
+		this.nextAsteroid=Sys.getTime()+1000;
+		this.nextMagnet=(long) (Sys.getTime()+Math.random()*15000);
 	}
 
 	//Updates the object, remove all the objects, clears the remove Array, move all the other objects and then check if its time to create new objects 
@@ -101,10 +105,10 @@ public class GameObjectHandler {
 		//new Asteroid, created within the range of 0.5 to 1.8 seconds minus scoreMulti*5.
 		if (Sys.getTime()>nextAsteroid) {
 			this.gameObjectArray.add(new Asteroid(texHandler.getAsteroidTex(), score, player, time));
-			nextAsteroid = (long) (Sys.getTime()+300+(Math.random()*1500-score.getScoreMulti()*5));
+			nextAsteroid = (long) (Sys.getTime()+200+(Math.random()*3000-score.getScoreMulti()*20));
 			//The lowest spawn rate is every 300 milliseconds.
-			if (nextAsteroid<Sys.getTime()+300) {
-				nextAsteroid=Sys.getTime()+300;
+			if (nextAsteroid<Sys.getTime()+200) {
+				nextAsteroid=Sys.getTime()+200;
 			}
 		}
 		//new Magnet, created within the range of 0.5 to 6.5 seconds.

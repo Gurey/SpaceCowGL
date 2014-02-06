@@ -52,8 +52,8 @@ public class StartMenu {
 		texHandler.drawTexture(startGameTex, 100, 100);
 		texHandler.drawTexture(highScoresTex, 100, 200);
 		texHandler.drawTexture(optionsTex, 100, 300);
-		statText.drawString(100, 400, "Exit", Color.white);
-		statText.drawString(100, 500, "Logout", Color.white);
+		statText.drawString(100, 400, "Logout", Color.white);
+		statText.drawString(100, 500, "Exit", Color.white);
 		pointer.updatePointerState();
 		
 		if (pointer.getPointerState()==1) {
@@ -75,11 +75,11 @@ public class StartMenu {
 			gameState.setStatus(Status.OPTIONS);
 			break;
 		case 4:
-			gameState.setStatus(Status.EXIT);
-			break;
-		case 5:
 			gameState.setStatus(Status.LOGON);
 			System.out.println("state logon!");
+			break;
+		case 5:
+			gameState.setStatus(Status.EXIT);
 			break;
 		default:
 			break;
