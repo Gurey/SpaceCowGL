@@ -32,6 +32,7 @@ public class LostPassword {
 	private Pointer pointer;
 	private boolean stateChanged;
 	private ServerConnection connection;
+	private Color matchColor;
 
 	public LostPassword(ArrayList<Star> starArrayList, TextureHandler textureHandler, GameState state, ServerConnection connection) {
 		this.connection = connection;
@@ -48,15 +49,22 @@ public class LostPassword {
 		this.mail1 = "";
 		this.input = new KeyboadTextInput();
 		this.pointer = new Pointer(350,mailPosY1, 100, 3, 1, textureHandler);
+		this.matchColor = Color.white;
 	}
 	
 	public void update(){
 		for (Star star : starArrayList) {
 			star.move();
 		}
+		
+		if (mail1.equals(mail2) && mail1.length()>5) {
+			matchColor = Color.green;
+		}
+		else matchColor = Color.white;
+		
 		pointer.updatePointerState();
-		drawInfo.drawString(textPosX, mailPosY1, "eMail: ", Color.white);
-		drawInfo.drawString(textPosX, mailPosY2, "eMail again: ", Color.white);
+		drawInfo.drawString(textPosX, mailPosY1, "eMail: ", matchColor);
+		drawInfo.drawString(textPosX, mailPosY2, "eMail again: ", matchColor);
 		drawInfo.drawString(textPosX, backPosY, "<- Back", Color.white);
 		getInput();
 		drawInput.drawString(textPosX, mailPosY1, mail1, Color.white);
@@ -73,6 +81,7 @@ public class LostPassword {
 		case 2:
 			mail2 = input.getInput(drawInput, mail2,30);
 			mail2 = mail2.trim();
+			break;
 		default:
 			break;
 			

@@ -53,7 +53,7 @@ public class HighScoreMenu {
 			printScore(top10, "Top 10");
 			break;
 		case 2:
-			printScore(personalTop10, "Personal Top 10");
+			printScore(personalTop10, "Personal Top Scores");
 			break;
 		case 3:
 			printScore(bestAvg, "Best average score");

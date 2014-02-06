@@ -18,7 +18,6 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
-import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -45,8 +44,6 @@ public class Game {
 
 	public static int dWidth = Display.getDesktopDisplayMode().getWidth();
 	public static int dHeight = Display.getDesktopDisplayMode().getHeight();
-
-	private int accID = 0;
 
 	private Score score;
 	private GameObjectHandler gameObjHandler;
@@ -292,14 +289,6 @@ public class Game {
 	}
 	public StartMenu getStartMenu() {
 		return startMenu;
-	}
-
-	public int getAccID() {
-		return accID;
-	}
-
-	public void setAccID(int accID) {
-		this.accID = accID;
 	}
 
 	public HighScoreMenu getScoreMenu() {

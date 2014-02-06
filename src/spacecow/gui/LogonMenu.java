@@ -27,7 +27,7 @@ public class LogonMenu {
 	private DrawText drawInfo;
 	private DrawText drawInput;
 	private String accountName, password, passSecret;
-	private float textPosX, accPosY, passPosY, createPosY;
+	private float textPosX, accPosY, passPosY, createPosY, lostPosY;
 	private KeyboadTextInput input;
 	private Pointer pointer;
 	private boolean stateChanged;
@@ -44,6 +44,7 @@ public class LogonMenu {
 		this.accPosY = (Game.dHeight/2)-150;
 		this.passPosY = (Game.dHeight/2)-50;
 		this.createPosY = (Game.dHeight/2)+50;
+		this.lostPosY = (Game.dHeight/2)+150;
 		this.password = "";
 		this.accountName = "";
 		this.input = new KeyboadTextInput();
@@ -58,6 +59,7 @@ public class LogonMenu {
 		drawInfo.drawString(textPosX, accPosY, "Name: ", Color.white);
 		drawInfo.drawString(textPosX, passPosY, "Password: ", Color.white);
 		drawInfo.drawString(textPosX, createPosY, "Create new  ", Color.white);
+		drawInfo.drawString(textPosX, lostPosY, "Lost Password", Color.white);
 		getInput();
 		drawInput.drawString(textPosX, accPosY, accountName, Color.white);
 		passSecret = "";
