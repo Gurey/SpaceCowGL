@@ -128,6 +128,7 @@ public class Game {
 		//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
+			System.out.println("<Entering gameloop>");
 			while (!Display.isCloseRequested() 
 					&& (gameState.getStatus()==Status.LOGON 
 					|| gameState.getStatus()==Status.CREATENEW 
@@ -142,7 +143,7 @@ public class Game {
 
 			}
 			updateTopLists();
-			while (!(gameState.getStatus()==Status.STARTGAME)) {
+			while (gameState.getStatus()==Status.MENU || gameState.getStatus()==Status.HIGHSCORE || gameState.getStatus()==Status.OPTIONS) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
 					dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 				}
@@ -227,7 +228,7 @@ public class Game {
 	}
 
 	private void resetGame() {
-		this.gameState.setStatus(Status.MENU);
+//		this.gameState.setStatus(Status.MENU);
 		this.gameObjHandler.getGameObjectArray().clear();
 		this.score.setScoreMulti(1);
 		this.score.resetCollisions();

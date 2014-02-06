@@ -67,12 +67,15 @@ public class HighScoreMenu {
 	}
 	public void printScore(Json[] jsonArray, String title){
 		float pad = 100;
+		int rank = 1;
 		nameText.drawString((Game.dWidth/2)-100, 50, title, Color.white);
 		if (jsonArray.length>0) {	
 			for (Json hs : jsonArray) {
 				if (hs.getName().isEmpty()) return; 
 				scoreText.drawString(Game.dWidth-100, pad, String.format("%,d", hs.getScore()), Color.white);
-				nameText.drawString((Game.dWidth/2)-100, pad, hs.getName(), Color.white);
+				if (!jsonArray.equals(personalTop10)) nameText.drawString((Game.dWidth/2)-100, pad, rank+". "+hs.getName(), Color.white);
+				else nameText.drawString((Game.dWidth/2)-100, pad, hs.getName()+".", Color.white);
+				rank++;
 				pad+=60;
 			}
 		}

@@ -63,7 +63,7 @@ public class CreateNewAccountMenu {
 		drawInfo.drawString(textPosX, accPosY, "Name: ", Color.white);
 		drawInfo.drawString(textPosX, passPosY, "Password: ", Color.white);
 		drawInfo.drawString(textPosX, pass2PosY, "Repeat: ", Color.white);
-		drawInfo.drawString(textPosX, mailPosY, "eMail", Color.white);
+		drawInfo.drawString(textPosX, mailPosY, "eMail: ", Color.white);
 		drawInfo.drawString(textPosX, backYPos, backString, Color.white);
 		getInput();
 		drawInput.drawString(textPosX, accPosY, accountName, Color.white);
@@ -98,7 +98,7 @@ public class CreateNewAccountMenu {
 			break;
 		case 4:
 			eMail = input.getInput(drawInput, eMail,20);
-			eMail.trim();
+			eMail =  eMail.trim();
 		default:
 			break;
 		}
@@ -136,9 +136,11 @@ public class CreateNewAccountMenu {
 		}
 	}
 	private boolean checkEmail(){
+		System.out.println("Checking Email: "+"'"+eMail+"'");
 		boolean eMailState = false;
 		String emailreg = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 		eMailState = eMail.matches(emailreg);
+		System.out.println("True email: "+eMailState);
 		return eMailState;
 	}
 
