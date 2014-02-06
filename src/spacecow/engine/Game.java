@@ -128,7 +128,7 @@ public class Game {
 		//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
-			System.out.println("<Entering gameloop>");
+			System.out.println("<Entering gameloop with GameState: "+gameState.getStatus()+">");
 			while (!Display.isCloseRequested() 
 					&& (gameState.getStatus()==Status.LOGON 
 					|| gameState.getStatus()==Status.CREATENEW 
@@ -170,7 +170,7 @@ public class Game {
 			}
 			//Starts the CoundDown of the game, exits when countdown is over.
 			count.setCountDownState(3);
-			while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && gameState.getStatus().equals(Status.STARTGAME)) {
+			while (!isEscPressed() && gameState.getStatus().equals(Status.STARTGAME)) {
 				render();
 				if (count.getCountdownState()<=0) {
 					break;
@@ -187,7 +187,7 @@ public class Game {
 			long startTime = Sys.getTime();
 			rush.resetRush();
 			//init the Game, running until the Player press Esc or the time runs out.
-			while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
+			while (!isEscPressed() && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
 				render();
 				update();
 				Display.update();
@@ -204,7 +204,7 @@ public class Game {
 				e.printStackTrace();
 			}
 			gOver.setDuration(Sys.getTime()-startTime);
-			while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && time.getSecondsLeft()<=0 && gameState.getStatus().equals(Status.STARTGAME)) {
+			while (!isEscPressed() && time.getSecondsLeft()<=0 && gameState.getStatus().equals(Status.STARTGAME)) {
 				render();
 				gOver.update();
 				textHandler.updateGameOver();
@@ -212,6 +212,7 @@ public class Game {
 				Display.sync(60);
 			}
 			resetGame();
+			System.out.println("Game reset");
 		}
 
 		serverConnection.closeAllConnections();
@@ -226,9 +227,16 @@ public class Game {
 		j.setType("PERSONALTOPTEN");
 		serverConnection.send(new Gson().toJson(j, Json.class));
 	}
+	
+	private boolean isEscPressed(){
+		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			gameState.setStatus(Status.MENU);
+			return true;
+		}
+		return false;
+	}
 
 	private void resetGame() {
-//		this.gameState.setStatus(Status.MENU);
 		this.gameObjHandler.getGameObjectArray().clear();
 		this.score.setScoreMulti(1);
 		this.score.resetCollisions();
