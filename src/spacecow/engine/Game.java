@@ -18,7 +18,6 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -32,6 +31,7 @@ import spacecow.buffs.Rush;
 import spacecow.engine.GameState.Status;
 import spacecow.gui.CreateNewAccountMenu;
 import spacecow.gui.HighScoreMenu;
+import spacecow.gui.HowToPlay;
 import spacecow.gui.LogonMenu;
 import spacecow.gui.LostPassword;
 import spacecow.gui.StartMenu;
@@ -63,6 +63,7 @@ public class Game {
 	private ServerConnection serverConnection;
 	private HighScoreMenu scoreMenu;
 	private LostPassword lostPassword;
+	private HowToPlay howToPlay;
 
 	TextHandler textHandler;
 
@@ -93,6 +94,7 @@ public class Game {
 		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		setScoreMenu(new HighScoreMenu(gameObjHandler.getStarsArray(), texHandler, gameState));
 		lostPassword = new LostPassword(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
+		howToPlay = new HowToPlay(gameObjHandler, player, texHandler);
 	}
 
 	//Set up the display and create it.
@@ -145,7 +147,10 @@ public class Game {
 
 			}
 			updateTopLists();
-			while (gameState.getStatus()==Status.MENU || gameState.getStatus()==Status.HIGHSCORE || gameState.getStatus()==Status.OPTIONS) {
+			while (gameState.getStatus()==Status.MENU 
+					|| gameState.getStatus()==Status.HIGHSCORE 
+					|| gameState.getStatus()==Status.OPTIONS
+					|| gameState.getStatus()==Status.HOWTOPLAY) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
 					dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 				}
@@ -159,6 +164,15 @@ public class Game {
 					break;
 				case OPTIONS:
 					startMenu.update();
+					break;
+				case HOWTOPLAY:
+					howToPlay.update();
+					rush.update();
+					magnet.update();
+					if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+						gameState.setStatus(Status.MENU);
+					}
+					break;
 				default:
 					break;
 				}
@@ -189,6 +203,7 @@ public class Game {
 			long startTime = Sys.getTime();
 			rush.resetRush();
 			gameObjHandler.resetObjectTimers();
+			resetGame();
 			//init the Game, running until the Player press Esc or the time runs out.
 			while (!isEscPressed() && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
 				render();

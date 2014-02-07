@@ -96,6 +96,9 @@ public class GameObjectHandler {
 		if (Sys.getTime()>nextScoreMultiplyer) {
 			this.gameObjectArray.add(new ScoreMultiplyer(texHandler.getPlusTex(),score, player));
 			nextScoreMultiplyer = (long) (Sys.getTime()+200+(Math.random()*2500)-(score.getScoreMulti()*5));
+			if (nextScoreMultiplyer<Sys.getTime()+200) {
+				nextScoreMultiplyer=Sys.getTime()+200;
+			}
 		}
 		//new StarBuff, new StarBuffs are created within the range of 0.5 seconds.
 		if (Sys.getTime()>nextStarBuff) {

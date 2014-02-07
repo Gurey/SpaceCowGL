@@ -22,7 +22,7 @@ public class GameOver {
 	private long finalScore;
 	private boolean scoreSubmited, enterKeyPressed;
 	private String stringToPrint;
-	private DrawText userInput;
+	private DrawText drawStats;
 	private GameState gameState;
 	private Score score;
 	private long duration;
@@ -34,7 +34,7 @@ public class GameOver {
 		this.gameState = gameState;
 		this.starsArray=starsArray;
 		this.scoreSubmited = false;
-		this.userInput = new DrawText(40, Alignment.CENTER);
+		this.drawStats = new DrawText(30, Alignment.CENTER);
 	}
 	//Moves the stars in the background.
 	public void update(){
@@ -50,7 +50,7 @@ public class GameOver {
 				+" | Duration: "+(duration/Sys.getTimerResolution()+1)
 				+" |";
 		
-		userInput.drawString(Game.dWidth/2, Game.dHeight-100, stringToPrint, Color.white);
+		drawStats.drawString(Game.dWidth/2, Game.dHeight-100, stringToPrint, Color.white);
 		submitScore();
 		checkEnter();
 	}

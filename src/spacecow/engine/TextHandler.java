@@ -34,6 +34,7 @@ public class TextHandler {
 		this.drawNormal=new DrawText(35,Alignment.LEFT);
 		this.drawCenter=new DrawText(55, Alignment.CENTER);
 		this.drawTime=new DrawText(30, Alignment.CENTER);
+		
 
 	}
 
