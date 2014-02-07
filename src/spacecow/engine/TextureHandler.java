@@ -37,6 +37,8 @@ public class TextureHandler{
 	private Texture plusTex;
 	private Texture asteroidTex;
 	private Texture magnet;
+	private Texture arrowKeys;
+	private Texture shiftKey;
 	
 	private Texture optionsTex, startGameTex, highScoreTex;
 	
@@ -63,6 +65,9 @@ public class TextureHandler{
 		 optionsTex = loadTexture("options.png");
 		 startGameTex = loadTexture("startgame.png");
 		 highScoreTex = loadTexture("highscore.png");
+		 
+		 arrowKeys = loadTexture("arrowkeys.png");
+		 shiftKey = loadTexture("shift.png");
 	}
 	//Loads a image based on the Path and puts it on a texture.
 	private Texture loadTexture(String file){
@@ -185,5 +190,11 @@ public class TextureHandler{
 	}
 	public Texture getHighScoreTex() {
 		return highScoreTex;
+	}
+	public Texture getArrowKeys() {
+		return arrowKeys;
+	}
+	public Texture getShiftKey() {
+		return shiftKey;
 	}
 }
