@@ -89,36 +89,56 @@ public class GameObjectHandler {
 	private void checkIfNewObjects(){
 		//new Cookie, new cookies are created in a random range within 0.5 to 15 seconds.
 		if (Sys.getTime()>nextCookie) {
-			this.gameObjectArray.add(new Cookie(texHandler.getCookieTex(),score, player, magnet, time));
-			nextCookie = (long) (Sys.getTime()+500+(Math.random()*14500));
+			addCookie();
 		}
 		//new ScoreMulti, new score multi are created within a range of 0.2 to 2.7 seconds minus the score multi*5
 		if (Sys.getTime()>nextScoreMultiplyer) {
-			this.gameObjectArray.add(new ScoreMultiplyer(texHandler.getPlusTex(),score, player));
-			nextScoreMultiplyer = (long) (Sys.getTime()+200+(Math.random()*2500)-(score.getScoreMulti()*5));
-			if (nextScoreMultiplyer<Sys.getTime()+200) {
-				nextScoreMultiplyer=Sys.getTime()+200;
-			}
+			addScoreMulti();
 		}
 		//new StarBuff, new StarBuffs are created within the range of 0.5 seconds.
 		if (Sys.getTime()>nextStarBuff) {
-			this.gameObjectArray.add(new StarBuff(texHandler.getStarBuffTex(),score, player));
-			nextStarBuff = (long) (Sys.getTime()+(Math.random()*500));
+			addStarBuff();
 		}
 		//new Asteroid, created within the range of 0.5 to 1.8 seconds minus scoreMulti*5.
 		if (Sys.getTime()>nextAsteroid) {
-			this.gameObjectArray.add(new Asteroid(texHandler.getAsteroidTex(), score, player, time));
-			nextAsteroid = (long) (Sys.getTime()+200+(Math.random()*3000-score.getScoreMulti()*20));
-			//The lowest spawn rate is every 300 milliseconds.
-			if (nextAsteroid<Sys.getTime()+200) {
-				nextAsteroid=Sys.getTime()+200;
-			}
+			addAsteroid();
 		}
 		//new Magnet, created within the range of 0.5 to 6.5 seconds.
 		if (Sys.getTime()>nextMagnet) {
-			this.gameObjectArray.add(new MagnetObj(texHandler.getMagnet(), score, player, magnet));
-			nextMagnet = (long) (Sys.getTime()+500+(Math.random()*6000));
+			addMagnet();
 		}
+	}
+
+	public void addMagnet() {
+		this.gameObjectArray.add(new MagnetObj(texHandler.getMagnet(), score, player, magnet));
+		nextMagnet = (long) (Sys.getTime()+500+(Math.random()*6000));
+	}
+
+	public void addAsteroid() {
+		this.gameObjectArray.add(new Asteroid(texHandler.getAsteroidTex(), score, player, time));
+		nextAsteroid = (long) (Sys.getTime()+200+(Math.random()*3000-score.getScoreMulti()*20));
+		//The lowest spawn rate is every 300 milliseconds.
+		if (nextAsteroid<Sys.getTime()+200) {
+			nextAsteroid=Sys.getTime()+200;
+		}
+	}
+
+	public void addStarBuff() {
+		this.gameObjectArray.add(new StarBuff(texHandler.getStarBuffTex(),score, player));
+		nextStarBuff = (long) (Sys.getTime()+(Math.random()*500));
+	}
+
+	public void addScoreMulti() {
+		this.gameObjectArray.add(new ScoreMultiplyer(texHandler.getPlusTex(),score, player));
+		nextScoreMultiplyer = (long) (Sys.getTime()+200+(Math.random()*2500)-(score.getScoreMulti()*5));
+		if (nextScoreMultiplyer<Sys.getTime()+200) {
+			nextScoreMultiplyer=Sys.getTime()+200;
+		}
+	}
+
+	public void addCookie() {
+		this.gameObjectArray.add(new Cookie(texHandler.getCookieTex(),score, player, magnet, time));
+		nextCookie = (long) (Sys.getTime()+500+(Math.random()*14500));
 	}
 	//Created initial star count
 	private void createStars(int numberOfStars){

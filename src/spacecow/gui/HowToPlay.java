@@ -24,28 +24,22 @@ public class HowToPlay {
 	private DrawText drawInfo;
 	private TextureHandler textureHandler;
 	private Magnet magnet;
+	private String message;
 	
 	public HowToPlay(GameObjectHandler gameObjectHandler, Player player, TextureHandler textureHandler, Magnet magnet) {
 		this.objectHandler = gameObjectHandler;
 		this.player = player;
-		this.drawInfo = new DrawText(35, Alignment.RIGHT);
+		this.drawInfo = new DrawText(35, Alignment.CENTER);
 		this.textureHandler = textureHandler;
 		this.magnet = magnet;
+		this.message = "";
 	}
 	
 	public void update(){
 		objectHandler.update();
 		setPositions();
 		player.update();
-//		for (GameObject go : objectHandler.getGameObjectArray()) {
-//			if (!(go instanceof Asteroid)) {
-//				drawInfo.drawString(go.getX(), go.getY(), "GOOD!->", Color.green);
-//			}
-//			else drawInfo.drawString(go.getX(), go.getY(), "BAD!->", Color.red);
-//		}
-//		Color.white.bind();
-//		textureHandler.drawTexture(textureHandler.getArrowKeys(), 100, Game.dHeight-textureHandler.getArrowKeys().getTextureHeight());
-//		textureHandler.drawTexture(textureHandler.getShiftKey(), 500, Game.dHeight-textureHandler.getShiftKey().getTextureHeight());
+		drawInfo();
 	}
 	
 	private void setPositions(){
@@ -57,5 +51,16 @@ public class HowToPlay {
 			else if(go instanceof ScoreMultiplyer) go.setX((float) (Game.dWidth/1.2));
 		}
 	}
-	
+	private void drawInfo(){
+		for (GameObject go : objectHandler.getGameObjectArray()) {
+			if (go.colliding()) {
+			if (go instanceof StarBuff && magnet.isAvailable()) message = "Stars gives you 100 x ScoreMultiplyer x ScoreMultiplyer points";
+			else if(go instanceof Cookie) message = "Cookies adds 10 seconds on the time";
+			else if(go instanceof Asteroid) message = "Ateroids removes 10 seconds from the timer";
+			else if(go instanceof MagnetObj) message = "Draws all the stars to you";
+			else if(go instanceof ScoreMultiplyer) message = "Adds +1 to the score multi, decreases after 5 seconds if you dont catch a new";
+		}
+		}
+		drawInfo.drawString(Game.dWidth/2, 100, message, Color.white);
+	}
 }
