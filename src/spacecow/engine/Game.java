@@ -94,7 +94,7 @@ public class Game {
 		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		setScoreMenu(new HighScoreMenu(gameObjHandler.getStarsArray(), texHandler, gameState));
 		lostPassword = new LostPassword(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
-		howToPlay = new HowToPlay(gameObjHandler, player, texHandler);
+		howToPlay = new HowToPlay(gameObjHandler, player, texHandler, magnet);
 	}
 
 	//Set up the display and create it.

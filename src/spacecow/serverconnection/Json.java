@@ -10,6 +10,13 @@ public class Json {
 	private Json[] jsonArray;
 	private Date date;
 	
+	
+	public Json() {
+		this.type= "";
+		this.name = "";
+		this.password="";
+		this.eMail ="";
+	}
 	public long getAvgScore() {
 		return avgScore;
 	}
