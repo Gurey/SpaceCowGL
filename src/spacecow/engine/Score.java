@@ -6,7 +6,7 @@ public class Score {
 	
 	private long score = 0;
 	private int scoreMulti=1;
-	private long scoreMultiTime;
+	private long scoreMultiTime, scoreLost;
 	private boolean removeMulti = false;
 	private int magnetCol, multiCol, cookiaCol, astroidCol, starCol;
 	
@@ -38,6 +38,7 @@ public class Score {
 		this.magnetCol = 0;
 		this.multiCol = 0;
 		this.starCol = 0;
+		this.scoreLost = 0;
 	}
 	public int getScoreMulti(){
 		return scoreMulti;
@@ -50,6 +51,14 @@ public class Score {
 	}
 	public void setScore(long score){
 		this.score = score;
+	}
+	public void reduceScorePercent(int percent){
+		double percentage = 100-percent;
+		percentage = percentage/100;
+		System.out.println("Reducement: "+percentage);
+		long reducedScore = (long) (this.score*percentage);
+		scoreLost = this.score-reducedScore;
+		this.score = (long) (this.score*percentage);
 	}
 	public int getMagnetCol() {
 		return magnetCol;

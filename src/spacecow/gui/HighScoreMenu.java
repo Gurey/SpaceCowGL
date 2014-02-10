@@ -74,7 +74,9 @@ public class HighScoreMenu {
 			for (Json json : jsonArray) {
 				if (json.getName().isEmpty()) return; 
 				scoreText.drawString(Game.dWidth-200, pad, String.format("%,d", json.getScore()), Color.white);
-				dateText.drawString(xPos+50, pad, ""+json.getDate(), Color.white);
+				
+				if (!jsonArray.equals(bestAvg)) dateText.drawString(xPos+50, pad, ""+json.getDate(), Color.white);
+				
 				if (!jsonArray.equals(personalTop10))
 					nameText.drawString((Game.dWidth/2)-200, pad, rank+". "+json.getName(), Color.white);
 				else nameText.drawString((Game.dWidth/2)-200, pad, json.getName()+".", Color.white);

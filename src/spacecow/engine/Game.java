@@ -244,6 +244,8 @@ public class Game {
 		serverConnection.send(new Gson().toJson(j, Json.class));
 		j.setType("PERSONALTOPTEN");
 		serverConnection.send(new Gson().toJson(j, Json.class));
+		j.setType("BESTAVG");
+		serverConnection.send(new Gson().toJson(j, Json.class));
 	}
 	
 	private boolean isEscPressed(){

@@ -101,6 +101,8 @@ public class ServerConnection implements Runnable {
 		case "PERSONALTOPTEN":
 			game.getScoreMenu().setPersonalTop10(json.getJsonArray());
 			break;
+		case "BESTAVG":
+			game.getScoreMenu().setBestAvg(json.getJsonArray());
 		default:
 			break;
 		}

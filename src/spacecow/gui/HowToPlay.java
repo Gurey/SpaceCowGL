@@ -1,5 +1,6 @@
 package spacecow.gui;
 
+import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 
 import spacecow.buffs.Magnet;
@@ -25,6 +26,7 @@ public class HowToPlay {
 	private TextureHandler textureHandler;
 	private Magnet magnet;
 	private String message;
+	private long time;
 	
 	public HowToPlay(GameObjectHandler gameObjectHandler, Player player, TextureHandler textureHandler, Magnet magnet) {
 		this.objectHandler = gameObjectHandler;
@@ -33,6 +35,7 @@ public class HowToPlay {
 		this.textureHandler = textureHandler;
 		this.magnet = magnet;
 		this.message = "";
+		this.time = Sys.getTime();
 	}
 	
 	public void update(){
@@ -40,6 +43,7 @@ public class HowToPlay {
 		setPositions();
 		player.update();
 		drawInfo();
+		createObjects();
 	}
 	
 	private void setPositions(){
@@ -54,13 +58,22 @@ public class HowToPlay {
 	private void drawInfo(){
 		for (GameObject go : objectHandler.getGameObjectArray()) {
 			if (go.colliding()) {
-			if (go instanceof StarBuff && magnet.isAvailable()) message = "Stars gives you 100 x ScoreMultiplyer x ScoreMultiplyer points";
+			if (go instanceof StarBuff && magnet.isAvailable()) message = "Stars adds point by 100 x ScoreMultiplyer";
 			else if(go instanceof Cookie) message = "Cookies adds 10 seconds on the time";
-			else if(go instanceof Asteroid) message = "Ateroids removes 10 seconds from the timer";
+			else if(go instanceof Asteroid) message = "Ateroids removes 10 seconds from the timer, removes 5% from your score!";
 			else if(go instanceof MagnetObj) message = "Draws all the stars to you";
 			else if(go instanceof ScoreMultiplyer) message = "Adds +1 to the score multi, decreases after 5 seconds if you dont catch a new";
 		}
 		}
 		drawInfo.drawString(Game.dWidth/2, 100, message, Color.white);
+	}
+	private void createObjects(){
+		if (time+1500<Sys.getTime()) {
+			objectHandler.addAsteroid();
+			objectHandler.addCookie();
+			objectHandler.addMagnet();
+			objectHandler.addScoreMulti();
+			time = Sys.getTime();
+		}
 	}
 }

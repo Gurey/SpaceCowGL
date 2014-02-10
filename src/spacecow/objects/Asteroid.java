@@ -24,7 +24,7 @@ public class Asteroid extends GameObject {
 	public void collisionAction(){
 		time.incTimeLeft(-10);
 		score.setAstroidCol(score.getAstroidCol()+1);
-		System.out.println(score.getAstroidCol());
+		score.reduceScorePercent(5);
 	}
 
 }
