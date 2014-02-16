@@ -25,8 +25,9 @@ public class LogonMenu {
 	private TextureHandler textureHandler;
 	private GameState state;
 	private DrawText drawInfo;
+	private DrawText drawMessage;
 	private DrawText drawInput;
-	private String accountName, password, passSecret;
+	private String accountName, password, passSecret, message;
 	private float textPosX, accPosY, passPosY, createPosY, lostPosY;
 	private KeyboadTextInput input;
 	private Pointer pointer;
@@ -38,8 +39,10 @@ public class LogonMenu {
 		this.setStarArrayList(starArrayList);
 		this.setTextureHandler(textureHandler);
 		this.setState(state);
+		this.message = "Welcome!";
 		this.drawInfo =  new DrawText(50, Alignment.RIGHT);
 		this.drawInput = new DrawText(50, Alignment.LEFT);
+		this.drawMessage = new DrawText(35, Alignment.CENTER);
 		this.textPosX = Game.dWidth/2;
 		this.accPosY = (Game.dHeight/2)-150;
 		this.passPosY = (Game.dHeight/2)-50;
@@ -68,6 +71,7 @@ public class LogonMenu {
 		}
 		drawInput.drawString(textPosX, passPosY, passSecret, Color.white);
 		checkIfExe();
+		drawMessage.drawString(Game.dWidth/2, Game.dHeight-100, message, Color.white);
 	}
 	
 	public void getInput(){
@@ -170,6 +174,14 @@ public class LogonMenu {
 	}
 	public void setConnection(ServerConnection connection){
 		this.connection = connection;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 }

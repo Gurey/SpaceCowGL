@@ -18,13 +18,14 @@ import spacecow.serverconnection.Json;
 
 public class HighScoreMenu {
 
-	private DrawText scoreText, nameText, menuText, dateText;
+	private DrawText scoreText, nameText, menuText, dateText, drawMessage;
 	private Json[] top10, personalTop10, bestAvg;
 	private ArrayList<Star> starAr;
 	private GameState gameState;
 	private Pointer pointer;
 	private boolean enterKeyPressed;
 	private float xPos;
+	private String message;
 
 	public HighScoreMenu(ArrayList<Star> starArray, TextureHandler texHandler, GameState gameState){
 		this.starAr = starArray;
@@ -38,6 +39,7 @@ public class HighScoreMenu {
 		setNameText(new DrawText(35, Alignment.LEFT));
 		this.dateText = new DrawText(35, Alignment.LEFT);
 		this.pointer = new Pointer(40,100, 100, 4, 1, texHandler);
+		this.drawMessage = new DrawText(35, Alignment.CENTER);
 	}
 
 	public void update(){
@@ -52,12 +54,15 @@ public class HighScoreMenu {
 		switch (pointer.getPointerState()) {
 		case 1:
 			printScore(top10, "Top 10");
+			message = "Top 10 world scores!";
 			break;
 		case 2:
 			printScore(personalTop10, "Personal Top Scores");
+			message = "Your personal top scores!";
 			break;
 		case 3:
 			printScore(bestAvg, "Best average score");
+			message = "Best average score (minimum 10 games)";
 			break;
 		case 4:
 			checkEnter();
@@ -65,6 +70,7 @@ public class HighScoreMenu {
 		default:
 			break;
 		}
+		drawMessage.drawString(Game.dWidth/2, Game.dHeight-100, message, Color.white);
 	}
 	public void printScore(Json[] jsonArray, String title){
 		float pad = 100;

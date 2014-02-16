@@ -57,9 +57,7 @@ public class StartMenu {
 		statText.drawString(100, 600, "Exit", Color.white);
 		pointer.updatePointerState();
 		
-		if (pointer.getPointerState()==1) {
-			printStats();
-		}
+		printStats();
 		checkIfExe();
 		
 	}

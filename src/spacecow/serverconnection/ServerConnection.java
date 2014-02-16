@@ -9,7 +9,6 @@ import java.net.Socket;
 import com.google.gson.Gson;
 
 import spacecow.engine.Game;
-import spacecow.engine.GameState;
 import spacecow.engine.GameState.Status;
 
 public class ServerConnection implements Runnable {
@@ -89,7 +88,7 @@ public class ServerConnection implements Runnable {
 			if (json.getAccID()>0) {
 				game.getGameState().setStatus(Status.MENU);
 			}
-			else conMsg = "Wrong username or pass";
+			else game.getLogonMenu().setMessage("Wrong username or password :(");
 			break;
 		case "STATS":
 			game.getStartMenu().setPlayerStats(json);

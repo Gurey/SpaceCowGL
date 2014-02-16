@@ -52,5 +52,69 @@ public class Pointer {
 	public void setPointerState(int state){
 		this.pointerState = state;
 	}
+
+	public boolean isKeyRealeased() {
+		return keyRealeased;
+	}
+
+	public int getPointerStateMax() {
+		return pointerStateMax;
+	}
+
+	public float getRotation() {
+		return rotation;
+	}
+
+	public float getStartPosX() {
+		return startPosX;
+	}
+
+	public float getStartPosY() {
+		return startPosY;
+	}
+
+	public float getPadding() {
+		return padding;
+	}
+
+	public TextureHandler getTextureHandler() {
+		return textureHandler;
+	}
+
+	public Texture getPointerTex() {
+		return pointerTex;
+	}
+
+	public void setKeyRealeased(boolean keyRealeased) {
+		this.keyRealeased = keyRealeased;
+	}
+
+	public void setPointerStateMax(int pointerStateMax) {
+		this.pointerStateMax = pointerStateMax;
+	}
+
+	public void setRotation(float rotation) {
+		this.rotation = rotation;
+	}
+
+	public void setStartPosX(float startPosX) {
+		this.startPosX = startPosX;
+	}
+
+	public void setStartPosY(float startPosY) {
+		this.startPosY = startPosY;
+	}
+
+	public void setPadding(float padding) {
+		this.padding = padding;
+	}
+
+	public void setTextureHandler(TextureHandler textureHandler) {
+		this.textureHandler = textureHandler;
+	}
+
+	public void setPointerTex(Texture pointerTex) {
+		this.pointerTex = pointerTex;
+	}
 	
 }

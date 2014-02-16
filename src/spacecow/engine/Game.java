@@ -34,9 +34,11 @@ import spacecow.gui.HighScoreMenu;
 import spacecow.gui.HowToPlay;
 import spacecow.gui.LogonMenu;
 import spacecow.gui.LostPassword;
+import spacecow.gui.Options;
 import spacecow.gui.StartMenu;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
+import spacecow.objects.Star;
 import spacecow.serverconnection.Json;
 import spacecow.serverconnection.ServerConnection;
 
@@ -64,6 +66,7 @@ public class Game {
 	private HighScoreMenu scoreMenu;
 	private LostPassword lostPassword;
 	private HowToPlay howToPlay;
+	private Options options;
 
 	TextHandler textHandler;
 
@@ -89,12 +92,13 @@ public class Game {
 		startMenu = new StartMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
 		count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
 		textHandler = new TextHandler(this);
-		dConfig = new DisplayConfig();
+		setdConfig(new DisplayConfig());
 		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		setScoreMenu(new HighScoreMenu(gameObjHandler.getStarsArray(), texHandler, gameState));
 		lostPassword = new LostPassword(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		howToPlay = new HowToPlay(gameObjHandler, player, texHandler, magnet);
+		options = new Options(this);
 	}
 
 	//Set up the display and create it.
@@ -124,7 +128,7 @@ public class Game {
 	}
 
 	public void start(){
-		//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
 			System.out.println("<Entering gameloop with GameState: "+gameState.getStatus()+">");
@@ -151,9 +155,6 @@ public class Game {
 					|| gameState.getStatus()==Status.HIGHSCORE 
 					|| gameState.getStatus()==Status.OPTIONS
 					|| gameState.getStatus()==Status.HOWTOPLAY) {
-				if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
-					dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
-				}
 				render();
 				switch (gameState.getStatus()) {
 				case MENU:
@@ -163,7 +164,8 @@ public class Game {
 					scoreMenu.update();
 					break;
 				case OPTIONS:
-					startMenu.update();
+					moveStars();
+					options.update();
 					break;
 				case HOWTOPLAY:
 					howToPlay.update();
@@ -238,6 +240,7 @@ public class Game {
 		Display.destroy();
 	}
 
+
 	private void updateTopLists() {
 		Json j = new Json();
 		j.setType("TOPTEN");
@@ -273,6 +276,12 @@ public class Game {
 		score.update();
 		textHandler.updateGame();
 	}
+	
+	public void moveStars(){
+		for (Star star : gameObjHandler.getStarsArray()) {
+			star.move();
+		}
+	}
 	//Prints out the content on the screen.
 	public void render(){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -283,6 +292,11 @@ public class Game {
 	public GameObjectHandler getGameObjHandler() {
 		return gameObjHandler;
 	}
+	
+	public LogonMenu getLogonMenu() {
+		return logonMenu;
+	}
+	
 	public Magnet getMagnet() {
 		return magnet;
 	}
@@ -320,5 +334,13 @@ public class Game {
 
 	public void setScoreMenu(HighScoreMenu scoreMenu) {
 		this.scoreMenu = scoreMenu;
+	}
+
+	public DisplayConfig getdConfig() {
+		return dConfig;
+	}
+
+	public void setdConfig(DisplayConfig dConfig) {
+		this.dConfig = dConfig;
 	}
 }

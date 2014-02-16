@@ -14,6 +14,7 @@ public class KeyboadTextInput {
 			keyReleased = false;
 			if (drawText.canPrint(keyPressed) && !(stringToEdit.length()>=stringMaxSize)) {
 				stringToEdit += keyPressed; 
+//				stringToEdit = stringToEdit.replaceAll("\\W", "");
 				System.out.print(keyPressed);
 			}
 		}
