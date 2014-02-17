@@ -44,6 +44,7 @@ public class Options extends Menu{
 			break;
 		case 3:
 			getGame().getGameState().setStatus(Status.CHANGEPASS);
+			getPointer().setPointerState(1);
 			break;
 		case 4:
 			getGame().getGameState().setStatus(Status.MENU);
