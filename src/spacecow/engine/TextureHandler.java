@@ -40,7 +40,7 @@ public class TextureHandler{
 	private Texture arrowKeys;
 	private Texture shiftKey;
 	
-	private Texture optionsTex, startGameTex, highScoreTex;
+	private Texture optionsTex, startGameTex, highScoreTex, cowsad, cowCool, dragonCow;
 	
 	
 	public TextureHandler(){
@@ -56,6 +56,10 @@ public class TextureHandler{
 		 star5Tex = loadTexture("Star5.png");
 		
 		 cowTex = loadTexture("cow.png");
+		 cowsad = loadTexture("Moosad.png");
+		 cowCool = loadTexture("MooCool.png");
+		 dragonCow = loadTexture("dragonMooIsh.png");
+		 
 		 starBuffTex = loadTexture("StarBuff.png");
 		 cookieTex = loadTexture("Cookie.png");
 		 plusTex = loadTexture("plus.png");
@@ -196,5 +200,26 @@ public class TextureHandler{
 	}
 	public Texture getShiftKey() {
 		return shiftKey;
+	}
+	public void setCowTex(Texture tex){
+		this.cowTex = tex;
+	}
+	public Texture getCowsad() {
+		return cowsad;
+	}
+	public void setCowsad(Texture cowsad) {
+		this.cowsad = cowsad;
+	}
+	public Texture getCowCool() {
+		return cowCool;
+	}
+	public void setCowCool(Texture cowCool) {
+		this.cowCool = cowCool;
+	}
+	public Texture getDragonCow() {
+		return dragonCow;
+	}
+	public void setDragonCow(Texture dragonCow) {
+		this.dragonCow = dragonCow;
 	}
 }

@@ -16,9 +16,9 @@ import spacecow.engine.TextureHandler;
 
 public class Menu {
 
-	protected ArrayList<MenuObject> menuObjects;
-	private String title, secretString;
-	private DrawText drawMenu, drawTitle, drawInput;
+	private ArrayList<MenuObject> menuObjects;
+	private String title, secretString, message;
+	private DrawText drawMenu, drawTitle, drawInput, drawMessage;
 	private KeyboadTextInput input;
 	private Pointer pointer;
 	private float startPosX, startPosY, padding;
@@ -34,11 +34,13 @@ public class Menu {
 		this.menuObjects = new ArrayList<>();
 		this.setTitle("");
 		this.secretString = "";
+		this.message = "";
 		this.setDrawMenu(new DrawText(40, Alignment.RIGHT));
 		this.drawInput = new DrawText(40, Alignment.LEFT);
 		this.setDrawTitle(new DrawText(50, Alignment.CENTER));
 		this.input = new KeyboadTextInput();
 		this.pointer = new Pointer(startPosX, startPosY, padding, menuObjects.size(), 1, game.getTexHandler());
+		this.drawMessage = new DrawText(35, Alignment.CENTER);
 	}
 	
 	public void editString(){
@@ -65,6 +67,7 @@ public class Menu {
 			}
 			yPos += padding;
 		}
+		drawMessage.drawString(Game.dWidth/2, (float) (Game.dHeight/1.2), message, Color.white);
 		pointer.updatePointerState();
 		editString();
 		if (checkEnter()) {
@@ -183,6 +186,14 @@ public class Menu {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	

@@ -26,7 +26,8 @@ public class LostPassword {
 	private GameState state;
 	private DrawText drawInfo;
 	private DrawText drawInput;
-	private String mail1, mail2, passSecret;
+	private DrawText drawMessage;
+	private String mail1, mail2, passSecret, message;
 	private float textPosX, mailPosY1, mailPosY2, backPosY;
 	private KeyboadTextInput input;
 	private Pointer pointer;
@@ -41,12 +42,14 @@ public class LostPassword {
 		this.setState(state);
 		this.drawInfo =  new DrawText(50, Alignment.RIGHT);
 		this.drawInput = new DrawText(50, Alignment.LEFT);
+		this.drawMessage = new DrawText(35, Alignment.CENTER);
 		this.textPosX = Game.dWidth/2;
 		this.mailPosY1 = (Game.dHeight/2)-50;
 		this.mailPosY2 = (Game.dHeight/2)+50;
 		this.backPosY = (Game.dHeight/2)+150;
 		this.mail2 = "";
 		this.mail1 = "";
+		this.message = "";
 		this.input = new KeyboadTextInput();
 		this.pointer = new Pointer(350,mailPosY1, 100, 3, 1, textureHandler);
 		this.matchColor = Color.white;
@@ -70,16 +73,17 @@ public class LostPassword {
 		drawInput.drawString(textPosX, mailPosY1, mail1, Color.white);
 		drawInput.drawString(textPosX, mailPosY2, mail2, Color.white);
 		checkIfExe();
+		drawMessage.drawString(Game.dWidth/2, Game.dHeight-100, message, Color.white);
 	}
 	
 	public void getInput(){
 		switch (pointer.getPointerState()) {
 		case 1:
-			mail1 = input.getInput(drawInput, mail1,30);
+			mail1 = input.getInput(drawInput, mail1,50);
 			mail1 = mail1.trim();
 			break;
 		case 2:
-			mail2 = input.getInput(drawInput, mail2,30);
+			mail2 = input.getInput(drawInput, mail2,50);
 			mail2 = mail2.trim();
 			break;
 		default:
@@ -162,5 +166,13 @@ public class LostPassword {
 	}
 	public void setConnection(ServerConnection connection){
 		this.connection = connection;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

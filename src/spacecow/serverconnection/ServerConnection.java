@@ -87,6 +87,7 @@ public class ServerConnection implements Runnable {
 		case "LOGIN RETURN":
 			if (json.getAccID()>0) {
 				game.getGameState().setStatus(Status.MENU);
+				game.getOptions().setSkin(json.getSkinID());
 			}
 			else game.getLogonMenu().setMessage("Wrong username or password :(");
 			break;
@@ -102,6 +103,13 @@ public class ServerConnection implements Runnable {
 			break;
 		case "BESTAVG":
 			game.getScoreMenu().setBestAvg(json.getJsonArray());
+			break;
+		case "CHANGEPASS":
+			game.getChangePassword().setMessage(json.getName());
+			break;
+		case "LOSTPASS":
+			game.getLostPassword().setMessage(json.getName());
+			break;
 		default:
 			break;
 		}

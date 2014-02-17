@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import spacecow.buffs.Magnet;
 import spacecow.buffs.Rush;
 import spacecow.engine.GameState.Status;
+import spacecow.gui.ChangePassword;
 import spacecow.gui.CreateNewAccountMenu;
 import spacecow.gui.HighScoreMenu;
 import spacecow.gui.HowToPlay;
@@ -67,6 +68,7 @@ public class Game {
 	private LostPassword lostPassword;
 	private HowToPlay howToPlay;
 	private Options options;
+	private ChangePassword changePassword;
 
 	TextHandler textHandler;
 
@@ -99,6 +101,7 @@ public class Game {
 		lostPassword = new LostPassword(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
 		howToPlay = new HowToPlay(gameObjHandler, player, texHandler, magnet);
 		options = new Options(this);
+		changePassword = new ChangePassword(this);
 	}
 
 	//Set up the display and create it.
@@ -128,7 +131,7 @@ public class Game {
 	}
 
 	public void start(){
-		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.LOGON);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
 			System.out.println("<Entering gameloop with GameState: "+gameState.getStatus()+">");
@@ -154,7 +157,8 @@ public class Game {
 			while (gameState.getStatus()==Status.MENU 
 					|| gameState.getStatus()==Status.HIGHSCORE 
 					|| gameState.getStatus()==Status.OPTIONS
-					|| gameState.getStatus()==Status.HOWTOPLAY) {
+					|| gameState.getStatus()==Status.HOWTOPLAY
+					|| gameState.getStatus()==Status.CHANGEPASS) {
 				render();
 				switch (gameState.getStatus()) {
 				case MENU:
@@ -174,6 +178,10 @@ public class Game {
 					if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 						gameState.setStatus(Status.MENU);
 					}
+					break;
+				case CHANGEPASS:
+					moveStars();
+					changePassword.update();
 					break;
 				default:
 					break;
@@ -342,5 +350,25 @@ public class Game {
 
 	public void setdConfig(DisplayConfig dConfig) {
 		this.dConfig = dConfig;
+	}
+
+	public ServerConnection getServerConnection() {
+		return serverConnection;
+	}
+
+	public Options getOptions() {
+		return options;
+	}
+
+	public ChangePassword getChangePassword() {
+		return changePassword;
+	}
+
+	public void setChangePassword(ChangePassword changePassword) {
+		this.changePassword = changePassword;
+	}
+
+	public LostPassword getLostPassword() {
+		return lostPassword;
 	}
 }

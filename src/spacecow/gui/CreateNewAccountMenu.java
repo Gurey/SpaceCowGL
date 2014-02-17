@@ -97,7 +97,7 @@ public class CreateNewAccountMenu {
 			password2 = password2.trim();
 			break;
 		case 4:
-			eMail = input.getInput(drawInput, eMail,20);
+			eMail = input.getInput(drawInput, eMail,35);
 			eMail =  eMail.trim();
 		default:
 			break;

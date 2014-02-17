@@ -154,6 +154,9 @@ public class Player {
 	public void setRush(Rush rush) {
 		this.rush = rush;
 	}
-
+	
+	public void setNeutralCow(Texture neutralCow) {
+		this.neutralCow = neutralCow;
+	}
 
 }

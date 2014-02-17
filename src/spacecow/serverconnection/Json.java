@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Json {
 
 	private String type, name, password, eMail;
-	private int accID, time, astoids, multi, cookies, stars, magnets;
+	private int accID, time, astoids, multi, cookies, stars, magnets, skinID;
 	private long score, avgScore;
 	private Json[] jsonArray;
 	private Date date;
@@ -135,6 +135,12 @@ public class Json {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	public int getSkinID() {
+		return skinID;
+	}
+	public void setSkinID(int skinID) {
+		this.skinID = skinID;
 	}
 	
 }
