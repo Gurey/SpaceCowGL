@@ -5,8 +5,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 //		Load natives to be able to run the rest of the program.
-//		LoadNative nativeLoader = new LoadNative();
-//		nativeLoader.loadNatives();
+		LoadNative nativeLoader = new LoadNative();
+		nativeLoader.loadNatives();
 		new Game().start();
 	}
 }

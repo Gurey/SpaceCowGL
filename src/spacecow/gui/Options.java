@@ -70,6 +70,7 @@ public class Options extends Menu{
 			tex = textureHandler.getDragonCow();
 			break;
 		default:
+			tex = textureHandler.getCowTex();
 			break;
 		}
 		player.setNeutralCow(tex);

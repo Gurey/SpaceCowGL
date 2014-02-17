@@ -242,9 +242,11 @@ public class Game {
 			resetGame();
 			System.out.println("Game reset");
 		}
-
-		serverConnection.closeAllConnections();
-		System.out.println("Connections Closed!");
+		
+		if (serverConnection != null) {
+			serverConnection.closeAllConnections();
+			System.out.println("Connections Closed!");
+		}
 		Display.destroy();
 	}
 

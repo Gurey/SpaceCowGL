@@ -26,7 +26,7 @@ public class ServerConnection implements Runnable {
 		gson = new Gson();
 		this.game = game;
 		try {
-			serverCon = new Socket("localhost", 10000);
+			serverCon = new Socket("gurey.synology.me", 10000);
 			out = new PrintWriter(serverCon.getOutputStream());
 			in = new BufferedReader(new InputStreamReader(serverCon.getInputStream()));
 			connected = true;
