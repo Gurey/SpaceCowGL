@@ -44,10 +44,16 @@ public class Menu {
 	}
 	
 	public void editString(){
+		if (menuObjects.get(pointer.getPointerState()-1).isEditable()) {
 			menuObjects.get(pointer.getPointerState()-1).setMenuInput(input.getInput(drawInput, menuObjects.get(pointer.getPointerState()-1).getMenuInput(), 100));
 			if (menuObjects.get(pointer.getPointerState()-1).isSecret()){
 				menuObjects.get(pointer.getPointerState()-1).setMenuInput(menuObjects.get(pointer.getPointerState()-1).getMenuInput().replaceAll("\\W", ""));
 			}
+		}
+		else {
+			String s = "";
+			s = input.getInput(drawInput, s, 100);
+		}
 	}
 	
 	public void update(){
@@ -89,8 +95,8 @@ public class Menu {
 		//Pointerstate can be 1 to the maximum amount of pointerstates:
 	}
 	
-	public void addMenuObject(String menuText, boolean haveInputString, boolean secretInput){
-		menuObjects.add(new MenuObject(menuText, haveInputString, secretInput));
+	public void addMenuObject(String menuText, boolean haveInputString, boolean secretInput, boolean editable){
+		menuObjects.add(new MenuObject(menuText, haveInputString, secretInput, editable));
 		pointer.setPointerStateMax(menuObjects.size());
 		if (pointer.getStartPosX() > (startPosX - drawMenu.getTextWidht(menuText))) {
 			pointer.setStartPosX(startPosX - drawMenu.getTextWidht(menuText) - 75);

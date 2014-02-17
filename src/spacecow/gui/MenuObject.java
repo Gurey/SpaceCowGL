@@ -3,13 +3,14 @@ package spacecow.gui;
 public class MenuObject {
 
 	private String menuText, menuInput;
-	private boolean secret, haveInputField;
+	private boolean secret, haveInputField, editable;
 	
-	public MenuObject(String menuText, boolean haveInputField, boolean secret) {
+	public MenuObject(String menuText, boolean haveInputField, boolean secret, boolean editable) {
 		this.menuText = menuText;
 		this.secret = secret;
 		this.menuInput = "";
 		this.haveInputField = haveInputField;
+		this.editable = editable;
 	}
 	
 	public String getMenuText() {
@@ -42,5 +43,13 @@ public class MenuObject {
 
 	public void setHaveInputField(boolean haveInputField) {
 		this.haveInputField = haveInputField;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 }

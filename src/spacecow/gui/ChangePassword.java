@@ -10,10 +10,10 @@ public class ChangePassword extends Menu {
 
 	public ChangePassword(Game game) {
 		super(game);
-		addMenuObject("New Password: ", true, true);
-		addMenuObject("New Password again: ", true, true);
-		addMenuObject("Send!", false, false);
-		addMenuObject("<- Back", false, false);
+		addMenuObject("New Password: ", true, true, true);
+		addMenuObject("New Password again: ", true, true, true);
+		addMenuObject("Send!", false, false,false);
+		addMenuObject("<- Back", false, false,false);
 		setTitle("Change Password");
 		setMessage("Enter new password two times!");
 	}

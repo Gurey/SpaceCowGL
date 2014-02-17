@@ -20,10 +20,10 @@ public class Options extends Menu{
 	
 	public Options(Game game) {
 		super(game);
-		addMenuObject("Change skin: ", false, false);
-		addMenuObject("Fullscreen: ", true, false);
-		addMenuObject("Change password", false, false);
-		addMenuObject("<- Back: ", false, false);
+		addMenuObject("Change skin: ", true, false,false);
+		addMenuObject("Fullscreen: ", true, false,false);
+		addMenuObject("Change password", false, false,false);
+		addMenuObject("<- Back: ", false, false,false);
 		setTitle("Options");
 		skinID = 1;
 		skinMax = 4;
@@ -60,15 +60,19 @@ public class Options extends Menu{
 		switch (skinID) {
 		case 1:
 			tex = textureHandler.getCowTex();
+			getMenuObjects().get(0).setMenuInput("Default");
 			break;
 		case 2:
 			tex = textureHandler.getCowsad();
+			getMenuObjects().get(0).setMenuInput("Sexy");
 			break;
 		case 3:
 			tex = textureHandler.getCowCool();
+			getMenuObjects().get(0).setMenuInput("Cool");
 			break;
 		case 4:
 			tex = textureHandler.getDragonCow();
+			getMenuObjects().get(0).setMenuInput("DragonCow");
 			break;
 		default:
 			tex = textureHandler.getCowTex();
