@@ -26,7 +26,7 @@ public class CreateNewAccountMenu {
 	private GameState state;
 	private DrawText drawInfo;
 	private DrawText drawInput;
-	private String accountName, password, passSecret, password2, backString, eMail;
+	private String accountName, password, passSecret, password2, backString, eMail, message;
 	private float textPosX, accPosY, passPosY, pass2PosY, backYPos, mailPosY;
 	private KeyboadTextInput input;
 	private Pointer pointer;
@@ -38,8 +38,8 @@ public class CreateNewAccountMenu {
 		this.setStarArrayList(starArrayList);
 		this.setTextureHandler(textureHandler);
 		this.setState(state);
-		this.drawInfo =  new DrawText(50, Alignment.RIGHT);
-		this.drawInput = new DrawText(50, Alignment.LEFT);
+		this.drawInfo =  new DrawText(35, Alignment.RIGHT);
+		this.drawInput = new DrawText(35, Alignment.LEFT);
 		this.textPosX = Game.dWidth/2;
 		this.accPosY = (Game.dHeight/2)-250;
 		this.passPosY = (Game.dHeight/2)-150;
@@ -50,6 +50,7 @@ public class CreateNewAccountMenu {
 		this.password2 = "";
 		this.accountName = "";
 		this.eMail = "";
+		this.setMessage("");
 		this.backString = "<<<Back  ";
 		this.input = new KeyboadTextInput();
 		this.pointer = new Pointer(350,accPosY, 100, 5, 1, textureHandler);
@@ -65,6 +66,7 @@ public class CreateNewAccountMenu {
 		drawInfo.drawString(textPosX, pass2PosY, "Repeat: ", Color.white);
 		drawInfo.drawString(textPosX, mailPosY, "eMail: ", Color.white);
 		drawInfo.drawString(textPosX, backYPos, backString, Color.white);
+		drawInfo.drawString(Game.dWidth/2, Game.dHeight-75, message, Color.white);
 		getInput();
 		drawInput.drawString(textPosX, accPosY, accountName, Color.white);
 		passSecret = "";
@@ -116,7 +118,6 @@ public class CreateNewAccountMenu {
 			case 4:
 				
 				if (!accountName.isEmpty() && (password.length() > 5 && password.equals(password2)) && checkEmail()) {
-				System.out.println("HEJ! :D");
 				Json json = new Json();
 				json.setType("CREATENEW");
 				json.setName(accountName);
@@ -124,10 +125,12 @@ public class CreateNewAccountMenu {
 				json.seteMail(eMail);
 				connection.send(new Gson().toJson(json, Json.class));
 				}
+				else if (password.length()<5) message = "Password to short";
+				else if (!checkEmail()) message = "Wrong E-mail, this one sucks!";
 				stateChanged = false;
 				break;
 			case 5:
-				state.setStatus(Status.LOGON);
+				state.setStatus(Status.STARTSCREEN);
 				stateChanged = false;
 				break;
 			default:
@@ -206,6 +209,14 @@ public class CreateNewAccountMenu {
 
 	public void setConnection(ServerConnection connection) {
 		this.connection = connection;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 }

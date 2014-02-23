@@ -37,6 +37,7 @@ import spacecow.gui.LogonMenu;
 import spacecow.gui.LostPassword;
 import spacecow.gui.Options;
 import spacecow.gui.StartMenu;
+import spacecow.gui.StartScreen;
 import spacecow.objects.GameObjectHandler;
 import spacecow.objects.Player;
 import spacecow.objects.Star;
@@ -69,6 +70,7 @@ public class Game {
 	private HowToPlay howToPlay;
 	private Options options;
 	private ChangePassword changePassword;
+	private StartScreen startScreen;
 
 	TextHandler textHandler;
 
@@ -102,6 +104,7 @@ public class Game {
 		howToPlay = new HowToPlay(gameObjHandler, player, texHandler, magnet);
 		options = new Options(this);
 		changePassword = new ChangePassword(this);
+		startScreen = new StartScreen(this);
 	}
 
 	//Set up the display and create it.
@@ -131,14 +134,15 @@ public class Game {
 	}
 
 	public void start(){
-//		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
-		gameState.setStatus(Status.LOGON);
+		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
+		gameState.setStatus(Status.STARTSCREEN);
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
 			System.out.println("<Entering gameloop with GameState: "+gameState.getStatus()+">");
 			while (!Display.isCloseRequested() 
 					&& (gameState.getStatus()==Status.LOGON 
 					|| gameState.getStatus()==Status.CREATENEW 
-					|| gameState.getStatus()==Status.LOSTPASSWORD) 
+					|| gameState.getStatus()==Status.LOSTPASSWORD
+					|| gameState.getStatus()==Status.STARTSCREEN) 
 					&& !(gameState.getStatus()==Status.EXIT)){
 				render();
 				if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -148,7 +152,11 @@ public class Game {
 				}
 				if (gameState.getStatus()==Status.LOGON) logonMenu.update();
 				else if(gameState.getStatus()==Status.CREATENEW) createNew.update();
-				else lostPassword.update();
+				else if(gameState.getStatus()==Status.LOSTPASSWORD) lostPassword.update();
+				else {
+					moveStars();
+					startScreen.update();;
+				}
 				Display.update();
 				Display.sync(60);
 
@@ -372,5 +380,21 @@ public class Game {
 
 	public LostPassword getLostPassword() {
 		return lostPassword;
+	}
+
+	public CreateNewAccountMenu getCreateNew() {
+		return createNew;
+	}
+
+	public void setCreateNew(CreateNewAccountMenu createNew) {
+		this.createNew = createNew;
+	}
+
+	public StartScreen getStartScreen() {
+		return startScreen;
+	}
+
+	public void setStartScreen(StartScreen startScreen) {
+		this.startScreen = startScreen;
 	}
 }

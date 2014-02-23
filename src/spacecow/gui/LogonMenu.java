@@ -61,7 +61,7 @@ public class LogonMenu {
 		pointer.updatePointerState();
 		drawInfo.drawString(textPosX, accPosY, "Name: ", Color.white);
 		drawInfo.drawString(textPosX, passPosY, "Password: ", Color.white);
-		drawInfo.drawString(textPosX, createPosY, "Create new  ", Color.white);
+		drawInfo.drawString(textPosX, createPosY, "<- Back ", Color.white);
 		drawInfo.drawString(textPosX, lostPosY, "Lost Password  ", Color.white);
 		getInput();
 		drawInput.drawString(textPosX, accPosY, accountName, Color.white);
@@ -105,7 +105,7 @@ public class LogonMenu {
 				stateChanged = false;
 				break;
 			case 3:
-				state.setStatus(Status.CREATENEW);
+				state.setStatus(Status.STARTSCREEN);
 				stateChanged = false;
 				break;
 			case 4:

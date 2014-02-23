@@ -85,7 +85,7 @@ public class ServerConnection implements Runnable {
 		Json jsonToSend = new Json();
 		switch (json.getType()) {
 		case "LOGIN RETURN":
-			if (json.getAccID()>0) {
+			if (json.getAccID()==1) {
 				game.getGameState().setStatus(Status.MENU);
 				game.getOptions().setSkin(json.getSkinID());
 			}
@@ -109,6 +109,9 @@ public class ServerConnection implements Runnable {
 			break;
 		case "LOSTPASS":
 			game.getLostPassword().setMessage(json.getName());
+			break;
+		case "CREATE NEW":
+			game.getCreateNew().setMessage(json.getName());
 			break;
 		default:
 			break;

@@ -2,7 +2,6 @@ package spacecow.gui;
 
 import java.util.ArrayList;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
@@ -12,7 +11,6 @@ import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.Game;
 import spacecow.engine.KeyboadTextInput;
 import spacecow.engine.Pointer;
-import spacecow.engine.TextureHandler;
 
 public class Menu {
 
