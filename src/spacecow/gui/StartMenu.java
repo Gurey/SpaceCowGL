@@ -22,7 +22,6 @@ import spacecow.serverconnection.ServerConnection;
 
 public class StartMenu {
 
-	private ArrayList<Star> starArray;
 	private TextureHandler texHandler;
 	private Texture startGameTex, highScoresTex, optionsTex;
 	private GameState gameState;
@@ -32,9 +31,8 @@ public class StartMenu {
 	private DrawText statVal;
 	private ServerConnection connection;
 	
-	public StartMenu(ArrayList<Star> starArray, TextureHandler texHandler, GameState gameState){
+	public StartMenu(TextureHandler texHandler, GameState gameState){
 		this.playerStats = new Json();
-		this.starArray = starArray;
 		this.texHandler = texHandler;
 		this.startGameTex = texHandler.getStartGameTex();
 		this.highScoresTex = texHandler.getHighScoreTex();
@@ -46,9 +44,6 @@ public class StartMenu {
 	}
 	
 	public void update(){
-		for (Star star : starArray) {
-			star.move();
-		}
 		texHandler.drawTexture(startGameTex, 100, 100);
 		texHandler.drawTexture(highScoresTex, 100, 200);
 		texHandler.drawTexture(optionsTex, 100, 300);
@@ -118,9 +113,6 @@ public class StartMenu {
 			statText.drawString(xPos, yPos, "Total Asterdoid collisions:", Color.white);
 	}
 
-	public ArrayList<Star> getStarArray() {
-		return starArray;
-	}
 
 	public TextureHandler getTexHandler() {
 		return texHandler;

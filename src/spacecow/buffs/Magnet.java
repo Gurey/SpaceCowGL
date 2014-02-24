@@ -134,4 +134,8 @@ public class Magnet {
 		return (timeLeft-Sys.getTime());
 	}
 	
+	public void setTimeLeft(long timeLeft){
+		this.timeLeft = timeLeft;
+	}
+	
 }

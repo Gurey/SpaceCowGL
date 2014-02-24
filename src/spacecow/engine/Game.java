@@ -93,14 +93,14 @@ public class Game {
 		magnet = new Magnet(gameObjHandler.getGameObjectArray(), player);
 		gOver = new GameOver(gameObjHandler.getStarsArray(), gameState, score, serverConnection);
 		gameObjHandler.setMagnet(magnet);
-		startMenu = new StartMenu(gameObjHandler.getStarsArray(), texHandler, gameState);
+		startMenu = new StartMenu(texHandler, gameState);
 		count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
 		textHandler = new TextHandler(this);
 		setdConfig(new DisplayConfig());
-		logonMenu = new LogonMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
-		createNew = new CreateNewAccountMenu(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
-		setScoreMenu(new HighScoreMenu(gameObjHandler.getStarsArray(), texHandler, gameState));
-		lostPassword = new LostPassword(gameObjHandler.getStarsArray(), texHandler, gameState, serverConnection);
+		logonMenu = new LogonMenu(texHandler, gameState, serverConnection);
+		createNew = new CreateNewAccountMenu(texHandler, gameState, serverConnection);
+		setScoreMenu(new HighScoreMenu(texHandler, gameState));
+		lostPassword = new LostPassword(texHandler, gameState, serverConnection);
 		howToPlay = new HowToPlay(gameObjHandler, player, texHandler, magnet);
 		options = new Options(this);
 		changePassword = new ChangePassword(this);
@@ -145,6 +145,7 @@ public class Game {
 					|| gameState.getStatus()==Status.STARTSCREEN) 
 					&& !(gameState.getStatus()==Status.EXIT)){
 				render();
+				moveStars();
 				if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 					Display.destroy();
 					serverConnection.closeAllConnections();
@@ -154,7 +155,6 @@ public class Game {
 				else if(gameState.getStatus()==Status.CREATENEW) createNew.update();
 				else if(gameState.getStatus()==Status.LOSTPASSWORD) lostPassword.update();
 				else {
-					moveStars();
 					startScreen.update();;
 				}
 				Display.update();
@@ -168,6 +168,7 @@ public class Game {
 					|| gameState.getStatus()==Status.HOWTOPLAY
 					|| gameState.getStatus()==Status.CHANGEPASS) {
 				render();
+				if (gameState.getStatus() != Status.HOWTOPLAY) moveStars();
 				switch (gameState.getStatus()) {
 				case MENU:
 					startMenu.update();
@@ -176,7 +177,6 @@ public class Game {
 					scoreMenu.update();
 					break;
 				case OPTIONS:
-					moveStars();
 					options.update();
 					break;
 				case HOWTOPLAY:
@@ -185,10 +185,10 @@ public class Game {
 					magnet.update();
 					if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 						gameState.setStatus(Status.MENU);
+						magnet.setTimeLeft(0);
 					}
 					break;
 				case CHANGEPASS:
-					moveStars();
 					changePassword.update();
 					break;
 				default:
@@ -211,6 +211,7 @@ public class Game {
 				}
 				player.update();
 				rush.update();
+				magnet.update();
 				count.countDown();
 				Display.update();
 				Display.sync(60);
@@ -281,6 +282,7 @@ public class Game {
 		this.gameObjHandler.getGameObjectArray().clear();
 		this.score.setScoreMulti(1);
 		this.score.resetCollisions();
+		this.magnet.setTimeLeft(0);
 		while (gameObjHandler.getStarsArray().size()>gameObjHandler.getNumberOfStars()) {
 			gameObjHandler.getStarsArray().remove(gameObjHandler.getStarsArray().size()-1);
 		}

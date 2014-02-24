@@ -21,7 +21,6 @@ import spacecow.serverconnection.ServerConnection;
 
 public class LostPassword {
 
-	private ArrayList<Star> starArrayList;
 	private TextureHandler textureHandler;
 	private GameState state;
 	private DrawText drawInfo;
@@ -35,9 +34,8 @@ public class LostPassword {
 	private ServerConnection connection;
 	private Color matchColor;
 
-	public LostPassword(ArrayList<Star> starArrayList, TextureHandler textureHandler, GameState state, ServerConnection connection) {
+	public LostPassword(TextureHandler textureHandler, GameState state, ServerConnection connection) {
 		this.connection = connection;
-		this.setStarArrayList(starArrayList);
 		this.setTextureHandler(textureHandler);
 		this.setState(state);
 		this.drawInfo =  new DrawText(50, Alignment.RIGHT);
@@ -56,9 +54,6 @@ public class LostPassword {
 	}
 	
 	public void update(){
-		for (Star star : starArrayList) {
-			star.move();
-		}
 		
 		if (mail1.equals(mail2) && mail1.length()>5) {
 			matchColor = Color.green;
@@ -109,13 +104,6 @@ public class LostPassword {
 		}
 	}
 	
-	public ArrayList<Star> getStarArrayList() {
-		return starArrayList;
-	}
-
-	public void setStarArrayList(ArrayList<Star> starArrayList) {
-		this.starArrayList = starArrayList;
-	}
 
 	public TextureHandler getTextureHandler() {
 		return textureHandler;

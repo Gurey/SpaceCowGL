@@ -21,7 +21,6 @@ import spacecow.serverconnection.ServerConnection;
 
 public class CreateNewAccountMenu {
 
-	private ArrayList<Star> starArrayList;
 	private TextureHandler textureHandler;
 	private GameState state;
 	private DrawText drawInfo;
@@ -33,9 +32,8 @@ public class CreateNewAccountMenu {
 	private boolean stateChanged;
 	private ServerConnection connection;
 	
-	public CreateNewAccountMenu(ArrayList<Star> starArrayList, TextureHandler textureHandler, GameState state, ServerConnection connection){
+	public CreateNewAccountMenu(TextureHandler textureHandler, GameState state, ServerConnection connection){
 		this.setConnection(connection);
-		this.setStarArrayList(starArrayList);
 		this.setTextureHandler(textureHandler);
 		this.setState(state);
 		this.drawInfo =  new DrawText(35, Alignment.RIGHT);
@@ -57,9 +55,6 @@ public class CreateNewAccountMenu {
 	}
 	
 	public void update(){
-		for (Star star : starArrayList) {
-			star.move();
-		}
 		pointer.updatePointerState();
 		drawInfo.drawString(textPosX, accPosY, "Name: ", Color.white);
 		drawInfo.drawString(textPosX, passPosY, "Password: ", Color.white);
@@ -147,13 +142,6 @@ public class CreateNewAccountMenu {
 		return eMailState;
 	}
 
-	public ArrayList<Star> getStarArrayList() {
-		return starArrayList;
-	}
-
-	public void setStarArrayList(ArrayList<Star> starArrayList) {
-		this.starArrayList = starArrayList;
-	}
 
 	public TextureHandler getTextureHandler() {
 		return textureHandler;

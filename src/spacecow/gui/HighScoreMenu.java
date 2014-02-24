@@ -1,7 +1,6 @@
 package spacecow.gui;
 
 
-import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
@@ -13,22 +12,19 @@ import spacecow.engine.TextureHandler;
 import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.GameState.Status;
 import spacecow.engine.Game;
-import spacecow.objects.Star;
 import spacecow.serverconnection.Json;
 
 public class HighScoreMenu {
 
 	private DrawText scoreText, nameText, menuText, dateText, drawMessage;
 	private Json[] top10, personalTop10, bestAvg;
-	private ArrayList<Star> starAr;
 	private GameState gameState;
 	private Pointer pointer;
 	private boolean enterKeyPressed;
 	private float xPos;
 	private String message;
 
-	public HighScoreMenu(ArrayList<Star> starArray, TextureHandler texHandler, GameState gameState){
-		this.starAr = starArray;
+	public HighScoreMenu(TextureHandler texHandler, GameState gameState){
 		this.gameState = gameState;
 		this.xPos = (Game.dWidth/2);
 		this.top10 = new Json[0];
@@ -43,9 +39,6 @@ public class HighScoreMenu {
 	}
 
 	public void update(){
-		for (Star star : starAr) {
-			star.move();
-		}
 		pointer.updatePointerState();
 		menuText.drawString(100, 100, "Top 10", Color.white);
 		menuText.drawString(100, 200, "Your top 10", Color.white);
