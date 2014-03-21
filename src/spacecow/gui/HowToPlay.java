@@ -23,7 +23,6 @@ public class HowToPlay {
 	private GameObjectHandler objectHandler;
 	private Player player;
 	private DrawText drawInfo;
-	private TextureHandler textureHandler;
 	private Magnet magnet;
 	private String message;
 	private long time;
@@ -32,7 +31,6 @@ public class HowToPlay {
 		this.objectHandler = gameObjectHandler;
 		this.player = player;
 		this.drawInfo = new DrawText(35, Alignment.CENTER);
-		this.textureHandler = textureHandler;
 		this.magnet = magnet;
 		this.message = "";
 		this.time = Sys.getTime();

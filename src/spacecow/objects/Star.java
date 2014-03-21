@@ -16,7 +16,6 @@ public class Star{
 
 	private double starRanSpeed = 0;
 
-	private Score score;
 
 	private double yVel=0;
 
@@ -34,7 +33,6 @@ public class Star{
 	public Star(Score score, TextureHandler texHandler){
 		this.centerX=(int) (0+Math.random()*gbWidth);
 		this.centerY=(int) (0+Math.random()*gbHeight);
-		this.score = score;
 		this.texHandler = texHandler;
 		this.minSpeed=0.3;
 		this.maxSpeed=15;
@@ -45,7 +43,6 @@ public class Star{
 	public Star(Score score, TextureHandler texHandler ,int y){
 		this.centerX=(int) (0+Math.random()*gbWidth);
 		this.centerY=y;
-		this.score = score;
 		this.texHandler = texHandler;
 		this.minSpeed=0.3;
 		this.maxSpeed=15;

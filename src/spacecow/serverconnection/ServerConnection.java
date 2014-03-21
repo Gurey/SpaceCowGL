@@ -20,7 +20,6 @@ public class ServerConnection implements Runnable {
 	private String conMsg;
 	private Game game;
 	private Gson gson;
-	private boolean closeThread = false;
 
 	public ServerConnection(Game game) {
 		gson = new Gson();
@@ -82,7 +81,6 @@ public class ServerConnection implements Runnable {
 	}
 
 	private void handleQuery(Json json){
-		Json jsonToSend = new Json();
 		switch (json.getType()) {
 		case "LOGIN RETURN":
 			if (json.getAccID()==1) {
@@ -113,13 +111,15 @@ public class ServerConnection implements Runnable {
 		case "CREATE NEW":
 			game.getCreateNew().setMessage(json.getName());
 			break;
+		case "STARTMENUMESSAGE":
+			game.getStartMenu().setMessage(json.getName());
+			break;
 		default:
 			break;
 		}
 	}
 
 	public void closeAllConnections(){
-		closeThread = true;
 		try {
 			serverCon.close();
 			out.close();

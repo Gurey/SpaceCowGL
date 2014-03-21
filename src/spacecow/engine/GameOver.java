@@ -1,9 +1,6 @@
 package spacecow.engine;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;

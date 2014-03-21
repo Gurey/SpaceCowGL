@@ -1,7 +1,5 @@
 package spacecow.gui;
 
-import java.util.ArrayList;
-
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
@@ -15,7 +13,6 @@ import spacecow.engine.Pointer;
 import spacecow.engine.TextureHandler;
 import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.GameState.Status;
-import spacecow.objects.Star;
 import spacecow.serverconnection.Json;
 import spacecow.serverconnection.ServerConnection;
 

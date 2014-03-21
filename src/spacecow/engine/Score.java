@@ -38,7 +38,7 @@ public class Score {
 		this.magnetCol = 0;
 		this.multiCol = 0;
 		this.starCol = 0;
-		this.scoreLost = 0;
+		this.setScoreLost(0);
 	}
 	public int getScoreMulti(){
 		return scoreMulti;
@@ -57,7 +57,7 @@ public class Score {
 		percentage = percentage/100;
 		System.out.println("Reducement: "+percentage);
 		long reducedScore = (long) (this.score*percentage);
-		scoreLost = this.score-reducedScore;
+		setScoreLost(this.score-reducedScore);
 		this.score = (long) (this.score*percentage);
 	}
 	public int getMagnetCol() {
@@ -89,5 +89,11 @@ public class Score {
 	}
 	public void setStarCol(int starCol) {
 		this.starCol = starCol;
+	}
+	public long getScoreLost() {
+		return scoreLost;
+	}
+	public void setScoreLost(long scoreLost) {
+		this.scoreLost = scoreLost;
 	}
 }

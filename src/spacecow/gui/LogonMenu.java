@@ -1,7 +1,5 @@
 package spacecow.gui;
 
-import java.util.ArrayList;
-
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
@@ -15,7 +13,6 @@ import spacecow.engine.GameState.Status;
 import spacecow.engine.KeyboadTextInput;
 import spacecow.engine.Pointer;
 import spacecow.engine.TextureHandler;
-import spacecow.objects.Star;
 import spacecow.serverconnection.Json;
 import spacecow.serverconnection.ServerConnection;
 
@@ -98,6 +95,7 @@ public class LogonMenu {
 				jSon.setPassword(password);
 				connection.send(new Gson().toJson(jSon, Json.class));
 				stateChanged = false;
+				message = "Logging in...";
 				break;
 			case 3:
 				state.setStatus(Status.STARTSCREEN);

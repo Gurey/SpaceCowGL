@@ -60,9 +60,9 @@ public class GameObjectHandler {
 			StarBuff.setAddStar(0);
 			starsArray.add(new Star(score, texHandler, -10));
 		}
-		for (Star st : starsArray) {
-			st.move();
-		}
+//		for (Star st : starsArray) {
+//			st.move();
+//		}
 		for (GameObject go : gameObjectArray) {
 			go.move();
 			if (go.isRotating()){

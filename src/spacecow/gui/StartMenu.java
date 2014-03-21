@@ -1,24 +1,17 @@
 package spacecow.gui;
 
-import java.util.ArrayList;
-
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
-
-import com.google.gson.Gson;
 
 import spacecow.engine.DrawText;
 import spacecow.engine.GameState;
 import spacecow.engine.DrawText.Alignment;
 import spacecow.engine.GameState.Status;
 import spacecow.engine.Game;
-import spacecow.engine.HighScore;
 import spacecow.engine.Pointer;
 import spacecow.engine.TextureHandler;
-import spacecow.objects.Star;
 import spacecow.serverconnection.Json;
-import spacecow.serverconnection.ServerConnection;
 
 public class StartMenu {
 
@@ -29,7 +22,8 @@ public class StartMenu {
 	private Json playerStats;
 	private DrawText statText;
 	private DrawText statVal;
-	private ServerConnection connection;
+	private DrawText drawMessage;
+	private String message;
 	
 	public StartMenu(TextureHandler texHandler, GameState gameState){
 		this.playerStats = new Json();
@@ -38,9 +32,11 @@ public class StartMenu {
 		this.highScoresTex = texHandler.getHighScoreTex();
 		this.optionsTex = texHandler.getOptionsTex();
 		this.gameState=gameState;
+		this.message = "";
 		this.pointer = new Pointer(40,100, 100, 6, 1, texHandler);
 		this.statText = new DrawText(35, Alignment.LEFT);
 		this.statVal = new DrawText(35, Alignment.RIGHT);
+		this.drawMessage = new DrawText(35, Alignment.CENTER);
 	}
 	
 	public void update(){
@@ -50,6 +46,7 @@ public class StartMenu {
 		statText.drawString(100, 400, "How To Play", Color.white);
 		statText.drawString(100, 500, "Logout", Color.white);
 		statText.drawString(100, 600, "Exit", Color.white);
+		drawMessage.drawString(Game.dWidth/2, Game.dHeight-75, message, Color.white);
 		pointer.updatePointerState();
 		
 		printStats();
@@ -140,5 +137,13 @@ public class StartMenu {
 
 	public void setPlayerStats(Json playerStats) {
 		this.playerStats = playerStats;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

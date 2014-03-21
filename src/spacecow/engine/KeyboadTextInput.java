@@ -3,10 +3,10 @@ package spacecow.engine;
 import org.lwjgl.input.Keyboard;
 
 public class KeyboadTextInput {
-	
+
 	private boolean keyReleased;
 	private String stringToSendBack;
-	
+
 	public String getInput(DrawText drawText, String stringToEdit, int stringMaxSize){
 		char keyPressed = Keyboard.CHAR_NONE;
 		if (keyReleased && Keyboard.getEventKeyState() && !Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
@@ -14,7 +14,7 @@ public class KeyboadTextInput {
 			keyReleased = false;
 			if (drawText.canPrint(keyPressed) && !(stringToEdit.length()>=stringMaxSize)) {
 				stringToEdit += keyPressed; 
-//				stringToEdit = stringToEdit.replaceAll("\\W", "");
+				//				stringToEdit = stringToEdit.replaceAll("\\W", "");
 				System.out.print(keyPressed);
 			}
 		}
