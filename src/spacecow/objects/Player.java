@@ -77,8 +77,10 @@ public class Player {
 			this.down=false;
 		}
 		this.pRectangle.setBounds(this.x, this.y, this.neutralCow.getImageWidth(), (float)this.neutralCow.getImageHeight());
-		texHandler.drawRotatingTexture(neutralCow, this.x, this.y-neutralCow.getImageHeight()/2, (float) (this.speedX*3));
 
+	}
+	public void render() {
+		texHandler.drawRotatingTexture(neutralCow, this.x, this.y-neutralCow.getImageHeight()/2, (float) (this.speedX*3));
 	}
 	//Check if there are any input from the Keyboard.
 	public void getInput(){

@@ -20,9 +20,6 @@ public class CountDown {
 	}
 	//Moves all the stars in the background and count down from 3 to 1 by printing out a Texture on the middle of the screen.
 	public void countDown(){
-		for (Star star : starArray) {
-			star.move();
-		}
 		if (countdownState==3) {
 			numberTex = texHandler.getNumber3tex();
 			if (Sys.getTime()>time+1000){

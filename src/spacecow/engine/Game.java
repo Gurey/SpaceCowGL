@@ -95,8 +95,8 @@ public class Game {
 		magnet = new Magnet(gameObjHandler.getGameObjectArray(), player);
 		gOver = new GameOver(gameObjHandler.getStarsArray(), gameState, score, serverConnection);
 		gameObjHandler.setMagnet(magnet);
-		startMenu = new StartMenu(texHandler, gameState);
 		count = new CountDown(gameObjHandler.getStarsArray(), texHandler);
+		startMenu = new StartMenu(texHandler, gameState, count);
 		textHandler = new TextHandler(this);
 		setdConfig(new DisplayConfig());
 		logonMenu = new LogonMenu(texHandler, gameState, serverConnection);
@@ -138,18 +138,68 @@ public class Game {
 	public void start(){
 		dConfig.setDisplayMode(dWidth, dHeight, !Display.isFullscreen());
 		gameState.setStatus(Status.STARTSCREEN);
-		updateTopLists();
+//		updateTopLists();
 		while (!Display.isCloseRequested() && !gameState.getStatus().equals(Status.EXIT)) {
-			render();
 			moveStars();
-			startScreen();
-			menu();
-			countDown();
-			gameLoop();
-			configGameOver();
-			gameOver();
+			switch (gameState.getStatus()) {
+			case LOGON:
+				logonMenu.update();
+				break;
+			case STARTSCREEN:
+				startScreen.runMenu();
+				break;
+			case MENU:
+				startMenu.update();
+				break;
+			case COUNTDOWN:
+				countDown();
+				break;
+			case STARTGAME:
+				input();
+				update();
+				renderGame();
+				if (time.getSecondsLeft()<=0) {
+					gameState.setStatus(Status.GAMEOVER);
+					gOver.setFinalScore(score.getScore());
+				}
+				else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+					gameState.setStatus(Status.MENU);
+				}
+				break;
+			case GAMEOVER:
+				gameOver();
+				break;
+			case HIGHSCORE:
+				scoreMenu.update();
+				break;
+			case OPTIONS:
+				options.runMenu();
+				break;
+			case CHANGEPASS:
+				changePassword.runMenu();
+				break;
+			case LOSTPASSWORD:
+				lostPassword.update();
+				break;
+			case CREATENEW:
+				createNew.update();
+				break;
+			case HOWTOPLAY:
+				howToPlay.update();
+				rush.update();
+				magnet.update();
+				player.render();
+				if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+					gameState.setStatus(Status.MENU);
+					magnet.setTimeLeft(0);
+				}
+				break;
+			default:
+				break;
+			}
 			Display.update();
-//			Display.sync(60);
+			render();
+			Display.sync(60);
 		}
 
 		if (serverConnection != null) {
@@ -159,9 +209,36 @@ public class Game {
 		Display.destroy();
 	}
 
+	private void input(){
+		player.update();
+	}
+
+	//updates all components in the Game phase.
+	public void update(){
+			gameUpdate();
+	}
+
+	private void gameUpdate() {
+		gameObjHandler.update();
+		rush.update();
+		magnet.update();
+		score.update();
+	}
+	
+	private void renderGame(){
+		player.render();
+		textHandler.updateGame();
+		
+	}
+
+	//Prints out the content on the screen.
+	public void render(){
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
 	public void countDown() {
 		//Starts the CoundDown of the game, exits when countdown is over.
-		if (!isEscPressed() && gameState.getStatus().equals(Status.COUNTDOWN)) {
+		if (!isEscPressed()) {
 			if (count.getCountdownState()<=0) {
 				//Sets the Score to 0 and the time left to XX seconds.
 				score.setScore(0);
@@ -175,6 +252,7 @@ public class Game {
 			player.update();
 			rush.update();
 			magnet.update();
+			player.render();
 			count.countDown();
 		}
 	}
@@ -187,10 +265,8 @@ public class Game {
 	}
 
 	public void gameOver() {
-		if (!isEscPressed() && time.getSecondsLeft()<=0 && gameState.getStatus().equals(Status.GAMEOVER)) {
 			gOver.update();
 			textHandler.updateGameOver();
-		}
 	}
 
 	public void configGameOver() {
@@ -203,7 +279,7 @@ public class Game {
 		}
 	}
 
-	public void gameLoop() {
+	public void runGame() {
 		//init the Game, running until the Player press Esc or the time runs out.
 		if (!isEscPressed() && !(time.getSecondsLeft()<=0) && gameState.getStatus().equals(Status.STARTGAME)) {
 			update();
@@ -218,6 +294,7 @@ public class Game {
 				|| gameState.getStatus()==Status.CHANGEPASS) {
 			switch (gameState.getStatus()) {
 			case MENU:
+				//Change to new menusystem
 				startMenu.update();
 				if (gameState.getStatus()==Status.STARTGAME) {
 					gameState.setStatus(Status.COUNTDOWN);
@@ -225,10 +302,11 @@ public class Game {
 				}
 				break;
 			case HIGHSCORE:
+				//Change to new menusystem
 				scoreMenu.update();
 				break;
 			case OPTIONS:
-				options.update();
+				options.runMenu();
 				break;
 			case HOWTOPLAY:
 				howToPlay.update();
@@ -240,7 +318,7 @@ public class Game {
 				}
 				break;
 			case CHANGEPASS:
-				changePassword.update();
+				changePassword.runMenu();
 				break;
 			default:
 				break;
@@ -269,20 +347,14 @@ public class Game {
 			else if(gameState.getStatus()==Status.CREATENEW) createNew.update();
 			else if(gameState.getStatus()==Status.LOSTPASSWORD) lostPassword.update();
 			else {
-				startScreen.update();;
+				startScreen.runMenu();
 			}
 		}
 	}
 
 
 	private void updateTopLists() {
-		Json j = new Json();
-		j.setType("TOPTEN");
-		serverConnection.send(new Gson().toJson(j, Json.class));
-		j.setType("PERSONALTOPTEN");
-		serverConnection.send(new Gson().toJson(j, Json.class));
-		j.setType("BESTAVG");
-		serverConnection.send(new Gson().toJson(j, Json.class));
+		serverConnection.updateTopLists();
 	}
 
 	private boolean isEscPressed(){
@@ -304,25 +376,14 @@ public class Game {
 		}
 		updateTopLists();
 	}
-	//updates all components in the Game phase.
-	public void update(){
-		player.update();
-		gameObjHandler.update();
-		rush.update();
-		magnet.update();
-		score.update();
-		textHandler.updateGame();
-	}
+
 
 	public void moveStars(){
 		for (Star star : gameObjHandler.getStarsArray()) {
-			star.move();
+			star.update();
 		}
 	}
-	//Prints out the content on the screen.
-	public void render(){
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
+
 	public Score getScore() {
 		return score;
 	}

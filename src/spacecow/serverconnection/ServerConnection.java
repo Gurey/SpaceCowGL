@@ -86,6 +86,8 @@ public class ServerConnection implements Runnable {
 			if (json.getAccID()==1) {
 				game.getGameState().setStatus(Status.MENU);
 				game.getOptions().setSkin(json.getSkinID());
+				game.getLogonMenu().setMessage("Welcome!");
+				updateTopLists();
 			}
 			else game.getLogonMenu().setMessage("Wrong username or password :(");
 			break;
@@ -129,6 +131,16 @@ public class ServerConnection implements Runnable {
 		catch (Exception e) {
 			System.err.println("Could not close connection: "+e.getMessage());		
 			}
+	}
+	
+	public void updateTopLists() {
+		Json j = new Json();
+		j.setType("TOPTEN");
+		send(new Gson().toJson(j, Json.class));
+		j.setType("PERSONALTOPTEN");
+		send(new Gson().toJson(j, Json.class));
+		j.setType("BESTAVG");
+		send(new Gson().toJson(j, Json.class));
 	}
 
 	public boolean isConnected() {

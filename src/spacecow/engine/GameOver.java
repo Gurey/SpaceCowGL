@@ -35,10 +35,6 @@ public class GameOver {
 	}
 	//Moves the stars in the background.
 	public void update(){
-		for (Star star : starsArray) {
-			star.move();
-		}
-		
 		stringToPrint = "| Stars: "+score.getStarCol()
 				+" | Multi: "+score.getMultiCol()
 				+" | Cookies: "+score.getCookiaCol()

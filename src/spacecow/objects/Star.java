@@ -54,15 +54,24 @@ public class Star{
 		this.centerY+=yVel;
 	}
 
-	public void move(){
-		this.changePos(this.yVel); 												//moves the star
-		texHandler.drawTexture(this.starIm, this.getCenterX(), this.centerY);	//Draws the star
+	private void move(){
+		this.changePos(this.yVel);
+	}
+	private void checkStarReset() {
 		if (this.centerY>gbHeight) { 											//if the star is outside the display
 			this.yVel=getStarRanSpeed(); 										//give the star a new random speed
 			this.centerX=(int) (0+Math.random()*gbWidth); 						//give the star and new random X position 
 			setStarim(this);													//Give the Star a new image based on the new speed
 			this.centerY=0-starIm.getTextureHeight();							//Set the Y-value to the top of the screen.
 		}
+	}
+	public void update() {
+		move();
+		checkStarReset();
+		render();
+	}
+	private void render() {
+		texHandler.drawTexture(this.starIm, this.getCenterX(), this.centerY);	//Draws the star
 	}
 	//return a random speed.
 	public double getStarRanSpeed() {

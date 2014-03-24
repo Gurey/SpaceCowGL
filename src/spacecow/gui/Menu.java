@@ -41,7 +41,7 @@ public class Menu {
 		this.drawMessage = new DrawText(35, Alignment.CENTER);
 	}
 	
-	public void editString(){
+	private void input(){
 		if (menuObjects.get(pointer.getPointerState()-1).isEditable()) {
 			menuObjects.get(pointer.getPointerState()-1).setMenuInput(input.getInput(drawInput, menuObjects.get(pointer.getPointerState()-1).getMenuInput(), 100));
 			if (menuObjects.get(pointer.getPointerState()-1).isSecret()){
@@ -52,9 +52,22 @@ public class Menu {
 			String s = "";
 			s = input.getInput(drawInput, s, 100);
 		}
+		if (checkEnter()) {
+			checkIfExe();
+		}
 	}
 	
-	public void update(){
+	private void update(){
+		pointer.updatePointerState();
+	}
+	
+	public void runMenu(){
+		input();
+		update();
+		render();
+	}
+	
+	private void render(){
 		float yPos = startPosY;
 		drawTitle.drawString(Game.dWidth/2, Game.dHeight/10, title, Color.white);
 		for (MenuObject object : menuObjects) {
@@ -63,7 +76,7 @@ public class Menu {
 				if (object.isSecret()) {
 					secretString = "";
 					for (int i = 0; i < object.getMenuInput().length(); i++) {
-					secretString += "*";	
+						secretString += "*";	
 					}
 					drawInput.drawString(startPosX, yPos, secretString, Color.white);
 				}
@@ -72,11 +85,7 @@ public class Menu {
 			yPos += padding;
 		}
 		drawMessage.drawString(Game.dWidth/2, (float) (Game.dHeight/1.2), message, Color.white);
-		pointer.updatePointerState();
-		editString();
-		if (checkEnter()) {
-			checkIfExe();
-		}
+		
 	}
 	
 	public boolean checkEnter(){
